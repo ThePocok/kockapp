@@ -34,10 +34,14 @@ public class Layer {
         colors.set(n, color);
     }
 
+    public void reverse() {
+        Collections.reverse(colors);
+    }
+
     public static void copy(Layer source, Layer destination, boolean reverseOrder) {
         //FIXME can cause problems, this way the source is reversed in place, needs to be tested
         if (reverseOrder)
-            Collections.reverse(source.colors);
+            source.reverse();
 
         for (int i = 0; i < source.dimension; i++) {
             destination.setNthPiece(i, source.getNthPiece(i));
