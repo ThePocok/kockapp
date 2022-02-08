@@ -29,10 +29,7 @@ public class Face {
         layers.get(n).copyTo(layer);
     }
 
-    public void setNthColumn(int n, Layer layer, boolean reverseOrder) {
-        if (reverseOrder)
-            layer.reverse();
-
+    public void setNthColumn(int n, Layer layer) {
         int i = 0;
         for (Layer l : layers) {
             l.setNthPiece(n, layer.getNthPiece(i++));
@@ -58,7 +55,7 @@ public class Face {
 
         for (; i <= dimensions; i = i+2) {
             int firstIndex = (dimensions - i) / 2;
-            int lastIndex = dimensions - firstIndex;
+            int lastIndex = dimensions - firstIndex - 1;
             Layer piecesToMove = getNthRow(firstIndex);
 
             //putting pieces to the right side, putting back pieces to the Layer from the right side
@@ -68,14 +65,14 @@ public class Face {
                 rightSide.setNthPiece(p, piecesToMove.getNthPiece(p));
                 piecesToMove.setNthPiece(p, oldPiece);
             }
-            setNthColumn(lastIndex, rightSide, false);
+            setNthColumn(lastIndex, rightSide);
 
             //putting pieces to the bottom side, putting back pieces to the Layer from the bottom side
             Layer bottomSide = getNthRow(lastIndex);
             for (int p = lastIndex; p >= firstIndex; p--) {
                 Color oldPiece = bottomSide.getNthPiece(p);
-                bottomSide.setNthPiece(p, piecesToMove.getNthPiece(dimensions - p));
-                piecesToMove.setNthPiece(dimensions - p, oldPiece);
+                bottomSide.setNthPiece(p, piecesToMove.getNthPiece(dimensions - p - 1));
+                piecesToMove.setNthPiece(dimensions - p - 1, oldPiece);
             }
             setNthRow(lastIndex, bottomSide);
 
@@ -83,10 +80,10 @@ public class Face {
             Layer leftSide = getNthColumn(firstIndex);
             for (int p = lastIndex; p >= firstIndex; p--) {
                 Color oldPiece = leftSide.getNthPiece(p);
-                leftSide.setNthPiece(dimensions - p, piecesToMove.getNthPiece(dimensions - p));
-                piecesToMove.setNthPiece(dimensions - p, oldPiece);
+                leftSide.setNthPiece(dimensions - p - 1, piecesToMove.getNthPiece(p));
+                piecesToMove.setNthPiece(p, oldPiece);
             }
-            setNthColumn(firstIndex, leftSide, false);
+            setNthColumn(firstIndex, leftSide);
 
             //every piece is now in order, put back piecesToMove to the top layer
             setNthRow(firstIndex, piecesToMove);
@@ -108,7 +105,7 @@ public class Face {
                 leftSide.setNthPiece(dimensions - p - 1, piecesToMove.getNthPiece(p));
                 piecesToMove.setNthPiece(p, oldPiece);
             }
-            setNthColumn(lastIndex, leftSide, false);
+            setNthColumn(lastIndex, leftSide);
 
             Layer bottomSide = getNthRow(lastIndex);
             for (int p = firstIndex; p < lastIndex; p++) {
@@ -124,7 +121,7 @@ public class Face {
                 rightSide.setNthPiece(p, piecesToMove.getNthPiece(dimensions - p - 1));
                 piecesToMove.setNthPiece(dimensions - p - 1, oldPiece);
             }
-            setNthColumn(lastIndex, rightSide, false);
+            setNthColumn(lastIndex, rightSide);
 
             setNthRow(firstIndex, piecesToMove);
         }

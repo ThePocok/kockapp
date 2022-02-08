@@ -36,18 +36,35 @@ public abstract class Cube {
     }
 
     /**
+     * Move: U
      * Turning the face on the top clockwise.
-     * Affected layers: the whole top face,
+     * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
      */
     public void rotateUpClockwise() {
         whiteFace.rotateClockwise();
+
+        Layer layerToRotate = greenFace.getNthRow(0);
+        greenFace.setNthRow(0, redFace.getNthRow(0));
+
+        Layer originalLayer = orangeFace.getNthRow(0);
+        orangeFace.setNthRow(0, layerToRotate);
+        layerToRotate = originalLayer;
+
+        originalLayer = blueFace.getNthRow(0);
+        blueFace.setNthRow(0, layerToRotate);
+        layerToRotate = originalLayer;
+
+        redFace.setNthRow(0, layerToRotate);
     }
 
-    //U'
+    /**
+     * Move: U'
+     * Turning the face on the top counterclockwise.
+     * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
+     */
     public void rotateUpCounterClockwise() {
         whiteFace.rotateCounterClockwise();
 
-        // Turning the side face layers
         Layer layerToRotate = blueFace.getNthRow(0);
         blueFace.setNthRow(0, redFace.getNthRow(0));
 
@@ -61,64 +78,6 @@ public abstract class Cube {
 
         redFace.setNthRow(0, layerToRotate);
     }
-
-
-//    private void turnClockwise(Face turningFace, ArrayList<Face> sideFaces) {
-//        // Turning the face itself
-//        Layer currentTurningFaceLayer = turningFace.getNthColumn(0);
-//
-//        Layer turningFaceLayer = turningFace.getNthRow(turningFace.getDimensions());
-//        turningFace.setNthRow(turningFace.getDimensions(), currentTurningFaceLayer);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        turningFaceLayer = turningFace.getNthColumn(turningFace.getDimensions());
-//        turningFace.setNthColumn(turningFace.getDimensions(), currentTurningFaceLayer, false);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        turningFaceLayer = turningFace.getNthRow(0);
-//        turningFace.setNthRow(0, currentTurningFaceLayer);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        turningFace.setNthColumn(0, currentTurningFaceLayer, false);
-//
-//        // Turning the side face layers
-//        Layer currentLayer = sideFaces.get(0).getNthRow(0);
-//        for (int i = 1; i < 3; i++) {
-//            Layer layer = sideFaces.get(i).getNthRow(0);
-//            sideFaces.get(i).setNthRow(0, currentLayer);
-//            currentLayer = layer;
-//        }
-//        sideFaces.get(0).setNthRow(0, currentLayer);
-//    }
-
-//    private void turnCounterClockwise(Color turningFaceColor) {
-//        ArrayList<Color> sideFaceColors = determineSideFaces(turningFaceColor, true);
-//        // Turning the face itself
-//        Layer currentTurningFaceLayer = getFace(turningFaceColor).getNthColumn(0);
-//
-//        Layer turningFaceLayer = getFace(turningFaceColor).getNthRow(0);
-//        getFace(turningFaceColor).setNthRow(0, currentTurningFaceLayer, true);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        turningFaceLayer = getFace(turningFaceColor).getNthColumn(getFace(turningFaceColor).getDimensions() - 1);
-//        getFace(turningFaceColor).setNthColumn(getFace(turningFaceColor).getDimensions() - 1, currentTurningFaceLayer, true);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        turningFaceLayer = getFace(turningFaceColor).getNthRow(getFace(turningFaceColor).getDimensions() - 1);
-//        getFace(turningFaceColor).setNthRow(getFace(turningFaceColor).getDimensions() - 1, currentTurningFaceLayer, true);
-//        currentTurningFaceLayer = turningFaceLayer;
-//
-//        getFace(turningFaceColor).setNthColumn(0, currentTurningFaceLayer, true);
-//
-//        // Turning the side face layers
-//        Layer currentLayer = getFace(sideFaceColors.get(3)).getNthRow(0);
-//        for (int i = 2; i >= 0; i--) {
-//            Layer layer = getFace(sideFaceColors.get(i)).getNthRow(0);
-//            getFace(sideFaceColors.get(i)).setNthRow(0, currentLayer, false);
-//            currentLayer = layer;
-//        }
-//        getFace(sideFaceColors.get(3)).setNthRow(0, currentLayer, false);
-//    }
 
     private ArrayList<Color> determineSideFaces(Color color, boolean reverseOrder) {
         ArrayList<Color> colors = new ArrayList<>();
