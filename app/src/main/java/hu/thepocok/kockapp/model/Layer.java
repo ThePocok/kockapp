@@ -14,8 +14,7 @@ public class Layer {
     }
 
     public Layer(ArrayList<Color> colors) {
-        this.colors = new ArrayList<>();
-        Collections.copy(this.colors, colors);
+        this.colors = (ArrayList<Color>) colors.clone();
     }
 
     public Layer(Color color, int dimension) {
@@ -34,17 +33,17 @@ public class Layer {
         colors.set(n, color);
     }
 
+    public ArrayList<Color> getDataSet() {
+        return colors;
+    }
+
     public void reverse() {
         Collections.reverse(colors);
     }
 
-    public static void copy(Layer source, Layer destination, boolean reverseOrder) {
-        //FIXME can cause problems, this way the source is reversed in place, needs to be tested
-        if (reverseOrder)
-            source.reverse();
-
-        for (int i = 0; i < source.dimension; i++) {
-            destination.setNthPiece(i, source.getNthPiece(i));
+    public void copyTo(Layer layer) {
+        for (int i = 0; i < this.dimension; i++) {
+            this.setNthPiece(i, layer.getNthPiece(i));
         }
     }
 
