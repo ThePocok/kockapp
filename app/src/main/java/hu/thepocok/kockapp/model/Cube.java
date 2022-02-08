@@ -10,12 +10,12 @@ import java.util.Collections;
  * on it's left side is the blue one, and on the back, there is the orange face.
  */
 public abstract class Cube {
-    private Face whiteFace;
-    private Face redFace;
-    private Face greenFace;
-    private Face orangeFace;
-    private Face blueFace;
-    private Face yellowFace;
+    private final Face whiteFace;
+    private final Face redFace;
+    private final Face greenFace;
+    private final Face orangeFace;
+    private final Face blueFace;
+    private final Face yellowFace;
 
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
         this.whiteFace = whiteFace;
@@ -138,14 +138,13 @@ public abstract class Cube {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Cube: \n");
-        sb.append(whiteFace.toString());
-        sb.append(redFace.toString());
-        sb.append(greenFace.toString());
-        sb.append(orangeFace.toString());
-        sb.append(blueFace.toString());
-        sb.append(yellowFace.toString());
-        return sb.toString();
+        String cube = "Cube: \n" +
+                whiteFace.toString() +
+                redFace.toString() +
+                greenFace.toString() +
+                orangeFace.toString() +
+                blueFace.toString() +
+                yellowFace.toString();
+        return cube;
     }
 }

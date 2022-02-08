@@ -2,10 +2,9 @@ package hu.thepocok.kockapp.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 public class Layer {
-    private int dimension;
+    private final int dimension;
     private ArrayList<Color> colors;
 
     public Layer(Color... colors) {
@@ -15,6 +14,7 @@ public class Layer {
 
     public Layer(ArrayList<Color> colors) {
         this.colors = (ArrayList<Color>) colors.clone();
+        this.dimension = colors.size();
     }
 
     public Layer(Color color, int dimension) {
@@ -35,10 +35,6 @@ public class Layer {
 
     public ArrayList<Color> getDataSet() {
         return colors;
-    }
-
-    public void reverse() {
-        Collections.reverse(colors);
     }
 
     public void copyTo(Layer layer) {

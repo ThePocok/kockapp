@@ -1,11 +1,13 @@
 package hu.thepocok.kockapp.model;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Face {
-    private int dimensions;
+    private final int dimensions;
     private ArrayList<Layer> layers;
 
     public Face(Layer... layers) {
