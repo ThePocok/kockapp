@@ -37,7 +37,7 @@ public abstract class Cube {
 
     /**
      * Move: U
-     * Turning the face on the top clockwise.
+     * Turning the white face clockwise.
      * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
      */
     public void rotateUpClockwise() {
@@ -59,7 +59,7 @@ public abstract class Cube {
 
     /**
      * Move: U'
-     * Turning the face on the top counterclockwise.
+     * Turning the white face counterclockwise.
      * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
      */
     public void rotateUpCounterClockwise() {
@@ -96,6 +96,28 @@ public abstract class Cube {
 
         originalLayer = blueFace.getNthRow(blueFace.getDimensions() - 1);
         blueFace.setNthRow(blueFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
+    }
+
+    /**
+     * Move: D'
+     * Turning the yellow face counterclockwise.
+     * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
+     */
+    public void rotateDownCounterClockwise() {
+        yellowFace.rotateClockwise();
+
+        Layer layerToRotate = blueFace.getNthRow(blueFace.getDimensions() - 1);
+        blueFace.setNthRow(blueFace.getDimensions() - 1, redFace.getNthRow(redFace.getDimensions() - 1));
+
+        Layer originalLayer = orangeFace.getNthRow(orangeFace.getDimensions() - 1);
+        orangeFace.setNthRow(orangeFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        originalLayer = greenFace.getNthRow(greenFace.getDimensions() - 1);
+        greenFace.setNthRow(greenFace.getDimensions() - 1, layerToRotate);
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
