@@ -123,6 +123,28 @@ public abstract class Cube {
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
     }
 
+    /**
+     * Move: R
+     * Turning the blue face counterclockwise.
+     * Affected faces: Whole blue face, right column of white, red, yellow and orange faces.
+     */
+    public void rotateRightClockwise() {
+        blueFace.rotateClockwise();
+
+        Layer layerToRotate = orangeFace.getNthColumn(0);
+        orangeFace.setNthColumn(0,  whiteFace.getNthColumn(whiteFace.getDimensions() - 1));
+
+        Layer originalLayer = yellowFace.getNthColumn(yellowFace.getDimensions() - 1);
+        yellowFace.setNthColumn(yellowFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        originalLayer = redFace.getNthColumn(redFace.getDimensions() - 1);
+        redFace.setNthColumn(redFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate);
+    }
+
     private ArrayList<Color> determineSideFaces(Color color, boolean reverseOrder) {
         ArrayList<Color> colors = new ArrayList<>();
         switch (color) {
