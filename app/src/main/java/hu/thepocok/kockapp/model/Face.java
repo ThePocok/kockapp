@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Representing a side of the face. <br>
+ * It contains the layers from top to bottom.
+ */
 public class Face {
     private final int dimensions;
     private ArrayList<Layer> layers;

@@ -3,6 +3,10 @@ package hu.thepocok.kockapp.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Representing a column or row of the cube. <br>
+ * It contains the colors from left to right
+ */
 public class Layer {
     private final int dimension;
     private ArrayList<Color> colors;
