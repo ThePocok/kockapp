@@ -124,8 +124,30 @@ public abstract class Cube {
     }
 
     /**
+     * Move: L
+     * Turning the green face clockwise.
+     * Affected faces: Whole green face, right column of white, red, yellow and orange faces.
+     */
+    public void rotateLeftClockwise() {
+        greenFace.rotateClockwise();
+
+        Layer layerToRotate = redFace.getNthColumn(0);
+        redFace.setNthColumn(0, whiteFace.getNthColumn(0));
+
+        Layer originalLayer = yellowFace.getNthColumn(0);
+        yellowFace.setNthColumn(0, layerToRotate);
+        layerToRotate = originalLayer;
+
+        originalLayer = orangeFace.getNthColumn(orangeFace.getDimensions() - 1);
+        orangeFace.setNthColumn(orangeFace.getDimensions() - 1,  layerToRotate);
+        layerToRotate = originalLayer;
+
+        whiteFace.setNthColumn(0, layerToRotate);
+    }
+
+    /**
      * Move: R
-     * Turning the blue face counterclockwise.
+     * Turning the blue face clockwise.
      * Affected faces: Whole blue face, right column of white, red, yellow and orange faces.
      */
     public void rotateRightClockwise() {
