@@ -359,4 +359,39 @@ public class TwoTimesTwoCubeTest {
         Assert.assertEquals(cube.getFace(Color.BLUE), Face.generateFace(Color.BLUE, 2));
         Assert.assertEquals(cube.getFace(Color.YELLOW), Face.generateFace(Color.YELLOW, 2));
     }
+
+    @Test
+    public void rotatingFrontCounterClockwise() {
+        cube.rotateFrontCounterClockwise();
+        Assert.assertEquals(new Face(new Layer(Color.WHITE, Color.WHITE), new Layer(Color.BLUE, Color.BLUE)), cube.getFace(Color.WHITE));
+        Assert.assertEquals(Face.generateFace(Color.RED, 2), cube.getFace(Color.RED));
+        Assert.assertEquals(new Face(new Layer(Color.GREEN, Color.WHITE), new Layer(Color.GREEN, Color.WHITE)), cube.getFace(Color.GREEN));
+        Assert.assertEquals(Face.generateFace(Color.ORANGE, 2), cube.getFace(Color.ORANGE));
+        Assert.assertEquals(new Face(new Layer(Color.YELLOW, Color.BLUE), new Layer(Color.YELLOW, Color.BLUE)), cube.getFace(Color.BLUE));
+        Assert.assertEquals(new Face(new Layer(Color.GREEN, Color.GREEN), new Layer(Color.YELLOW, Color.YELLOW)), cube.getFace(Color.YELLOW));
+
+        cube.rotateFrontCounterClockwise();
+        Assert.assertEquals(new Face(new Layer(Color.WHITE, Color.WHITE), new Layer(Color.YELLOW, Color.YELLOW)), cube.getFace(Color.WHITE));
+        Assert.assertEquals(Face.generateFace(Color.RED, 2), cube.getFace(Color.RED));
+        Assert.assertEquals(new Face(new Layer(Color.GREEN, Color.BLUE), new Layer(Color.GREEN, Color.BLUE)), cube.getFace(Color.GREEN));
+        Assert.assertEquals(Face.generateFace(Color.ORANGE, 2), cube.getFace(Color.ORANGE));
+        Assert.assertEquals(new Face(new Layer(Color.GREEN, Color.BLUE), new Layer(Color.GREEN, Color.BLUE)), cube.getFace(Color.BLUE));
+        Assert.assertEquals(new Face(new Layer(Color.WHITE, Color.WHITE), new Layer(Color.YELLOW, Color.YELLOW)), cube.getFace(Color.YELLOW));
+
+        cube.rotateFrontCounterClockwise();
+        Assert.assertEquals(new Face(new Layer(Color.WHITE, Color.WHITE), new Layer(Color.GREEN, Color.GREEN)), cube.getFace(Color.WHITE));
+        Assert.assertEquals(Face.generateFace(Color.RED, 2), cube.getFace(Color.RED));
+        Assert.assertEquals(new Face(new Layer(Color.GREEN, Color.YELLOW), new Layer(Color.GREEN, Color.YELLOW)), cube.getFace(Color.GREEN));
+        Assert.assertEquals(Face.generateFace(Color.ORANGE, 2), cube.getFace(Color.ORANGE));
+        Assert.assertEquals(new Face(new Layer(Color.WHITE, Color.BLUE), new Layer(Color.WHITE, Color.BLUE)), cube.getFace(Color.BLUE));
+        Assert.assertEquals(new Face(new Layer(Color.BLUE, Color.BLUE), new Layer(Color.YELLOW, Color.YELLOW)), cube.getFace(Color.YELLOW));
+
+        cube.rotateFrontCounterClockwise();
+        Assert.assertEquals(cube.getFace(Color.WHITE), Face.generateFace(Color.WHITE, 2));
+        Assert.assertEquals(cube.getFace(Color.RED), Face.generateFace(Color.RED, 2));
+        Assert.assertEquals(cube.getFace(Color.GREEN), Face.generateFace(Color.GREEN, 2));
+        Assert.assertEquals(cube.getFace(Color.ORANGE), Face.generateFace(Color.ORANGE, 2));
+        Assert.assertEquals(cube.getFace(Color.BLUE), Face.generateFace(Color.BLUE, 2));
+        Assert.assertEquals(cube.getFace(Color.YELLOW), Face.generateFace(Color.YELLOW, 2));
+    }
 }
