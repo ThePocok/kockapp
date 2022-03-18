@@ -2,6 +2,7 @@ package hu.thepocok.kockapp.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Representing a column or row of the cube. <br>
@@ -43,8 +44,29 @@ public class Layer {
 
     public void copyTo(Layer layer) {
         for (int i = 0; i < this.dimension; i++) {
+            if (layer.getNthPiece(i) == Color.EMPTY) {
+                continue;
+            }
             this.setNthPiece(i, layer.getNthPiece(i));
         }
+    }
+
+    public Layer reverse() {
+        Collections.reverse(colors);
+        return this;
+    }
+
+    /**
+     * This method is used to wildcard the two ends of the layer.
+     * It helps rotating the face layer by layer.
+     * @param n The number of pieces, that should be wildcarded at both ends of the layer
+     */
+    public Layer replaceWithEmpty(int n) {
+        for(int i = 0; i < n; i++) {
+            colors.set(i, Color.EMPTY);
+            colors.set(colors.size() - 1 - i, Color.EMPTY);
+        }
+        return this;
     }
 
     @Override

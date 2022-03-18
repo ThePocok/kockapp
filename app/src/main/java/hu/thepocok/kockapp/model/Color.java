@@ -6,7 +6,8 @@ public enum Color {
     GREEN("G"),
     BLUE("B"),
     ORANGE("O"),
-    YELLOW("Y");
+    YELLOW("Y"),
+    EMPTY("_");
 
     public final String stringValue;
 

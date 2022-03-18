@@ -1,7 +1,5 @@
 package hu.thepocok.kockapp.model;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -38,6 +36,10 @@ public class Face {
     public void setNthColumn(int n, Layer layer) {
         int i = 0;
         for (Layer l : layers) {
+            if (l.getNthPiece(i) == Color.EMPTY) {
+                i++;
+                continue;
+            }
             l.setNthPiece(n, layer.getNthPiece(i++));
         }
     }
@@ -57,79 +59,32 @@ public class Face {
     }
 
     public void rotateClockwise() {
-        int i = (dimensions % 2 == 0) ? 2 : 3;
+        for (int i = dimensions; i > 1; i--) {
+            int completedLayers = i - dimensions;
+            Layer topLayer = getNthRow(dimensions - i).replaceWithEmpty(completedLayers);
+            Layer rightLayer = getNthColumn(i - 1).replaceWithEmpty(completedLayers);
+            Layer bottomLayer = getNthRow(i - 1).replaceWithEmpty(completedLayers);
+            Layer leftLayer = getNthColumn(dimensions - i).replaceWithEmpty(completedLayers);
 
-        for (; i <= dimensions; i = i+2) {
-            int firstIndex = (dimensions - i) / 2;
-            int lastIndex = dimensions - firstIndex - 1;
-            Layer piecesToMove = getNthRow(firstIndex);
-
-            //putting pieces to the right side, putting back pieces to the Layer from the right side
-            Layer rightSide = getNthColumn(lastIndex);
-            for (int p = firstIndex; p < lastIndex; p++) {
-                Color oldPiece = rightSide.getNthPiece(p);
-                rightSide.setNthPiece(p, piecesToMove.getNthPiece(p));
-                piecesToMove.setNthPiece(p, oldPiece);
-            }
-            setNthColumn(lastIndex, rightSide);
-
-            //putting pieces to the bottom side, putting back pieces to the Layer from the bottom side
-            Layer bottomSide = getNthRow(lastIndex);
-            for (int p = lastIndex; p >= firstIndex; p--) {
-                Color oldPiece = bottomSide.getNthPiece(p);
-                bottomSide.setNthPiece(p, piecesToMove.getNthPiece(dimensions - p - 1));
-                piecesToMove.setNthPiece(dimensions - p - 1, oldPiece);
-            }
-            setNthRow(lastIndex, bottomSide);
-
-            //putting pieces to the left side, putting back pieces to the Layer from the left side
-            Layer leftSide = getNthColumn(firstIndex);
-            for (int p = lastIndex; p >= firstIndex; p--) {
-                Color oldPiece = leftSide.getNthPiece(p);
-                leftSide.setNthPiece(dimensions - p - 1, piecesToMove.getNthPiece(p));
-                piecesToMove.setNthPiece(p, oldPiece);
-            }
-            setNthColumn(firstIndex, leftSide);
-
-            //every piece is now in order, put back piecesToMove to the top layer
-            setNthRow(firstIndex, piecesToMove);
+            setNthColumn(i - 1, topLayer);
+            setNthRow(i - 1, rightLayer.reverse());
+            setNthColumn(dimensions - i, bottomLayer);
+            setNthRow(dimensions - i, leftLayer.reverse());
         }
     }
 
     public void rotateCounterClockwise() {
-        int i = (dimensions % 2 == 0) ? 2 : 3;
+        for (int i = dimensions; i > 1; i--) {
+            int completedLayers = i - dimensions;
+            Layer topLayer = getNthRow(dimensions - i).replaceWithEmpty(completedLayers);
+            Layer rightLayer = getNthColumn(i - 1).replaceWithEmpty(completedLayers);
+            Layer bottomLayer = getNthRow(i - 1).replaceWithEmpty(completedLayers);
+            Layer leftLayer = getNthColumn(dimensions - i).replaceWithEmpty(completedLayers);
 
-        for (; i <= dimensions; i = i+2) {
-            int firstIndex = (dimensions - i) / 2;
-            int lastIndex = dimensions - firstIndex - 1;
-            Layer piecesToMove = getNthRow(firstIndex);
-
-            //putting pieces to the right side, putting back pieces to the Layer from the right side
-            Layer leftSide = getNthColumn(firstIndex);
-            for (int p = lastIndex; p >= firstIndex; p--) {
-                Color oldPiece = leftSide.getNthPiece(p);
-                leftSide.setNthPiece(dimensions - p - 1, piecesToMove.getNthPiece(p));
-                piecesToMove.setNthPiece(p, oldPiece);
-            }
-            setNthColumn(lastIndex, leftSide);
-
-            Layer bottomSide = getNthRow(lastIndex);
-            for (int p = firstIndex; p < lastIndex; p++) {
-                Color oldPiece = bottomSide.getNthPiece(p);
-                bottomSide.setNthPiece(p, piecesToMove.getNthPiece(p));
-                piecesToMove.setNthPiece(p, oldPiece);
-            }
-            setNthRow(lastIndex, bottomSide);
-
-            Layer rightSide = getNthColumn(lastIndex);
-            for (int p = lastIndex; p >= firstIndex; p--) {
-                Color oldPiece = rightSide.getNthPiece(p);
-                rightSide.setNthPiece(p, piecesToMove.getNthPiece(dimensions - p - 1));
-                piecesToMove.setNthPiece(dimensions - p - 1, oldPiece);
-            }
-            setNthColumn(lastIndex, rightSide);
-
-            setNthRow(firstIndex, piecesToMove);
+            setNthColumn(dimensions - i, topLayer.reverse());
+            setNthRow(i - 1, leftLayer);
+            setNthColumn(i - 1, bottomLayer.reverse());
+            setNthRow(dimensions - i, rightLayer);
         }
     }
 
