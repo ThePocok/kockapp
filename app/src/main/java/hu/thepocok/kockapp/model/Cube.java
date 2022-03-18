@@ -80,11 +80,11 @@ public abstract class Cube {
     }
 
     /**
-     * Move: D
-     * Turning the yellow face clockwise.
+     * Move: D'
+     * Turning the yellow face counterclockwise.
      * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
      */
-    public void rotateDownClockwise() {
+    public void rotateDownCounterClockwise() {
         yellowFace.rotateCounterClockwise();
 
         Layer layerToRotate = greenFace.getNthRow(greenFace.getDimensions() - 1);
@@ -102,11 +102,11 @@ public abstract class Cube {
     }
 
     /**
-     * Move: D'
-     * Turning the yellow face counterclockwise.
+     * Move: D
+     * Turning the yellow face clockwise.
      * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
      */
-    public void rotateDownCounterClockwise() {
+    public void rotateDownClockwise() {
         yellowFace.rotateClockwise();
 
         Layer layerToRotate = blueFace.getNthRow(blueFace.getDimensions() - 1);
@@ -139,10 +139,10 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         originalLayer = orangeFace.getNthColumn(orangeFace.getDimensions() - 1);
-        orangeFace.setNthColumn(orangeFace.getDimensions() - 1,  layerToRotate);
+        orangeFace.setNthColumn(orangeFace.getDimensions() - 1,  layerToRotate.reverse());
         layerToRotate = originalLayer;
 
-        whiteFace.setNthColumn(0, layerToRotate);
+        whiteFace.setNthColumn(0, layerToRotate.reverse());
     }
 
     /**
@@ -154,10 +154,10 @@ public abstract class Cube {
         greenFace.rotateCounterClockwise();
 
         Layer layerToRotate = orangeFace.getNthColumn(orangeFace.getDimensions() - 1);
-        orangeFace.setNthColumn(orangeFace.getDimensions() - 1, whiteFace.getNthColumn(0));
+        orangeFace.setNthColumn(orangeFace.getDimensions() - 1, whiteFace.getNthColumn(0).reverse());
 
         Layer originalLayer = yellowFace.getNthColumn(0);
-        yellowFace.setNthColumn(0, layerToRotate);
+        yellowFace.setNthColumn(0, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
         originalLayer = redFace.getNthColumn(0);
@@ -176,10 +176,10 @@ public abstract class Cube {
         blueFace.rotateClockwise();
 
         Layer layerToRotate = orangeFace.getNthColumn(0);
-        orangeFace.setNthColumn(0,  whiteFace.getNthColumn(whiteFace.getDimensions() - 1));
+        orangeFace.setNthColumn(0,  whiteFace.getNthColumn(whiteFace.getDimensions() - 1).reverse());
 
         Layer originalLayer = yellowFace.getNthColumn(yellowFace.getDimensions() - 1);
-        yellowFace.setNthColumn(yellowFace.getDimensions() - 1, layerToRotate);
+        yellowFace.setNthColumn(yellowFace.getDimensions() - 1, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
         originalLayer = redFace.getNthColumn(redFace.getDimensions() - 1);
@@ -205,10 +205,10 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         originalLayer = orangeFace.getNthColumn(0);
-        orangeFace.setNthColumn(0, layerToRotate);
+        orangeFace.setNthColumn(0, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
-        whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate);
+        whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate.reverse());
     }
 
     /**
@@ -224,14 +224,14 @@ public abstract class Cube {
         blueFace.setNthColumn(0, whiteFace.getNthRow(whiteFace.getDimensions() - 1));
 
         Layer originalLayer = yellowFace.getNthRow(0);
-        yellowFace.setNthRow(0, layerToRotate);
+        yellowFace.setNthRow(0, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
         originalLayer = greenFace.getNthColumn(greenFace.getDimensions() - 1);
         greenFace.setNthColumn(greenFace.getDimensions() - 1, layerToRotate);
         layerToRotate = originalLayer;
 
-        whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate);
+        whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate.reverse());
     }
 
     /**
@@ -244,14 +244,14 @@ public abstract class Cube {
         redFace.rotateCounterClockwise();
 
         Layer layerToRotate = greenFace.getNthColumn(greenFace.getDimensions() - 1);
-        greenFace.setNthColumn(greenFace.getDimensions() - 1, whiteFace.getNthRow(whiteFace.getDimensions() - 1));
+        greenFace.setNthColumn(greenFace.getDimensions() - 1, whiteFace.getNthRow(whiteFace.getDimensions() - 1).reverse());
 
         Layer originalLayer = yellowFace.getNthRow(0);
         yellowFace.setNthRow(0, layerToRotate);
         layerToRotate = originalLayer;
 
         originalLayer = blueFace.getNthColumn(0);
-        blueFace.setNthColumn(0, layerToRotate);
+        blueFace.setNthColumn(0, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate);
@@ -267,17 +267,17 @@ public abstract class Cube {
         orangeFace.rotateClockwise();
 
         Layer layerToRotate = greenFace.getNthColumn(0);
-        greenFace.setNthColumn(0, whiteFace.getNthRow(0));
+        greenFace.setNthColumn(0, whiteFace.getNthRow(0).reverse());
 
         Layer originalLayer = yellowFace.getNthRow(yellowFace.getDimensions() - 1);
         yellowFace.setNthRow(yellowFace.getDimensions() - 1, layerToRotate);
         layerToRotate = originalLayer;
 
         originalLayer = blueFace.getNthColumn(blueFace.getDimensions() - 1);
-        blueFace.setNthColumn(blueFace.getDimensions() - 1, layerToRotate);
+        blueFace.setNthColumn(blueFace.getDimensions() - 1, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
-        whiteFace.setNthRow(0, layerToRotate);
+        whiteFace.setNthRow(0, layerToRotate.reverse());
     }
 
     /**
@@ -293,14 +293,14 @@ public abstract class Cube {
         blueFace.setNthColumn(blueFace.getDimensions() - 1, whiteFace.getNthRow(0));
 
         Layer originalLayer = yellowFace.getNthRow(yellowFace.getDimensions() - 1);
-        yellowFace.setNthRow(yellowFace.getDimensions() - 1, layerToRotate);
+        yellowFace.setNthRow(yellowFace.getDimensions() - 1, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
         originalLayer = greenFace.getNthColumn(0);
         greenFace.setNthColumn(0, layerToRotate);
         layerToRotate = originalLayer;
 
-        whiteFace.setNthRow(0, layerToRotate);
+        whiteFace.setNthRow(0, layerToRotate.reverse());
     }
 
     private ArrayList<Color> determineSideFaces(Color color, boolean reverseOrder) {
