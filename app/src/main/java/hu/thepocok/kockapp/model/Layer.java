@@ -62,6 +62,7 @@ public class Layer {
      * @param n The number of pieces, that should be wildcarded at both ends of the layer
      */
     public Layer replaceWithEmpty(int n) {
+        n = n / 2;
         for(int i = 0; i < n; i++) {
             colors.set(i, Color.EMPTY);
             colors.set(colors.size() - 1 - i, Color.EMPTY);

@@ -59,8 +59,8 @@ public class Face {
     }
 
     public void rotateClockwise() {
-        for (int i = dimensions; i > 1; i--) {
-            int completedLayers = i - dimensions;
+        for (int i = dimensions; i > 1; i = i-2) {
+            int completedLayers = dimensions - i;
             Layer topLayer = getNthRow(dimensions - i).replaceWithEmpty(completedLayers);
             Layer rightLayer = getNthColumn(i - 1).replaceWithEmpty(completedLayers);
             Layer bottomLayer = getNthRow(i - 1).replaceWithEmpty(completedLayers);
@@ -74,8 +74,8 @@ public class Face {
     }
 
     public void rotateCounterClockwise() {
-        for (int i = dimensions; i > 1; i--) {
-            int completedLayers = i - dimensions;
+        for (int i = dimensions; i > 1; i = i-2) {
+            int completedLayers = dimensions - i;
             Layer topLayer = getNthRow(dimensions - i).replaceWithEmpty(completedLayers);
             Layer rightLayer = getNthColumn(i - 1).replaceWithEmpty(completedLayers);
             Layer bottomLayer = getNthRow(i - 1).replaceWithEmpty(completedLayers);
