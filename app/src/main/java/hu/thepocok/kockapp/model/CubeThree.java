@@ -7,6 +7,11 @@ public class CubeThree extends Cube{
     }
 
     @Override
+    public Position getPositionByColor(Color... colors) {
+        return null;
+    }
+
+    @Override
     public void solve() {
         return;
     }

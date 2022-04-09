@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CubeTwoPieceMap extends PieceMap{
-    private ArrayList<ArrayList<Position>> positions;
 
     public CubeTwoPieceMap() {
         positions = new ArrayList<>();

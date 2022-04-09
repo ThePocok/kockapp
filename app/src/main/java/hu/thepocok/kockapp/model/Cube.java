@@ -391,6 +391,8 @@ public abstract class Cube {
         return faces.iterator();
     }
 
+    public abstract Position getPositionByColor(Color... colors);
+
     public abstract void solve();
 
     @Override

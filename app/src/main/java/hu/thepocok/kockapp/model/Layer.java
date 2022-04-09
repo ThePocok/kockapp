@@ -3,6 +3,7 @@ package hu.thepocok.kockapp.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Representing a column or row of the cube. <br>
@@ -54,6 +55,28 @@ public class Layer {
     public Layer reverse() {
         Collections.reverse(colors);
         return this;
+    }
+
+    public boolean hasColor(Color colorToFind) {
+        boolean l = false;
+
+        for (Color c : colors) {
+            l = l || c.equals(colorToFind);
+        }
+
+        return l;
+    }
+
+    public List<Integer> findColor(Color colorToFind) {
+        ArrayList<Integer> indexes = new ArrayList<>();
+
+        for (int i = 0; i < colors.size(); i++) {
+            if (colors.get(i).equals(colorToFind)) {
+                indexes.add(i);
+            }
+        }
+
+        return indexes;
     }
 
     /**
