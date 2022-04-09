@@ -2,6 +2,7 @@ package hu.thepocok.kockapp.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  * The Cube class models an abstract Rubik's cube.
@@ -10,12 +11,12 @@ import java.util.Collections;
  * on it's left side is the blue one, and on the back, there is the orange face.
  */
 public abstract class Cube {
-    private final Face whiteFace;
-    private final Face redFace;
-    private final Face greenFace;
-    private final Face orangeFace;
-    private final Face blueFace;
-    private final Face yellowFace;
+    protected final Face whiteFace;
+    protected final Face redFace;
+    protected final Face greenFace;
+    protected final Face orangeFace;
+    protected final Face blueFace;
+    protected final Face yellowFace;
 
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
         this.whiteFace = whiteFace;
@@ -303,46 +304,67 @@ public abstract class Cube {
         whiteFace.setNthRow(0, layerToRotate.reverse());
     }
 
-    private ArrayList<Color> determineSideFaces(Color color, boolean reverseOrder) {
-        ArrayList<Color> colors = new ArrayList<>();
+    /**
+     * Determines the faces next to the face of the given color
+     * @param color
+     * @return ArrayList of the side faces in the following order: <br>
+     * Face on top, face on left, face on right, face on bottom
+     */
+    protected ArrayList<Face> determineSideFaces(Color color) {
+        ArrayList<Face> faces = new ArrayList<>();
         switch (color) {
             case WHITE:
+                faces.add(orangeFace);
+                faces.add(greenFace);
+                faces.add(blueFace);
+                faces.add(redFace);
+                break;
             case YELLOW:
-                colors.add(Color.RED);
-                colors.add(Color.GREEN);
-                colors.add(Color.ORANGE);
-                colors.add(Color.BLUE);
+                faces.add(redFace);
+                faces.add(greenFace);
+                faces.add(blueFace);
+                faces.add(orangeFace);
                 break;
             case RED:
-                colors.add(Color.YELLOW);
-                colors.add(Color.GREEN);
-                colors.add(Color.WHITE);
-                colors.add(Color.BLUE);
+                faces.add(whiteFace);
+                faces.add(greenFace);
+                faces.add(blueFace);
+                faces.add(yellowFace);
                 break;
             case GREEN:
-                colors.add(Color.YELLOW);
-                colors.add(Color.ORANGE);
-                colors.add(Color.WHITE);
-                colors.add(Color.BLUE);
+                faces.add(whiteFace);
+                faces.add(orangeFace);
+                faces.add(redFace);
+                faces.add(yellowFace);
                 break;
             case ORANGE:
-                colors.add(Color.YELLOW);
-                colors.add(Color.BLUE);
-                colors.add(Color.WHITE);
-                colors.add(Color.GREEN);
+                faces.add(whiteFace);
+                faces.add(blueFace);
+                faces.add(greenFace);
+                faces.add(yellowFace);
                 break;
             case BLUE:
-                colors.add(Color.YELLOW);
-                colors.add(Color.RED);
-                colors.add(Color.WHITE);
-                colors.add(Color.ORANGE);
+                faces.add(whiteFace);
+                faces.add(redFace);
+                faces.add(orangeFace);
+                faces.add(yellowFace);
                 break;
             default:
                 break;
         }
 
-        if (reverseOrder)
-            Collections.reverse(colors);
+        return faces;
+    }
+
+    public Color getColorFromPosition(Position position) {
+        return getFace(position.getFace()).getNthColumn(position.getColumn()).getNthPiece(position.getRow());
+    }
+
+    public ArrayList<Color> mapPositionToColor(ArrayList<Position> positions) {
+        ArrayList<Color> colors = new ArrayList<>();
+        for(Position p : positions) {
+            colors.add(getFace(p.getFace()).getNthColumn(p.getColumn()).getNthPiece(p.getRow()));
+        }
         return colors;
     }
 
@@ -356,6 +378,17 @@ public abstract class Cube {
             case YELLOW: return yellowFace;
             default: return null;
         }
+    }
+
+    public Iterator<Face> getFaceIterator() {
+        ArrayList<Face> faces = new ArrayList<>();
+        faces.add(whiteFace);
+        faces.add(redFace);
+        faces.add(greenFace);
+        faces.add(orangeFace);
+        faces.add(blueFace);
+        faces.add(yellowFace);
+        return faces.iterator();
     }
 
     public abstract void solve();

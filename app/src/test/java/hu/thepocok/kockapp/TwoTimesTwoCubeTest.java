@@ -4,10 +4,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import hu.thepocok.kockapp.model.Color;
 import hu.thepocok.kockapp.model.CubeTwo;
+import hu.thepocok.kockapp.model.CubeTwoPieceMap;
 import hu.thepocok.kockapp.model.Face;
 import hu.thepocok.kockapp.model.Layer;
+import hu.thepocok.kockapp.model.Position;
 
 public class TwoTimesTwoCubeTest {
     private CubeTwo cube;
@@ -546,5 +552,89 @@ public class TwoTimesTwoCubeTest {
         Assert.assertEquals(new Face(new Layer(Color.YELLOW, Color.GREEN), new Layer(Color.BLUE, Color.BLUE)), cube.getFace(Color.ORANGE));
         Assert.assertEquals(new Face(new Layer(Color.RED, Color.RED), new Layer(Color.ORANGE, Color.YELLOW)), cube.getFace(Color.BLUE));
         Assert.assertEquals(new Face(new Layer(Color.BLUE, Color.GREEN), new Layer(Color.ORANGE, Color.ORANGE)), cube.getFace(Color.YELLOW));
+    }
+
+    @Test
+    public void pieceMapTest() {
+        CubeTwoPieceMap pieceMap = new CubeTwoPieceMap();
+        ArrayList<Color> colors;
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.GREEN, Color.ORANGE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 0, 1)));
+        System.out.println(colors);
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.BLUE, Color.ORANGE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.GREEN, Color.RED)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.BLUE, Color.RED)));
+
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 0, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
+
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 0, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
+
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 0, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
+
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 0, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
+
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 0, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 0, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 1, 0)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
+
+        colors = cube.mapPositionToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 1, 1)));
+        Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
     }
 }
