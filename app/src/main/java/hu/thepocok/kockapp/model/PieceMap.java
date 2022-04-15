@@ -8,6 +8,6 @@ public abstract class PieceMap {
     public abstract Piece getPieceColorPositions(Position positionToFind);
 
     public ArrayList<Piece> getAllPieces() {
-        return pieces;
+        return new ArrayList<>(pieces);
     }
 }
