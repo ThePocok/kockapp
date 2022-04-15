@@ -289,7 +289,7 @@ public abstract class Cube {
         blueFace.setNthColumn(blueFace.getDimensions() - 1, layerToRotate.reverse());
         layerToRotate = originalLayer;
 
-        whiteFace.setNthRow(0, layerToRotate.reverse());
+        whiteFace.setNthRow(0, layerToRotate);
     }
 
     /**
@@ -318,6 +318,7 @@ public abstract class Cube {
     public void mapKeysToRotation(String... rotationKeys) {
         for (String key : rotationKeys) {
             mapKeyToRotation(key);
+            System.out.println(this);
         }
     }
 
