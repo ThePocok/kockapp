@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * Representing a side of the face. <br>
+ * Representing a side of the cube. <br>
  * It contains the layers from top to bottom.
  */
 public class Face {

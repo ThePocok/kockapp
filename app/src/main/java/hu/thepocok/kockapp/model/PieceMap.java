@@ -3,11 +3,11 @@ package hu.thepocok.kockapp.model;
 import java.util.ArrayList;
 
 public abstract class PieceMap {
-    protected ArrayList<ArrayList<Position>> positions;
+    protected ArrayList<Piece> pieces;
 
-    public abstract ArrayList<Position> getPieceColorPositions(Position positionToFind);
+    public abstract Piece getPieceColorPositions(Position positionToFind);
 
-    public ArrayList<ArrayList<Position>> getAllPositions() {
-        return positions;
+    public ArrayList<Piece> getAllPieces() {
+        return pieces;
     }
 }

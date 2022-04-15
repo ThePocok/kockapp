@@ -3,14 +3,30 @@ package hu.thepocok.kockapp.model;
 import java.util.Objects;
 
 public class Position {
+    private Color color;
     private Color faceColor;
     private int row;
     private int column;
 
     public Position(Color faceColor, int row, int column) {
+        this.color = null;
         this.faceColor = faceColor;
         this.row = row;
         this.column = column;
+    }
+
+    public Position(Color color, Color faceColor, int row, int column) {
+        this.faceColor = faceColor;
+        this.row = row;
+        this.column = column;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public Color getFace() {

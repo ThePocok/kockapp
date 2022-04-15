@@ -4,6 +4,17 @@ public class CubeThree extends Cube{
 
     public CubeThree() {
         super(3);
+        pieceMap = new PieceMap() {
+            @Override
+            public Piece getPieceColorPositions(Position positionToFind) {
+                return null;
+            }
+        };
+    }
+
+    @Override
+    public boolean isValidCube() {
+        return false;
     }
 
     @Override

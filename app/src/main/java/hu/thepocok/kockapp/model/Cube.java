@@ -1,8 +1,9 @@
 package hu.thepocok.kockapp.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
+
+import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 /**
  * The Cube class models an abstract Rubik's cube.
@@ -18,13 +19,21 @@ public abstract class Cube {
     protected final Face blueFace;
     protected final Face yellowFace;
 
-    public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
+    protected Orientation orientation;
+
+    protected int dimensions;
+    protected PieceMap pieceMap;
+
+    public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace, int dimensions) {
         this.whiteFace = whiteFace;
         this.redFace = redFace;
         this.greenFace = greenFace;
         this.orangeFace = orangeFace;
         this.blueFace = blueFace;
         this.yellowFace = yellowFace;
+
+        this.orientation = new Orientation();
+        this.dimensions = dimensions;
     }
 
     public Cube(int dimensions) {
@@ -33,7 +42,9 @@ public abstract class Cube {
                 Face.generateFace(Color.GREEN, dimensions),
                 Face.generateFace(Color.ORANGE, dimensions),
                 Face.generateFace(Color.BLUE, dimensions),
-                Face.generateFace(Color.YELLOW, dimensions));
+                Face.generateFace(Color.YELLOW, dimensions), dimensions);
+
+        this.orientation = new Orientation();
     }
 
     /**
@@ -81,28 +92,6 @@ public abstract class Cube {
     }
 
     /**
-     * Move: D'
-     * Turning the yellow face counterclockwise.
-     * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
-     */
-    public void rotateDownCounterClockwise() {
-        yellowFace.rotateCounterClockwise();
-
-        Layer layerToRotate = greenFace.getNthRow(greenFace.getDimensions() - 1);
-        greenFace.setNthRow(greenFace.getDimensions() - 1, redFace.getNthRow(redFace.getDimensions() - 1));
-
-        Layer originalLayer = orangeFace.getNthRow(orangeFace.getDimensions() - 1);
-        orangeFace.setNthRow(orangeFace.getDimensions() - 1, layerToRotate);
-        layerToRotate = originalLayer;
-
-        originalLayer = blueFace.getNthRow(blueFace.getDimensions() - 1);
-        blueFace.setNthRow(blueFace.getDimensions() - 1, layerToRotate);
-        layerToRotate = originalLayer;
-
-        redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
-    }
-
-    /**
      * Move: D
      * Turning the yellow face clockwise.
      * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
@@ -119,6 +108,28 @@ public abstract class Cube {
 
         originalLayer = greenFace.getNthRow(greenFace.getDimensions() - 1);
         greenFace.setNthRow(greenFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
+    }
+
+    /**
+     * Move: D'
+     * Turning the yellow face counterclockwise.
+     * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
+     */
+    public void rotateDownCounterClockwise() {
+        yellowFace.rotateCounterClockwise();
+
+        Layer layerToRotate = greenFace.getNthRow(greenFace.getDimensions() - 1);
+        greenFace.setNthRow(greenFace.getDimensions() - 1, redFace.getNthRow(redFace.getDimensions() - 1));
+
+        Layer originalLayer = orangeFace.getNthRow(orangeFace.getDimensions() - 1);
+        orangeFace.setNthRow(orangeFace.getDimensions() - 1, layerToRotate);
+        layerToRotate = originalLayer;
+
+        originalLayer = blueFace.getNthRow(blueFace.getDimensions() - 1);
+        blueFace.setNthRow(blueFace.getDimensions() - 1, layerToRotate);
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
@@ -304,50 +315,144 @@ public abstract class Cube {
         whiteFace.setNthRow(0, layerToRotate.reverse());
     }
 
+    public void mapKeysToRotation(String... rotationKeys) {
+        for (String key : rotationKeys) {
+            mapKeyToRotation(key);
+        }
+    }
+
+    public void mapKeyToRotation(String rotationKey) {
+        switch (rotationKey) {
+            case "U":
+                mapFaceToRotation(orientation.getFaceUp(), false);
+                break;
+            case "U'":
+                mapFaceToRotation(orientation.getFaceUp(), true);
+                break;
+            case "F":
+                mapFaceToRotation(orientation.getFaceFront(), false);
+                break;
+            case "F'":
+                mapFaceToRotation(orientation.getFaceFront(), true);
+                break;
+            case "L":
+                mapFaceToRotation(orientation.getFaceLeft(), false);
+                break;
+            case "L'":
+                mapFaceToRotation(orientation.getFaceLeft(), true);
+                break;
+            case "B":
+                mapFaceToRotation(orientation.getFaceBack(), false);
+                break;
+            case "B'":
+                mapFaceToRotation(orientation.getFaceBack(), true);
+                break;
+            case "R":
+                mapFaceToRotation(orientation.getFaceRight(), false);
+                break;
+            case "R'":
+                mapFaceToRotation(orientation.getFaceRight(), true);
+                break;
+            case "D":
+                mapFaceToRotation(orientation.getFaceDown(), false);
+                break;
+            case "D'":
+                mapFaceToRotation(orientation.getFaceDown(), true);
+                break;
+        }
+    }
+
+    private void mapFaceToRotation(Color color, boolean counterClockwise) {
+        switch (color) {
+            case WHITE:
+                if (counterClockwise) {
+                    rotateUpCounterClockwise();
+                } else  {
+                    rotateUpClockwise();
+                }
+                break;
+            case RED:
+                if (counterClockwise) {
+                    rotateFrontCounterClockwise();
+                } else  {
+                    rotateFrontClockwise();
+                }
+                break;
+            case GREEN:
+                if (counterClockwise) {
+                    rotateLeftCounterClockwise();
+                } else  {
+                    rotateLeftClockwise();
+                }
+                break;
+            case ORANGE:
+                if (counterClockwise) {
+                    rotateBackCounterClockwise();
+                } else  {
+                    rotateBackClockwise();
+                }
+                break;
+            case BLUE:
+                if (counterClockwise) {
+                    rotateRightCounterClockwise();
+                } else  {
+                    rotateRightClockwise();
+                }
+                break;
+            case YELLOW:
+                if (counterClockwise) {
+                    rotateDownCounterClockwise();
+                } else  {
+                    rotateDownClockwise();
+                }
+                break;
+        }
+    }
+
     /**
      * Determines the faces next to the face of the given color
      * @param color
      * @return ArrayList of the side faces in the following order: <br>
-     * Face on top, face on left, face on right, face on bottom
+     * Face on top, face on right, face on bottom, face on left
      */
     protected ArrayList<Face> determineSideFaces(Color color) {
         ArrayList<Face> faces = new ArrayList<>();
         switch (color) {
             case WHITE:
                 faces.add(orangeFace);
-                faces.add(greenFace);
                 faces.add(blueFace);
                 faces.add(redFace);
+                faces.add(greenFace);
                 break;
             case YELLOW:
                 faces.add(redFace);
-                faces.add(greenFace);
                 faces.add(blueFace);
                 faces.add(orangeFace);
+                faces.add(greenFace);
                 break;
             case RED:
                 faces.add(whiteFace);
-                faces.add(greenFace);
                 faces.add(blueFace);
                 faces.add(yellowFace);
+                faces.add(greenFace);
                 break;
             case GREEN:
                 faces.add(whiteFace);
-                faces.add(orangeFace);
                 faces.add(redFace);
                 faces.add(yellowFace);
+                faces.add(orangeFace);
                 break;
             case ORANGE:
                 faces.add(whiteFace);
-                faces.add(blueFace);
                 faces.add(greenFace);
                 faces.add(yellowFace);
+                faces.add(blueFace);
                 break;
             case BLUE:
                 faces.add(whiteFace);
-                faces.add(redFace);
                 faces.add(orangeFace);
                 faces.add(yellowFace);
+                faces.add(redFace);
                 break;
             default:
                 break;
@@ -360,12 +465,23 @@ public abstract class Cube {
         return getFace(position.getFace()).getNthColumn(position.getColumn()).getNthPiece(position.getRow());
     }
 
-    public ArrayList<Color> mapPositionToColor(ArrayList<Position> positions) {
+    public ArrayList<Color> mapPieceToColor(Piece piece) {
         ArrayList<Color> colors = new ArrayList<>();
-        for(Position p : positions) {
+        for(Position p : piece.getPositions()) {
             colors.add(getFace(p.getFace()).getNthColumn(p.getColumn()).getNthPiece(p.getRow()));
         }
         return colors;
+    }
+
+    public Piece mapPieceToColorInPlace(Piece piece) {
+        for(Position p : piece.getPositions()) {
+            p.setColor(getFace(p.getFace()).getNthColumn(p.getColumn()).getNthPiece(p.getRow()));
+        }
+        return piece;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
     }
 
     public Face getFace(Color color) {
@@ -391,9 +507,11 @@ public abstract class Cube {
         return faces.iterator();
     }
 
+    public abstract boolean isValidCube();
+
     public abstract Position getPositionByColor(Color... colors);
 
-    public abstract void solve();
+    public abstract void solve() throws UnsolvableCubeException;
 
     @Override
     public String toString() {
@@ -405,5 +523,9 @@ public abstract class Cube {
                 blueFace.toString() +
                 yellowFace.toString();
         return cube;
+    }
+
+    protected PieceMap getPieceMap() {
+        return pieceMap;
     }
 }

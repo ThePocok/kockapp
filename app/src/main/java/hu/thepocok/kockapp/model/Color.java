@@ -1,6 +1,6 @@
 package hu.thepocok.kockapp.model;
 
-public enum Color {
+public enum Color implements Comparable<Color>{
     WHITE("W"),
     RED("R"),
     GREEN("G"),

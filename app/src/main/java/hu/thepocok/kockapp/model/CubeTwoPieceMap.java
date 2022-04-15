@@ -6,39 +6,39 @@ import java.util.Arrays;
 public class CubeTwoPieceMap extends PieceMap{
 
     public CubeTwoPieceMap() {
-        positions = new ArrayList<>();
+        pieces = new ArrayList<>();
 
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.WHITE, 0, 0),
+        pieces.add(new Piece(new Position(Color.WHITE, 0, 0),
                 new Position(Color.GREEN, 0, 0),
-                new Position(Color.ORANGE, 0, 1))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.WHITE, 0, 1),
+                new Position(Color.ORANGE, 0, 1)));
+        pieces.add(new Piece(new Position(Color.WHITE, 0, 1),
                 new Position(Color.BLUE, 0, 1),
-                new Position(Color.ORANGE, 0, 0))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.WHITE, 1, 0),
+                new Position(Color.ORANGE, 0, 0)));
+        pieces.add(new Piece(new Position(Color.WHITE, 1, 0),
                 new Position(Color.GREEN, 0, 1),
-                new Position(Color.RED, 0, 0))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.WHITE, 1, 1),
+                new Position(Color.RED, 0, 0)));
+        pieces.add(new Piece(new Position(Color.WHITE, 1, 1),
                 new Position(Color.BLUE, 0, 0),
-                new Position(Color.RED, 0, 1))));
+                new Position(Color.RED, 0, 1)));
 
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.YELLOW, 0, 0),
+        pieces.add(new Piece(new Position(Color.YELLOW, 0, 0),
                 new Position(Color.GREEN, 1, 1),
-                new Position(Color.RED, 1, 0))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.YELLOW, 0, 1),
+                new Position(Color.RED, 1, 0)));
+        pieces.add(new Piece(new Position(Color.YELLOW, 0, 1),
                 new Position(Color.BLUE, 1, 0),
-                new Position(Color.RED, 1, 1))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.YELLOW, 1, 0),
+                new Position(Color.RED, 1, 1)));
+        pieces.add(new Piece(new Position(Color.YELLOW, 1, 0),
                 new Position(Color.GREEN, 1, 0),
-                new Position(Color.ORANGE, 1, 1))));
-        positions.add(new ArrayList<>(Arrays.asList(new Position(Color.YELLOW, 1, 1),
+                new Position(Color.ORANGE, 1, 1)));
+        pieces.add(new Piece(new Position(Color.YELLOW, 1, 1),
                 new Position(Color.BLUE, 1, 1),
-                new Position(Color.ORANGE, 1, 0))));
+                new Position(Color.ORANGE, 1, 0)));
     }
 
     @Override
-    public ArrayList<Position> getPieceColorPositions(Position positionToFind) {
-        for (ArrayList<Position> positionList : positions) {
-            for (Position p : positionList) {
+    public Piece getPieceColorPositions(Position positionToFind) {
+        for (Piece positionList : pieces) {
+            for (Position p : positionList.getPositions()) {
                 if (p.equals(positionToFind)) {
                     return positionList;
                 }
