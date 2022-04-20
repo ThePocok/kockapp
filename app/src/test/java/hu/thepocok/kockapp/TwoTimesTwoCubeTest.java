@@ -4,15 +4,23 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import hu.thepocok.kockapp.model.Color;
+import hu.thepocok.kockapp.model.Cube;
 import hu.thepocok.kockapp.model.CubeTwo;
 import hu.thepocok.kockapp.model.CubeTwoPieceMap;
 import hu.thepocok.kockapp.model.Face;
 import hu.thepocok.kockapp.model.Layer;
+import hu.thepocok.kockapp.model.Move;
+import hu.thepocok.kockapp.model.Piece;
 import hu.thepocok.kockapp.model.Position;
+import hu.thepocok.kockapp.model.Reorientation;
+import hu.thepocok.kockapp.model.Rotation;
+import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 public class TwoTimesTwoCubeTest {
     private CubeTwo cube;
@@ -662,5 +670,104 @@ public class TwoTimesTwoCubeTest {
         Assert.assertTrue(cube.isValidCube());
         cube.makeCubeInvalid();
         Assert.assertFalse(cube.isValidCube());
+    }
+
+    @Test
+    public void pieceAdjacencyTest() {
+        Piece piece1 = cube.getPieceByColor(Color.BLUE, Color.WHITE, Color.RED);
+        Piece piece2 = cube.getPieceByColor(Color.BLUE, Color.WHITE, Color.ORANGE);
+
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.WHITE));
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.BLUE));
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.WHITE, Color.BLUE));
+
+        piece2 = cube.getPieceByColor(Color.WHITE, Color.GREEN, Color.RED);
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.WHITE));
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.BLUE));
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.WHITE, Color.BLUE));
+
+        piece2 = cube.getPieceByColor(Color.WHITE, Color.GREEN, Color.ORANGE);
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.WHITE));
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.RED));
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.WHITE, Color.RED));
+
+        piece2 = cube.getPieceByColor(Color.YELLOW, Color.RED, Color.BLUE);
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.WHITE));
+        Assert.assertFalse(piece1.isAdjacent(piece2, Color.YELLOW));
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.RED));
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.BLUE));
+        Assert.assertTrue(piece1.isAdjacent(piece2, Color.BLUE, Color.RED));
+    }
+
+    @Test
+    public void simplifySolutionTest() throws NoSuchFieldException {
+        cube.mapKeysToRotation("D", "D", "D");
+        cube.mapKeysToRotation("B'", "B'", "B'");
+        cube.mapKeysToRotation("F'", "F", "F'");
+        cube.mapKeysToRotation("U", "U'", "U");
+        cube.mapKeysToRotation("R", "L", "R");
+        cube.simplifySolution();
+
+        Field field = Cube.class.getDeclaredField("solution");
+        field.setAccessible(true);
+        ArrayList<Move> solution = cube.getSolution(); //(ArrayList<Move>) field.get(cube);
+        System.out.println(solution);
+        Assert.assertTrue(((Rotation) solution.get(0)).getKey().equals("D'"));
+        Assert.assertTrue(((Rotation) solution.get(1)).getKey().equals("B"));
+        Assert.assertTrue(((Rotation) solution.get(2)).getKey().equals("F'"));
+        Assert.assertTrue(((Rotation) solution.get(3)).getKey().equals("F"));
+        Assert.assertTrue(((Rotation) solution.get(4)).getKey().equals("F'"));
+        Assert.assertTrue(((Rotation) solution.get(5)).getKey().equals("U"));
+        Assert.assertTrue(((Rotation) solution.get(6)).getKey().equals("U'"));
+        Assert.assertTrue(((Rotation) solution.get(7)).getKey().equals("U"));
+        Assert.assertTrue(((Rotation) solution.get(8)).getKey().equals("R"));
+        Assert.assertTrue(((Rotation) solution.get(9)).getKey().equals("L"));
+        Assert.assertTrue(((Rotation) solution.get(10)).getKey().equals("R"));
+    }
+
+    @Test
+    public void randomScrambledSecondPieceSolutionTest() throws UnsolvableCubeException {
+        //cube.mapKeysToRotation("U'", "U", "F", "D'", "L'", "B'"); //simplify error
+        cube.randomScramble(6);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Solution:\n");
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+
+        cube.solve();
+
+        Piece referencePiece = cube.findReferencePiece();
+        Piece secondPiece = cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+        try {
+            Assert.assertNotNull(referencePiece);
+            Assert.assertTrue(referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE));
+        } catch (AssertionError e) {
+            System.out.println("Second piece is not solved!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
+    public void hundredRandomTest() throws UnsolvableCubeException{
+        for(int i = 0; i < 100; i++) {
+            System.out.println("Teszt " + (i+1));
+            cube = new CubeTwo();
+            randomScrambledSecondPieceSolutionTest();
+        }
     }
 }

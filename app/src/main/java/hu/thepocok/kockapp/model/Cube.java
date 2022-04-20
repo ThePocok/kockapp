@@ -2,7 +2,9 @@ package hu.thepocok.kockapp.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
+import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 /**
@@ -24,6 +26,8 @@ public abstract class Cube {
     protected int dimensions;
     protected PieceMap pieceMap;
 
+    protected ArrayList<Move> solution;
+
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace, int dimensions) {
         this.whiteFace = whiteFace;
         this.redFace = redFace;
@@ -34,6 +38,7 @@ public abstract class Cube {
 
         this.orientation = new Orientation();
         this.dimensions = dimensions;
+        this.solution = new ArrayList<>();
     }
 
     public Cube(int dimensions) {
@@ -45,6 +50,7 @@ public abstract class Cube {
                 Face.generateFace(Color.YELLOW, dimensions), dimensions);
 
         this.orientation = new Orientation();
+        this.solution = new ArrayList<>();
     }
 
     /**
@@ -318,7 +324,6 @@ public abstract class Cube {
     public void mapKeysToRotation(String... rotationKeys) {
         for (String key : rotationKeys) {
             mapKeyToRotation(key);
-            System.out.println(this);
         }
     }
 
@@ -361,6 +366,8 @@ public abstract class Cube {
                 mapFaceToRotation(orientation.getFaceDown(), true);
                 break;
         }
+
+        solution.add(new Rotation(rotationKey));
     }
 
     private void mapFaceToRotation(Color color, boolean counterClockwise) {
@@ -408,6 +415,85 @@ public abstract class Cube {
                 }
                 break;
         }
+    }
+
+    protected void setOrientation(Color faceUp, Color faceTowardsPlayer, Color faceLeft) throws InvalidOrientationException {
+        orientation.setOrientation(faceUp, faceTowardsPlayer, faceLeft);
+        solution.add(new Reorientation(orientation));
+    }
+
+    public void simplifySolution() {
+        for (int i = 0; i < solution.size() - 2; i++) {
+            if (solution.get(i) instanceof Reorientation) {
+                continue;
+            }
+
+            String key = ((Rotation) solution.get(i)).getKey();
+            int j = i;
+            while (j < i + 3 && ((Rotation) solution.get(j)).getKey().equals(key)) {
+                j++;
+                if (!(solution.get(j) instanceof Rotation)) {
+                    break;
+                }
+            }
+
+            if (!(solution.get(j) instanceof Rotation)) {
+                continue;
+            }
+
+            if (j == i+3) {
+                String newKey = (key.endsWith("'")) ? (key.substring(0, 1)) : key + "'";
+
+                ((Rotation) solution.get(i)).setKey(newKey);
+                solution.remove(i+1);
+                solution.remove(i+1);
+            }
+        }
+    }
+
+    public ArrayList<Position> getTopLayerPositions() {
+        ArrayList<Position> positions = new ArrayList<>();
+
+        switch (orientation.getFaceUp()) {
+            case WHITE:
+                positions.addAll(redFace.getNthRowPositions(0));
+                positions.addAll(greenFace.getNthRowPositions(0));
+                positions.addAll(orangeFace.getNthRowPositions(0));
+                positions.addAll(blueFace.getNthRowPositions(0));
+                break;
+            case RED:
+                positions.addAll(yellowFace.getNthRowPositions(0));
+                positions.addAll(greenFace.getNthColumnPositions(dimensions - 1));
+                positions.addAll(whiteFace.getNthRowPositions(dimensions - 1));
+                positions.addAll(blueFace.getNthColumnPositions(0));
+                break;
+            case GREEN:
+                positions.addAll(yellowFace.getNthColumnPositions(0));
+                positions.addAll(orangeFace.getNthColumnPositions(dimensions - 1));
+                positions.addAll(whiteFace.getNthColumnPositions(0));
+                positions.addAll(redFace.getNthColumnPositions(0));
+                break;
+            case ORANGE:
+                positions.addAll(whiteFace.getNthRowPositions(0));
+                positions.addAll(greenFace.getNthColumnPositions(0));
+                positions.addAll(yellowFace.getNthRowPositions(dimensions - 1));
+                positions.addAll(blueFace.getNthColumnPositions(dimensions - 1));
+                break;
+            case BLUE:
+                positions.addAll(whiteFace.getNthColumnPositions(dimensions - 1));
+                positions.addAll(redFace.getNthColumnPositions(dimensions - 1));
+                positions.addAll(yellowFace.getNthColumnPositions(dimensions - 1));
+                positions.addAll(orangeFace.getNthColumnPositions(0));
+                break;
+            case YELLOW:
+                positions.addAll(redFace.getNthRowPositions(dimensions - 1));
+                positions.addAll(greenFace.getNthRowPositions(dimensions - 1));
+                positions.addAll(orangeFace.getNthRowPositions(dimensions - 1));
+                positions.addAll(blueFace.getNthRowPositions(dimensions - 1));
+                break;
+        }
+
+        return positions;
     }
 
     /**
@@ -528,5 +614,41 @@ public abstract class Cube {
 
     protected PieceMap getPieceMap() {
         return pieceMap;
+    }
+
+    public void randomScramble(int length) {
+        String[] possibleRotations = new String[]{"U", "U'", "F", "F'", "L", "L'", "B", "B'", "R", "R'", "D", "D'"};
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            mapKeyToRotation(possibleRotations[random.nextInt(possibleRotations.length)]);
+        }
+    }
+
+    public ArrayList<Move> getSolution() {
+        return solution;
+    }
+
+    public String getSolutionString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Solution:\n");
+        for (Move m : solution) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public void turnCubeClockwise() throws InvalidOrientationException {
+        Color faceRight = orientation.getFaceRight();
+        Color faceFront = orientation.getFaceFront();
+
+        setOrientation(orientation.getFaceUp(), faceRight, faceFront);
     }
 }

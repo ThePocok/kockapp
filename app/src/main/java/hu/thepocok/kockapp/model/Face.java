@@ -9,12 +9,18 @@ import java.util.Objects;
  * It contains the layers from top to bottom.
  */
 public class Face {
+    private Color faceColor;
     private final int dimensions;
     private ArrayList<Layer> layers;
 
     public Face(Layer... layers) {
         this.layers = new ArrayList<>(Arrays.asList(layers));
         this.dimensions = layers.length;
+    }
+
+    public Face(Color faceColor, Layer... layers) {
+        this(layers);
+        this.faceColor = faceColor;
     }
 
     public Layer getNthRow(int n) {
@@ -27,6 +33,29 @@ public class Face {
             colors.add(layer.getNthPiece(n));
         }
         return new Layer(colors);
+    }
+
+    public ArrayList<Position> getNthRowPositions(int n) {
+        ArrayList<Position> positions = new ArrayList<>();
+
+        for (int i = 0; i < dimensions; i++) {
+            Position p = new Position(layers.get(n).getNthPiece(i), faceColor, n, i);
+            positions.add(p);
+        }
+
+        return positions;
+    }
+
+    public ArrayList<Position> getNthColumnPositions(int n) {
+        ArrayList<Position> positions = new ArrayList<>();
+        Layer layer = getNthColumn(n);
+
+        for (int i = 0; i < dimensions; i++) {
+            Position p = new Position(layer.getNthPiece(i), faceColor, i, n);
+            positions.add(p);
+        }
+
+        return positions;
     }
 
     public void setNthRow(int n, Layer layer) {
@@ -55,7 +84,7 @@ public class Face {
             layers.add(layer);
         }
 
-        return new Face(layers.toArray(new Layer[dimension]));
+        return new Face(color, layers.toArray(new Layer[dimension]));
     }
 
     public void rotateClockwise() {

@@ -1,5 +1,6 @@
 package hu.thepocok.kockapp.model;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,6 +11,8 @@ import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 public class CubeTwo extends Cube{
+    private Piece referencePiece;
+    private Piece secondPiece;
 
     public CubeTwo() {
         super(2);
@@ -18,10 +21,11 @@ public class CubeTwo extends Cube{
 
     @Override
     public void solve() throws UnsolvableCubeException {
+        solution.clear();
         /* First task: find the reference piece, and orient the cuba in a way,
-        that the reference piece's white color faces up */
+           that the reference piece's white color faces up */
 
-        Piece referencePiece = findReferencePiece();
+        referencePiece = findReferencePiece();
         Color faceUp = null;
         Color faceTowardsPlayer = null;
         Color faceRight = null;
@@ -37,12 +41,123 @@ public class CubeTwo extends Cube{
             }
         }
         try {
-            orientation.setOrientation(faceUp, faceTowardsPlayer, orientation.getOppositeColor(faceRight));
+            setOrientation(faceUp, faceTowardsPlayer, orientation.getOppositeColor(faceRight));
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
 
-        return;
+        /* Second task: locate the piece with white, blue and orange colors */
+
+        solveSecondPiece();
+
+    }
+
+    private void solveSecondPiece() throws UnsolvableCubeException {
+        referencePiece = findReferencePiece();
+        secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+        Color whiteTileFace = secondPiece.getPosition(Color.WHITE).getFace();
+
+
+        // White tile can be on the top, first layer of the sides, second layer of the sides or on the bottom
+        // Checking if on top
+        if (whiteTileFace.equals(orientation.getFaceUp())) {
+            //Check if positioned correctly
+            if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                return; //The two pieces are adjacent to each other
+            }
+            if (referencePiece.isAdjacent(secondPiece, Color.WHITE)) {
+                mapKeysToRotation("F'", "D'", "F", "D", "D", "B'", "D", "B");
+                return;
+            }
+            mapKeysToRotation("L'", "D'", "L", "D'", "B'", "D", "B");
+            return;
+        }
+
+        // Check if white tile faces sideways
+        if (!whiteTileFace.equals(orientation.getFaceDown())) {
+            /* We know, that the blue and red tiles are located on the first layer of the side faces
+               If in this orientation, the reference piece's row values are equal,
+               the row value of the second piece's white tile should be checked.
+               If they are all the same, the white tile is in the first layer. */
+            ArrayList<Position> topLayerPositions = getTopLayerPositions();
+            if (topLayerPositions.contains(secondPiece.getPosition(Color.WHITE))) {
+                // If the white tile faces left, and the two pieces are not adjacent, one rotation can solve the second piece
+                if (secondPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceLeft()) &&
+                        !secondPiece.isAdjacent(referencePiece, 2)) {
+                    mapKeyToRotation("B'");
+                    return;
+                }
+
+                if (secondPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceFront()) &&
+                        secondPiece.isAdjacent(referencePiece, 2)) {
+                    mapKeysToRotation("L", "D'", "L'");
+                } else {
+                    try {
+                        //Hold the cube in a way, when the white-blue-orange piece is on the top left position
+                        while (!secondPiece.isFacing(orientation.getFaceUp(), orientation.getFaceFront(),
+                                orientation.getFaceRight())) {
+                            turnCubeClockwise();
+                        }
+                    } catch (InvalidOrientationException e) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    mapKeysToRotation("R'", "D'", "R");
+                }
+            }
+
+            referencePiece = findReferencePiece();
+            secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+
+            try {
+                setOrientation(referencePiece.getPosition(Color.WHITE).getFace(),
+                        referencePiece.getPosition(Color.BLUE).getFace(),
+                        referencePiece.getPosition(Color.RED).getFace());
+            } catch (InvalidOrientationException e) {
+                throw new UnsolvableCubeException();
+            }
+
+            //At this point, the piece should be on the bottom layer
+
+            if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                return; //The two pieces are adjacent to each other
+            }
+
+            //Moving to the right place
+            int rotations = 0;
+            while(rotations < 4 && !secondPiece.hasPosition(referencePiece.getPosition(Color.BLUE).getPositionAcross(2))) {//referencePiece.hasCommonFace(secondPiece) && !referencePiece.isAdjacent(secondPiece)) {
+                mapKeyToRotation("D");
+                referencePiece = findReferencePiece();
+                secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+                rotations++;
+            }
+            if (rotations == 4) {
+                throw new UnsolvableCubeException();
+            }
+
+            if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                return; //The two pieces are adjacent to each other
+            }
+
+            if (secondPiece.getPosition(Color.WHITE).getFace().equals(referencePiece.getPosition(Color.BLUE).getFace())) {
+                mapKeyToRotation("R");
+                return;
+            } else if(secondPiece.getPosition(Color.BLUE).getFace().equals(referencePiece.getPosition(Color.BLUE).getFace())) {
+                mapKeysToRotation("R'", "D'", "R");
+                return;
+            } else {
+                mapKeysToRotation("D", "R", "R");
+                return;
+            }
+
+        } else {
+            while (!referencePiece.isAdjacent(secondPiece, Color.BLUE)) {
+                mapKeyToRotation("D");
+                referencePiece = findReferencePiece();
+                secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+            }
+            mapKeysToRotation("B'", "D", "D", "B", "D'", "B'", "D", "B");
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ public class Position {
     }
 
     public Position(Color color, Color faceColor, int row, int column) {
+        this.color = color;
         this.faceColor = faceColor;
         this.row = row;
         this.column = column;
@@ -51,6 +52,11 @@ public class Position {
 
     public void setColumn(int column) {
         this.column = column;
+    }
+
+    public Position getPositionAcross(int cubeDimension) {
+        return new Position(faceColor, ((row == cubeDimension - 1) ? 0 : cubeDimension - 1),
+                ((column == cubeDimension - 1) ? 0 : cubeDimension - 1));
     }
 
     @Override
