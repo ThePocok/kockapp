@@ -46,9 +46,71 @@ public class CubeTwo extends Cube{
             throw new UnsolvableCubeException();
         }
 
-        /* Second task: locate the piece with white, blue and orange colors */
-
+        /* Second task: solve the white-blue-orange piece */
         solveSecondPiece();
+
+        /* Third task: solve the white-green-orange piece*/
+        solveThirdPiece();
+    }
+
+    private void solveThirdPiece() throws UnsolvableCubeException {
+        referencePiece = findReferencePiece();
+        secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+        Piece thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+
+        if (secondPiece.isAdjacent(thirdPiece, Color.WHITE, Color.ORANGE)) {
+            return; //The two pieces are adjacent to each other
+        }
+
+        try {
+            setOrientation(secondPiece.getPosition(Color.WHITE).getFace(),
+                    secondPiece.getPosition(Color.ORANGE).getFace(),
+                    secondPiece.getPosition(Color.BLUE).getFace());
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
+        }
+
+        ArrayList<Position> topLayerPositions = getTopLayerPositions();
+        if (topLayerPositions.contains(thirdPiece.getPosition(Color.WHITE))) {
+            if (thirdPiece.isAdjacent(referencePiece, 2) && thirdPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceBack())) {
+                mapKeyToRotation("R'");
+                return;
+            }
+
+            if (thirdPiece.isAdjacent(referencePiece, 2)) {
+                mapKeysToRotation("R", "D'");
+            } else if (thirdPiece.isAdjacent(secondPiece, 2)) {
+                mapKeysToRotation("R", "R", "D'");
+            } else {
+                throw new UnsolvableCubeException();
+            }
+        } else if (thirdPiece.isAdjacent(referencePiece, 2) && thirdPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceUp())) {
+            mapKeysToRotation("R", "D'");
+        }
+
+        //At this point, the third piece is on the bottom layer
+
+        thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+
+        //Moving to the right place
+        int rotations = 0;
+        while(rotations < 4 && !thirdPiece.hasPosition(secondPiece.getPosition(Color.ORANGE).getPositionAcross(2))) {
+            mapKeyToRotation("D");
+            secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+            thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+            rotations++;
+        }
+        if (rotations == 4) {
+            throw new UnsolvableCubeException();
+        }
+
+        if (thirdPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceFront())) {
+            mapKeyToRotation("R");
+        } else if (thirdPiece.getPosition(Color.ORANGE).getFace().equals(orientation.getFaceFront())) {
+            mapKeysToRotation("R'", "D'", "R");
+        } else {
+            mapKeysToRotation("D", "R", "R");
+        }
 
     }
 
@@ -125,7 +187,7 @@ public class CubeTwo extends Cube{
 
             //Moving to the right place
             int rotations = 0;
-            while(rotations < 4 && !secondPiece.hasPosition(referencePiece.getPosition(Color.BLUE).getPositionAcross(2))) {//referencePiece.hasCommonFace(secondPiece) && !referencePiece.isAdjacent(secondPiece)) {
+            while(rotations < 4 && !secondPiece.hasPosition(referencePiece.getPosition(Color.BLUE).getPositionAcross(2))) {
                 mapKeyToRotation("D");
                 referencePiece = findReferencePiece();
                 secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
