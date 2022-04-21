@@ -51,6 +51,62 @@ public class CubeTwo extends Cube{
 
         /* Third task: solve the white-green-orange piece*/
         solveThirdPiece();
+
+        /* Fourth task: solve the white-green-red piece*/
+        solveFourthPiece();
+    }
+
+    private void solveFourthPiece() throws UnsolvableCubeException {
+        Piece thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+        Piece fourthPiece = getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+
+        if (thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN)) {
+            return; //The two pieces are adjacent to each other
+        }
+
+        try {
+            setOrientation(thirdPiece.getPosition(Color.WHITE).getFace(),
+                        thirdPiece.getPosition(Color.GREEN).getFace(),
+                        thirdPiece.getPosition(Color.ORANGE).getFace());
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
+        }
+
+        ArrayList<Position> topLayerPositions = getTopLayerPositions();
+        if (topLayerPositions.contains(fourthPiece.getPosition(Color.WHITE))) {
+            mapKeysToRotation("R'", "D'", "R");
+        }
+
+        // At this point, the fourth piece is on the bottom layer
+
+        fourthPiece = getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+
+        //Moving to the right place
+        int rotations = 0;
+        while(rotations < 4 && !fourthPiece.hasPosition(thirdPiece.getPosition(Color.GREEN).getPositionAcross(2))) {
+            mapKeyToRotation("D");
+            thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+            fourthPiece = getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+            rotations++;
+        }
+        if (rotations == 4) {
+            throw new UnsolvableCubeException();
+        }
+
+        if (fourthPiece.getPosition(Color.RED).getFace().equals(orientation.getFaceFront())) {
+            mapKeysToRotation("F", "D'", "F'", "D", "D");
+        }
+        fourthPiece = getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+
+        if (fourthPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceFront())) {
+            mapKeysToRotation("D'", "R'", "D", "R");
+            return;
+        } else if(fourthPiece.getPosition(Color.GREEN).getFace().equals(orientation.getFaceFront())) {
+            mapKeysToRotation("R'", "D'", "R");
+            return;
+        } else {
+            throw new UnsolvableCubeException();
+        }
     }
 
     private void solveThirdPiece() throws UnsolvableCubeException {

@@ -800,6 +800,45 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
+    public void randomScrambledFourthPieceSolutionTest() throws UnsolvableCubeException {
+        //cube.mapKeysToRotation("L", "B'", "D", "B'", "U'", "B");
+        cube.randomScramble(6);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Solution:\n");
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+
+        cube.solve();
+
+        Piece thirdPiece = cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+        Piece fourthPiece = cube.getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+
+        try {
+            Assert.assertNotNull(thirdPiece);
+            Assert.assertTrue(thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN));
+        } catch (AssertionError e) {
+            System.out.println("Third piece is not solved!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+        System.out.println(cube);
+    }
+
+    @Test
     public void hundredRandomTest() throws UnsolvableCubeException{
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
@@ -811,6 +850,19 @@ public class TwoTimesTwoCubeTest {
             try {
                 Assert.assertNotNull(secondPiece);
                 Assert.assertTrue(secondPiece.isAdjacent(thirdPiece, Color.WHITE, Color.ORANGE));
+            } catch (AssertionError e) {
+                System.out.println("Third piece is not solved!");
+
+                System.out.println(cube.getSolutionString());
+                throw e;
+            }
+
+            thirdPiece = cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
+            Piece fourthPiece = cube.getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
+
+            try {
+                Assert.assertNotNull(thirdPiece);
+                Assert.assertTrue(thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN));
             } catch (AssertionError e) {
                 System.out.println("Third piece is not solved!");
 
