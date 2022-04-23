@@ -876,7 +876,7 @@ public class TwoTimesTwoCubeTest {
 
     @Test
     public void hundredRandomTest() throws UnsolvableCubeException{
-        for(int i = 0; i < 10000; i++) {
+        for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeTwo();
             randomScrambledSecondPieceSolutionTest();
