@@ -152,4 +152,24 @@ public class Piece {
 
         return l;
     }
+
+    public ArrayList<Color> getColors() {
+        ArrayList<Color> colors = new ArrayList<>();
+
+        for (Position p : positions) {
+            colors.add(p.getColor());
+        }
+
+        return colors;
+    }
+
+    public Color getColorOnFace(Color face) {
+        for (Position p : positions) {
+            if (p.getFace().equals(face)) {
+                return p.getColor();
+            }
+        }
+
+        return null;
+    }
 }

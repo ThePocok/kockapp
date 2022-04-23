@@ -40,17 +40,119 @@ public class Orientation {
         return getOppositeColor(faceFront);
     }
 
-    public void setOrientation(Color faceUp, Color faceTowardsPlayer, Color faceLeft) throws InvalidOrientationException{
-        ArrayList<Color> allColors = new ArrayList<>(Arrays.asList(faceUp, getOppositeColor(faceUp),
-                faceTowardsPlayer, getOppositeColor(faceTowardsPlayer), faceLeft, getOppositeColor(faceLeft)));
+    public void setOrientation(Color faceUp, Color faceFront) throws InvalidOrientationException{
+        Color[] previousOrientation = new Color[]{this.faceUp, this.faceFront, this.faceLeft};
+        this.faceUp = faceUp;
+        this.faceFront = faceFront;
 
-        if (!allColors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.YELLOW))) {
-            throw new InvalidOrientationException();
+        switch (faceUp) {
+            case WHITE:
+                switch (faceFront) {
+                    case RED:
+                        this.faceLeft = Color.GREEN;
+                        break;
+                    case GREEN:
+                        this.faceLeft = Color.ORANGE;
+                        break;
+                    case ORANGE:
+                        this.faceLeft = Color.BLUE;
+                        break;
+                    case BLUE:
+                        this.faceLeft = Color.RED;
+                        break;
+                }
+                break;
+            case RED:
+                switch (faceFront) {
+                    case WHITE:
+                        this.faceLeft = Color.BLUE;
+                        break;
+                    case BLUE:
+                        this.faceLeft = Color.YELLOW;
+                        break;
+                    case YELLOW:
+                        this.faceLeft = Color.GREEN;
+                        break;
+                    case GREEN:
+                        this.faceLeft = Color.WHITE;
+                        break;
+                }
+                break;
+            case GREEN:
+                switch (faceFront) {
+                    case WHITE:
+                        this.faceLeft = Color.RED;
+                        break;
+                    case RED:
+                        this.faceLeft = Color.YELLOW;
+                        break;
+                    case YELLOW:
+                        this.faceLeft = Color.ORANGE;
+                        break;
+                    case ORANGE:
+                        this.faceLeft = Color.WHITE;
+                        break;
+                }
+                break;
+            case ORANGE:
+                switch (faceFront) {
+                    case WHITE:
+                        this.faceLeft = Color.GREEN;
+                        break;
+                    case GREEN:
+                        this.faceLeft = Color.YELLOW;
+                        break;
+                    case YELLOW:
+                        this.faceLeft = Color.BLUE;
+                        break;
+                    case BLUE:
+                        this.faceLeft = Color.WHITE;
+                        break;
+                }
+                break;
+            case BLUE:
+                switch (faceFront) {
+                    case WHITE:
+                        this.faceLeft = Color.ORANGE;
+                        break;
+                    case ORANGE:
+                        this.faceLeft = Color.YELLOW;
+                        break;
+                    case YELLOW:
+                        this.faceLeft = Color.RED;
+                        break;
+                    case RED:
+                        this.faceLeft = Color.WHITE;
+                        break;
+                }
+                break;
+            case YELLOW:
+                switch (faceFront) {
+                    case RED:
+                        this.faceLeft = Color.BLUE;
+                        break;
+                    case BLUE:
+                        this.faceLeft = Color.ORANGE;
+                        break;
+                    case ORANGE:
+                        this.faceLeft = Color.GREEN;
+                        break;
+                    case GREEN:
+                        this.faceLeft = Color.RED;
+                        break;
+                }
+                break;
         }
 
-        this.faceUp = faceUp;
-        this.faceFront = faceTowardsPlayer;
-        this.faceLeft = faceLeft;
+        ArrayList<Color> allColors = new ArrayList<>(Arrays.asList(this.faceUp, getOppositeColor(this.faceUp),
+                this.faceFront, getOppositeColor(this.faceFront), faceLeft, getOppositeColor(faceLeft)));
+
+        if (!allColors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.YELLOW))) {
+            this.faceUp = previousOrientation[0];
+            this.faceFront = previousOrientation[1];
+            this.faceLeft = previousOrientation[2];
+            throw new InvalidOrientationException();
+        }
     }
 
     public Color getOppositeColor(Color color) {

@@ -36,7 +36,7 @@ public class CubeTwoPieceMap extends PieceMap{
     }
 
     @Override
-    public Piece getPieceColorPositions(Position positionToFind) {
+    public Piece getPieceByPosition(Position positionToFind) {
         for (Piece positionList : pieces) {
             for (Position p : positionList.getPositions()) {
                 if (p.equals(positionToFind)) {
@@ -46,5 +46,22 @@ public class CubeTwoPieceMap extends PieceMap{
         }
 
         return null;
+    }
+
+    public boolean isExistingPiece(Color... color) {
+        ArrayList<Color> colorsOnPiece = new ArrayList<>();
+
+        for (Piece positionList : pieces) {
+            for (Position p : positionList.getPositions()) {
+                colorsOnPiece.add(p.getFace());
+            }
+            if (colorsOnPiece.containsAll(Arrays.asList(color))) {
+                return true;
+            } else {
+                colorsOnPiece.clear();
+            }
+        }
+
+        return false;
     }
 }

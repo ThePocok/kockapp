@@ -417,8 +417,8 @@ public abstract class Cube {
         }
     }
 
-    protected void setOrientation(Color faceUp, Color faceTowardsPlayer, Color faceLeft) throws InvalidOrientationException {
-        orientation.setOrientation(faceUp, faceTowardsPlayer, faceLeft);
+    public void setOrientation(Color faceUp, Color faceTowardsPlayer) throws InvalidOrientationException {
+        orientation.setOrientation(faceUp, faceTowardsPlayer);
         solution.add(new Reorientation(orientation));
     }
 
@@ -647,6 +647,25 @@ public abstract class Cube {
         Color faceRight = orientation.getFaceRight();
         Color faceFront = orientation.getFaceFront();
 
-        setOrientation(orientation.getFaceUp(), faceRight, faceFront);
+        setOrientation(orientation.getFaceUp(), faceRight);//, faceFront);
+    }
+
+    public boolean isSolved() {
+        boolean l = true;
+        Iterator<Face> it = getFaceIterator();
+        int i;
+
+        while (it.hasNext() && l) {
+            Face f = it.next();
+            Color colorOnFace = f.getAllColors().get(0);
+            i = 0;
+
+            while (i < f.getAllColors().size() && l) {
+                l = l && f.getAllColors().get(i).equals(colorOnFace);
+                i++;
+            }
+        }
+
+        return l;
     }
 }

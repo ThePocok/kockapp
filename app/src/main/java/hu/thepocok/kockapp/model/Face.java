@@ -130,6 +130,14 @@ public class Face {
         }
     }
 
+    public ArrayList<Color> getAllColors() {
+        ArrayList<Color> colors = new ArrayList<>();
+        for (Layer layer : layers) {
+            colors.addAll(layer.getDataSet());
+        }
+        return colors;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

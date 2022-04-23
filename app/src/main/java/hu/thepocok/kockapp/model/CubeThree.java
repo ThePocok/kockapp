@@ -6,7 +6,7 @@ public class CubeThree extends Cube{
         super(3);
         pieceMap = new PieceMap() {
             @Override
-            public Piece getPieceColorPositions(Position positionToFind) {
+            public Piece getPieceByPosition(Position positionToFind) {
                 return null;
             }
         };

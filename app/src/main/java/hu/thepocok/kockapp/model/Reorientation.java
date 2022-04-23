@@ -10,7 +10,7 @@ public class Reorientation extends Move {
     public Reorientation(Orientation orientation) {
         this.orientation = new Orientation();
         try {
-            this.orientation.setOrientation(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceLeft());
+            this.orientation.setOrientation(orientation.getFaceUp(), orientation.getFaceFront());
         } catch (InvalidOrientationException e) {
             //This can not occur
             e.printStackTrace();

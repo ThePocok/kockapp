@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -20,6 +19,7 @@ import hu.thepocok.kockapp.model.Piece;
 import hu.thepocok.kockapp.model.Position;
 import hu.thepocok.kockapp.model.Reorientation;
 import hu.thepocok.kockapp.model.Rotation;
+import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 public class TwoTimesTwoCubeTest {
@@ -586,82 +586,82 @@ public class TwoTimesTwoCubeTest {
         CubeTwoPieceMap pieceMap = new CubeTwoPieceMap();
         ArrayList<Color> colors;
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.GREEN, Color.ORANGE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 0, 1)));
         System.out.println(colors);
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.BLUE, Color.ORANGE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.GREEN, Color.RED)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.WHITE, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.BLUE, Color.RED)));
 
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.RED, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.RED, 0, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.RED, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.RED, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.RED, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
 
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.GREEN, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.GREEN, 0, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.GREEN, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.GREEN, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.GREEN, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
 
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 0, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.ORANGE, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
 
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.BLUE, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.RED, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.BLUE, 0, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.ORANGE, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.BLUE, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.BLUE, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.BLUE, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
 
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 0, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 0, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 0, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 0, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.RED, Color.BLUE)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 1, 0)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 1, 0)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.GREEN)));
 
-        colors = cube.mapPieceToColor(pieceMap.getPieceColorPositions(new Position(Color.YELLOW, 1, 1)));
+        colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 1, 1)));
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.YELLOW, Color.ORANGE, Color.BLUE)));
     }
 
@@ -732,7 +732,6 @@ public class TwoTimesTwoCubeTest {
         ArrayList<Move> scramble = cube.getSolution();
         System.out.println("Scramble:");
         StringBuilder sb = new StringBuilder();
-        sb.append("Solution:\n");
         for (Move m : scramble) {
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
@@ -769,7 +768,6 @@ public class TwoTimesTwoCubeTest {
         ArrayList<Move> scramble = cube.getSolution();
         System.out.println("Scramble:");
         StringBuilder sb = new StringBuilder();
-        sb.append("Solution:\n");
         for (Move m : scramble) {
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
@@ -806,7 +804,6 @@ public class TwoTimesTwoCubeTest {
         ArrayList<Move> scramble = cube.getSolution();
         System.out.println("Scramble:");
         StringBuilder sb = new StringBuilder();
-        sb.append("Solution:\n");
         for (Move m : scramble) {
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
@@ -845,7 +842,6 @@ public class TwoTimesTwoCubeTest {
         ArrayList<Move> scramble = cube.getSolution();
         System.out.println("Scramble:");
         StringBuilder sb = new StringBuilder();
-        sb.append("Solution:\n");
         for (Move m : scramble) {
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
@@ -865,6 +861,40 @@ public class TwoTimesTwoCubeTest {
             Assert.assertEquals(4, cube.getFace(cube.getOrientation().getFaceDown()).getColorCount(Color.WHITE));
         } catch (AssertionError e) {
             System.out.println("Yellow face is unsolved or white face did not remain intact!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+        System.out.println(cube);
+    }
+
+    @Test
+    public void solveWholeCubeTest() throws UnsolvableCubeException {
+        //cube.mapKeysToRotation("R", "D", "D'", "U", "F'", "B'");
+        cube.randomScramble(6);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+
+        cube.solve();
+
+        try {
+            Assert.assertTrue(cube.isSolved());
+        } catch (AssertionError e) {
+            System.out.println("Cube is unsolved!");
 
             System.out.println(cube.getSolutionString());
             throw e;
@@ -900,7 +930,7 @@ public class TwoTimesTwoCubeTest {
                 Assert.assertNotNull(thirdPiece);
                 Assert.assertTrue(thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN));
             } catch (AssertionError e) {
-                System.out.println("Third piece is not solved!");
+                System.out.println("Fourth piece is not solved!");
 
                 System.out.println(cube.getSolutionString());
                 throw e;
@@ -915,6 +945,24 @@ public class TwoTimesTwoCubeTest {
                 System.out.println(cube.getSolutionString());
                 throw e;
             }
+
+            try {
+                Assert.assertTrue(cube.isSolved());
+            } catch (AssertionError e) {
+                System.out.println("Cube is unsolved!");
+
+                System.out.println(cube.getSolutionString());
+                throw e;
+            }
         }
+    }
+
+    @Test
+    public void solvedCheckTest() {
+        Assert.assertTrue(cube.isSolved());
+
+        cube.mapKeyToRotation("R");
+
+        Assert.assertFalse(cube.isSolved());
     }
 }

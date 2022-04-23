@@ -1,6 +1,5 @@
 package hu.thepocok.kockapp.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -27,21 +26,17 @@ public class CubeTwo extends Cube{
 
         referencePiece = findReferencePiece();
         Color faceUp = null;
-        Color faceTowardsPlayer = null;
-        Color faceRight = null;
+        Color faceFront = null;
         for (Position p : referencePiece.getPositions()) {
             if (p.getColor().equals(Color.WHITE)) {
                 faceUp = p.getFace();
             }
             if (p.getColor().equals(Color.RED)) {
-                faceTowardsPlayer = p.getFace();
-            }
-            if (p.getColor().equals(Color.BLUE)) {
-                faceRight = p.getFace();
+                faceFront = p.getFace();
             }
         }
         try {
-            setOrientation(faceUp, faceTowardsPlayer, orientation.getOppositeColor(faceRight));
+            setOrientation(faceUp, faceFront);
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -65,6 +60,90 @@ public class CubeTwo extends Cube{
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
+
+        /* Last task: swap the two pieces not matching on the bottom layer*/
+        swapNotMatchingPieces();
+    }
+
+    private void swapNotMatchingPieces() throws UnsolvableCubeException {
+        int count = 0;
+        while (count < 10 && !isSolved()) {
+            ArrayList<Position> topLayerPositions = getTopLayerPositions();
+
+            int i = 0;
+            while (i < topLayerPositions.size()) {
+                if (topLayerPositions.get(i).getColor().equals(topLayerPositions.get(i + 1).getColor())) {
+                    Color colorShouldBeCompleted = topLayerPositions.get(i).getColor();
+                    ArrayList<Color> colors = mapPieceToColor(pieceMap.getPieceByPosition(topLayerPositions.get(i)));
+                    ArrayList<Color> colorsToDetermineFace = mapPieceToColor(pieceMap.getPieceByPosition(topLayerPositions.get(i)));
+
+                    colorsToDetermineFace.remove(Color.YELLOW);
+                    colorsToDetermineFace.remove(colorShouldBeCompleted);
+
+                    if (colorsToDetermineFace.size() != 1) {
+                        throw new UnsolvableCubeException();
+                    }
+                    Piece piecePlacedCorrectly = getPieceByColor(Color.WHITE, colorShouldBeCompleted, colorsToDetermineFace.get(0));
+
+                    Piece pieceToMatch = getPieceByColor(colors.toArray(new Color[3]));
+                    int rotationCount = 0;
+                    while (rotationCount < 4 && !piecePlacedCorrectly.isAdjacent(pieceToMatch, colorShouldBeCompleted, colorsToDetermineFace.get(0))) {
+                        mapKeyToRotation("U");
+                        pieceToMatch = getPieceByColor(colors.toArray(new Color[3]));
+                        rotationCount++;
+                    }
+                    if (rotationCount == 4) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    try {
+                        setOrientation(orientation.getOppositeColor(piecePlacedCorrectly.getPosition(Color.WHITE).getFace()),
+                                orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorShouldBeCompleted).getFace()));
+                                //piecePlacedCorrectly.getPosition(colorsToDetermineFace.get(0)).getFace());
+                    } catch (InvalidOrientationException e) {
+                        try {
+                            setOrientation(orientation.getOppositeColor(piecePlacedCorrectly.getPosition(Color.WHITE).getFace()),
+                                    orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorShouldBeCompleted).getFace()));
+                                    //orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorsToDetermineFace.get(0)).getFace()));
+                        } catch (InvalidOrientationException invalidOrientationException) {
+                            throw new UnsolvableCubeException();
+                        }
+                    }
+
+                    break;
+                }
+                i = i + 2;
+            }
+
+            if (i == topLayerPositions.size()) {
+                Piece pieceBottomRight = getPieceByFaceColor(orientation.getFaceDown(), orientation.getFaceFront(), orientation.getFaceRight());
+                Piece p1 = getPieceByColor(Color.YELLOW, pieceBottomRight.getColorOnFace(orientation.getFaceFront()), pieceBottomRight.getColorOnFace(orientation.getFaceRight()));
+
+                while (!pieceBottomRight.isAdjacent(p1, pieceBottomRight.getColorOnFace(orientation.getFaceFront()), pieceBottomRight.getColorOnFace(orientation.getFaceRight()))) {
+                    mapKeyToRotation("U");
+                    p1 = getPieceByColor(Color.YELLOW, pieceBottomRight.getColorOnFace(orientation.getFaceFront()), pieceBottomRight.getColorOnFace(orientation.getFaceRight()));
+                }
+
+                try {
+                    setOrientation(orientation.getOppositeColor(pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceDown())).getFace()),
+                            pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceFront())).getFace());
+                            //orientation.getOppositeColor(pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceRight())).getFace()));
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
+            }
+
+            if (isSolved()) {
+                return;
+            }
+
+            mapKeysToRotation("R'", "F", "R'", "B", "B", "R", "F'", "R'", "B", "B", "R", "R", "U'");
+            count++;
+        }
+
+        if (count == 10) {
+            throw new UnsolvableCubeException();
+        }
     }
 
     private void moveYellowTilesUp() throws UnsolvableCubeException, InvalidOrientationException {
@@ -72,8 +151,8 @@ public class CubeTwo extends Cube{
 
         try {
             setOrientation(orientation.getOppositeColor(referencePiece.getPosition(Color.WHITE).getFace()),
-                    orientation.getFaceBack(),
-                    orientation.getFaceLeft());
+                    orientation.getFaceBack());
+                    //orientation.getFaceLeft());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -81,7 +160,6 @@ public class CubeTwo extends Cube{
         int yellowTilesOnTop = getFace(orientation.getFaceUp()).getColorCount(Color.YELLOW);
 
         while (yellowTilesOnTop != 4) {
-            System.out.println(yellowTilesOnTop);
             Piece p1 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceLeft()));
             Piece p2 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceLeft()));
             Piece p3 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight()));
@@ -90,31 +168,31 @@ public class CubeTwo extends Cube{
 
             if (yellowTilesOnTop == 0) {
                 if (p2.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceBack())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft(), orientation.getFaceBack());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft());//, orientation.getFaceBack());
                 } else if (p3.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceRight())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack());//, orientation.getFaceRight());
                 } else if (p4.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceBack())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight(), orientation.getFaceFront());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight());//, orientation.getFaceFront());
                 } else if (!p1.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceLeft())) {
                     throw new UnsolvableCubeException();
                 }
             } else if (yellowTilesOnTop == 1) {
                 if (p2.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceUp())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft(), orientation.getFaceBack());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft());//, orientation.getFaceBack());
                 } else if (p3.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceUp())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack());//, orientation.getFaceRight());
                 } else if (p4.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceUp())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight(), orientation.getFaceFront());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight());//, orientation.getFaceFront());
                 } else if (!p1.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceUp())) {
                     throw new UnsolvableCubeException();
                 }
             } else {
                 if (p2.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceLeft())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft(), orientation.getFaceBack());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceLeft());//, orientation.getFaceBack());
                 } else if (p3.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceBack())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceBack());//, orientation.getFaceRight());
                 } else if (p4.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceRight())) {
-                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight(), orientation.getFaceFront());
+                    setOrientation(orientation.getFaceUp(), orientation.getFaceRight());//, orientation.getFaceFront());
                 } else if (!p1.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceFront())) {
                     throw new UnsolvableCubeException();
                 }
@@ -134,8 +212,8 @@ public class CubeTwo extends Cube{
         }
 
         setOrientation(thirdPiece.getPosition(Color.WHITE).getFace(),
-                thirdPiece.getPosition(Color.GREEN).getFace(),
-                thirdPiece.getPosition(Color.ORANGE).getFace());
+                thirdPiece.getPosition(Color.GREEN).getFace());
+                //thirdPiece.getPosition(Color.ORANGE).getFace());
 
         ArrayList<Position> topLayerPositions = getTopLayerPositions();
         if (topLayerPositions.contains(fourthPiece.getPosition(Color.WHITE))) {
@@ -185,8 +263,8 @@ public class CubeTwo extends Cube{
 
         try {
             setOrientation(secondPiece.getPosition(Color.WHITE).getFace(),
-                    secondPiece.getPosition(Color.ORANGE).getFace(),
-                    secondPiece.getPosition(Color.BLUE).getFace());
+                    secondPiece.getPosition(Color.ORANGE).getFace());
+                    //secondPiece.getPosition(Color.BLUE).getFace());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -294,8 +372,8 @@ public class CubeTwo extends Cube{
 
             try {
                 setOrientation(referencePiece.getPosition(Color.WHITE).getFace(),
-                        referencePiece.getPosition(Color.BLUE).getFace(),
-                        referencePiece.getPosition(Color.RED).getFace());
+                        referencePiece.getPosition(Color.BLUE).getFace());
+                        //referencePiece.getPosition(Color.RED).getFace());
             } catch (InvalidOrientationException e) {
                 throw new UnsolvableCubeException();
             }
@@ -352,7 +430,7 @@ public class CubeTwo extends Cube{
 
     public void getPiece(Color faceColor, int row, int column) {
         Position positionToFind = new Position(faceColor, row, column);
-        Piece piece = pieceMap.getPieceColorPositions(positionToFind);
+        Piece piece = pieceMap.getPieceByPosition(positionToFind);
 
         ArrayList<Color> colors = new ArrayList<>();
         for (Position p : piece.getPositions()) {
