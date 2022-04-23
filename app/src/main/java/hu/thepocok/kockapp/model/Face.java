@@ -77,6 +77,19 @@ public class Face {
         return dimensions;
     }
 
+    public int getColorCount(Color color) {
+        int n = 0;
+        for (Layer layer : layers) {
+            for (Color c : layer.getDataSet()) {
+                if (c.equals(color)) {
+                    n++;
+                }
+            }
+        }
+
+        return n;
+    }
+
     public static Face generateFace(Color color, int dimension) {
         ArrayList<Layer> layers = new ArrayList<>();
         for (int i = 0; i < dimension; i++) {

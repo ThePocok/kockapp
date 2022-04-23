@@ -839,8 +839,44 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
+    public void randomScrambledYellowFaceTest() throws UnsolvableCubeException {
+        //cube.mapKeysToRotation("L", "B'", "D", "B'", "U'", "B");
+        cube.randomScramble(6);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Solution:\n");
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+
+        cube.solve();
+
+        try {
+            Assert.assertEquals(4, cube.getFace(cube.getOrientation().getFaceUp()).getColorCount(Color.YELLOW));
+            Assert.assertEquals(4, cube.getFace(cube.getOrientation().getFaceDown()).getColorCount(Color.WHITE));
+        } catch (AssertionError e) {
+            System.out.println("Yellow face is unsolved or white face did not remain intact!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+        System.out.println(cube);
+    }
+
+    @Test
     public void hundredRandomTest() throws UnsolvableCubeException{
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i < 10000; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeTwo();
             randomScrambledSecondPieceSolutionTest();
@@ -865,6 +901,16 @@ public class TwoTimesTwoCubeTest {
                 Assert.assertTrue(thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN));
             } catch (AssertionError e) {
                 System.out.println("Third piece is not solved!");
+
+                System.out.println(cube.getSolutionString());
+                throw e;
+            }
+
+            try {
+                Assert.assertEquals(4, cube.getFace(cube.getOrientation().getFaceUp()).getColorCount(Color.YELLOW));
+                Assert.assertEquals(4, cube.getFace(cube.getOrientation().getFaceDown()).getColorCount(Color.WHITE));
+            } catch (AssertionError e) {
+                System.out.println("Yellow face is unsolved or white face did not remain intact!");
 
                 System.out.println(cube.getSolutionString());
                 throw e;

@@ -17,7 +17,7 @@ public class CubeThree extends Cube{
         return false;
     }
 
-    @Override
+
     public Position getPositionByColor(Color... colors) {
         return null;
     }

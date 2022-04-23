@@ -142,4 +142,14 @@ public class Piece {
 
         return pieceFaces.containsAll(Arrays.asList(face1, face2, face3));
     }
+
+    public boolean hasFace(Color face) {
+        boolean l = false;
+
+        for (Position p : positions) {
+            l = l || p.getFace().equals(face);
+        }
+
+        return l;
+    }
 }

@@ -596,8 +596,6 @@ public abstract class Cube {
 
     public abstract boolean isValidCube();
 
-    public abstract Position getPositionByColor(Color... colors);
-
     public abstract void solve() throws UnsolvableCubeException;
 
     @Override
