@@ -8,7 +8,21 @@ import hu.thepocok.kockapp.model.cube.component.Position;
 public abstract class PieceMap {
     protected ArrayList<Piece> pieces;
 
-    public abstract Piece getPieceByPosition(Position positionToFind);
+    public PieceMap() {
+        pieces = new ArrayList<>();
+    }
+
+    public Piece getPieceByPosition(Position positionToFind) {
+        for (Piece positionList : pieces) {
+            for (Position p : positionList.getPositions()) {
+                if (p.equals(positionToFind)) {
+                    return positionList;
+                }
+            }
+        }
+
+        return null;
+    }
 
     public ArrayList<Piece> getAllPieces() {
         return new ArrayList<>(pieces);

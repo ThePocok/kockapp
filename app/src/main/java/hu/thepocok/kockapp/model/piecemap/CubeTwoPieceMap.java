@@ -10,7 +10,7 @@ import hu.thepocok.kockapp.model.cube.component.Position;
 public class CubeTwoPieceMap extends PieceMap {
 
     public CubeTwoPieceMap() {
-        pieces = new ArrayList<>();
+        super();
 
         pieces.add(new Piece(new Position(Color.WHITE, 0, 0),
                 new Position(Color.GREEN, 0, 0),
@@ -37,19 +37,6 @@ public class CubeTwoPieceMap extends PieceMap {
         pieces.add(new Piece(new Position(Color.YELLOW, 1, 1),
                 new Position(Color.BLUE, 1, 1),
                 new Position(Color.ORANGE, 1, 0)));
-    }
-
-    @Override
-    public Piece getPieceByPosition(Position positionToFind) {
-        for (Piece positionList : pieces) {
-            for (Position p : positionList.getPositions()) {
-                if (p.equals(positionToFind)) {
-                    return positionList;
-                }
-            }
-        }
-
-        return null;
     }
 
     public boolean isExistingPiece(Color... color) {

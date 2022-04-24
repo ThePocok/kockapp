@@ -1,20 +1,14 @@
 package hu.thepocok.kockapp.model.cube;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
-import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
-import hu.thepocok.kockapp.model.piecemap.PieceMap;
+import hu.thepocok.kockapp.model.piecemap.CubeThreePieceMap;
 
 public class CubeThree extends Cube{
 
     public CubeThree() {
         super(3);
-        pieceMap = new PieceMap() {
-            @Override
-            public Piece getPieceByPosition(Position positionToFind) {
-                return null;
-            }
-        };
+        pieceMap = new CubeThreePieceMap();
     }
 
     @Override
