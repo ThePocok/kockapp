@@ -545,4 +545,11 @@ public class ThreeTimesThreeCubeTest {
         Assert.assertEquals(new Face(new Layer(Color.RED, Color.BLUE, Color.RED), new Layer(Color.RED, Color.BLUE, Color.YELLOW), new Layer(Color.ORANGE, Color.ORANGE, Color.YELLOW)), cube.getFace(Color.BLUE));
         Assert.assertEquals(new Face(new Layer(Color.BLUE, Color.YELLOW, Color.GREEN), new Layer(Color.GREEN, Color.YELLOW, Color.YELLOW), new Layer(Color.ORANGE, Color.BLUE, Color.ORANGE)), cube.getFace(Color.YELLOW));
     }
+
+    @Test
+    public void invalidCubeTest() {
+        Assert.assertTrue(cube.isValidCube());
+        cube.makeCubeInvalid();
+        Assert.assertFalse(cube.isValidCube());
+    }
 }
