@@ -459,8 +459,7 @@ public abstract class Cube {
             key = ((Rotation) solution.get(i)).getKey();
             String nextKey = ((Rotation) solution.get(i)).getKey();
 
-            if (key.endsWith("'") && key.substring(0, 1).equals(nextKey)
-                || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key)) {
+            if (areCounterRotations(key, nextKey)) {
                 solution.remove(i+1);
                 solution.remove(i);
             }
@@ -635,6 +634,11 @@ public abstract class Cube {
         Random random = new Random();
 
         for (int i = 0; i < length; i++) {
+            String nextRotation = possibleRotations[random.nextInt(possibleRotations.length)];
+            if (i > 0 && areCounterRotations(((Rotation) solution.get(solution.size() - 1)).getKey(), nextRotation)) {
+                i--;
+                continue;
+            }
             mapKeyToRotation(possibleRotations[random.nextInt(possibleRotations.length)]);
         }
     }
@@ -683,5 +687,10 @@ public abstract class Cube {
         }
 
         return l;
+    }
+
+    public boolean areCounterRotations(String key, String nextKey) {
+        return key.endsWith("'") && key.substring(0, 1).equals(nextKey)
+                || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key);
     }
 }
