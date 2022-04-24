@@ -1,8 +1,11 @@
 package hu.thepocok.kockapp.model.cube;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
@@ -427,11 +430,6 @@ public abstract class Cube {
         }
     }
 
-    public void setOrientation(Color faceUp, Color faceTowardsPlayer) throws InvalidOrientationException {
-        orientation.setOrientation(faceUp, faceTowardsPlayer);
-        solution.add(new Reorientation(orientation));
-    }
-
     public void simplifySolution() {
         for (int i = 0; i < solution.size() - 2; i++) {
             // If two reorientations were made, the first one is unnecessary
@@ -592,49 +590,6 @@ public abstract class Cube {
         return piece;
     }
 
-    public Orientation getOrientation() {
-        return orientation;
-    }
-
-    public Face getFace(Color color) {
-        switch (color) {
-            case WHITE: return whiteFace;
-            case RED: return redFace;
-            case GREEN: return greenFace;
-            case ORANGE: return orangeFace;
-            case BLUE: return blueFace;
-            case YELLOW: return yellowFace;
-            default: return null;
-        }
-    }
-
-    public Iterator<Face> getFaceIterator() {
-        ArrayList<Face> faces = new ArrayList<>();
-        faces.add(whiteFace);
-        faces.add(redFace);
-        faces.add(greenFace);
-        faces.add(orangeFace);
-        faces.add(blueFace);
-        faces.add(yellowFace);
-        return faces.iterator();
-    }
-
-    public abstract boolean isValidCube();
-
-    public abstract void solve() throws UnsolvableCubeException;
-
-    @Override
-    public String toString() {
-        String cube = "Cube: \n" +
-                whiteFace.toString() +
-                redFace.toString() +
-                greenFace.toString() +
-                orangeFace.toString() +
-                blueFace.toString() +
-                yellowFace.toString();
-        return cube;
-    }
-
     protected PieceMap getPieceMap() {
         return pieceMap;
     }
@@ -702,5 +657,121 @@ public abstract class Cube {
     public boolean areCounterRotations(String key, String nextKey) {
         return key.endsWith("'") && key.substring(0, 1).equals(nextKey)
                 || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key);
+    }
+
+    public Position getPositionByColor(Color... colors) {
+        if (colors.length != 3) {
+            return null;
+        }
+
+        for (Piece piece : pieceMap.getAllPieces()) {
+            ArrayList<Color> colorsInPiece = mapPieceToColor(piece);
+
+            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
+                return piece.getPositions().get(0);
+            }
+        }
+
+        return null;
+    }
+
+    public Piece getPieceByColor(Color... colors) {
+        if (colors.length != 3) {
+            return null;
+        }
+
+        for (Piece piece : pieceMap.getAllPieces()) {
+            Piece positionsWithColor = mapPieceToColorInPlace(piece);
+            List<Color> colorsInPiece = positionsWithColor.getPositions().stream().map(Position::getColor).collect(Collectors.toList());
+
+            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
+                return piece;
+            }
+        }
+
+        return null;
+    }
+
+    public Piece getPieceByFaceColor(Color... colors) {
+        if (colors.length != 3) {
+            return null;
+        }
+
+        for (Piece piece : pieceMap.getAllPieces()) {
+            Piece positionsWithColor = mapPieceToColorInPlace(piece);
+            List<Color> colorsInPiece = positionsWithColor.getPositions().stream().map(Position::getFace).collect(Collectors.toList());
+
+            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
+                return piece;
+            }
+        }
+
+        return null;
+    }
+
+    public ArrayList<Piece> getPiecesByFaceAndColor(Color face, Color tileColor) {
+        if (getFace(face).getColorCount(tileColor) == 0) {
+            return null;
+        }
+
+        ArrayList<Piece> pieces = new ArrayList<>();
+
+        for (Piece piece : pieceMap.getAllPieces()) {
+            Position position = piece.getPosition(tileColor);
+            if (position != null && position.getFace().equals(face)) {
+                pieces.add(piece);
+                continue;
+            }
+        }
+
+        return pieces;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
+
+    public Face getFace(Color color) {
+        switch (color) {
+            case WHITE: return whiteFace;
+            case RED: return redFace;
+            case GREEN: return greenFace;
+            case ORANGE: return orangeFace;
+            case BLUE: return blueFace;
+            case YELLOW: return yellowFace;
+            default: return null;
+        }
+    }
+
+    public Iterator<Face> getFaceIterator() {
+        ArrayList<Face> faces = new ArrayList<>();
+        faces.add(whiteFace);
+        faces.add(redFace);
+        faces.add(greenFace);
+        faces.add(orangeFace);
+        faces.add(blueFace);
+        faces.add(yellowFace);
+        return faces.iterator();
+    }
+
+    public void setOrientation(Color faceUp, Color faceTowardsPlayer) throws InvalidOrientationException {
+        orientation.setOrientation(faceUp, faceTowardsPlayer);
+        solution.add(new Reorientation(orientation));
+    }
+
+    public abstract boolean isValidCube();
+
+    public abstract void solve() throws UnsolvableCubeException;
+
+    @Override
+    public String toString() {
+        String cube = "Cube: \n" +
+                whiteFace.toString() +
+                redFace.toString() +
+                greenFace.toString() +
+                orangeFace.toString() +
+                blueFace.toString() +
+                yellowFace.toString();
+        return cube;
     }
 }
