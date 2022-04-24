@@ -84,6 +84,10 @@ public class Piece {
         Piece that = (Piece) o;
         List<Color> colorsOnThis = positions.stream().map(Position::getColor).collect(Collectors.toList());
         List<Color> colorsOnThat = that.positions.stream().map(Position::getColor).collect(Collectors.toList());
+
+        if (colorsOnThis.size() != colorsOnThat.size()) {
+            return false;
+        }
         Collections.sort(colorsOnThis);
         Collections.sort(colorsOnThat);
 
