@@ -589,7 +589,6 @@ public class TwoTimesTwoCubeTest {
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.GREEN, Color.ORANGE)));
 
         colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 0, 1)));
-        System.out.println(colors);
         Assert.assertTrue(colors.containsAll(Arrays.asList(Color.WHITE, Color.BLUE, Color.ORANGE)));
 
         colors = cube.mapPieceToColor(pieceMap.getPieceByPosition(new Position(Color.WHITE, 1, 0)));
