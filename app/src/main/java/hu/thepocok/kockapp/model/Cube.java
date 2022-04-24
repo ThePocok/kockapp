@@ -424,10 +424,16 @@ public abstract class Cube {
 
     public void simplifySolution() {
         for (int i = 0; i < solution.size() - 2; i++) {
+            // If two reorientations were made, the first one is unnecessary
+            if (solution.get(i) instanceof Reorientation && solution.get(i+1) instanceof Reorientation) {
+                solution.remove(i);
+            }
+
             if (solution.get(i) instanceof Reorientation) {
                 continue;
             }
 
+            // If three rotation with the same key was made, they can be replaced with one counter rotation
             String key = ((Rotation) solution.get(i)).getKey();
             int j = i;
             while (j < i + 3 && ((Rotation) solution.get(j)).getKey().equals(key)) {
@@ -447,6 +453,16 @@ public abstract class Cube {
                 ((Rotation) solution.get(i)).setKey(newKey);
                 solution.remove(i+1);
                 solution.remove(i+1);
+            }
+
+            // If one rotation and its counter rotation were made, they both can be eliminated
+            key = ((Rotation) solution.get(i)).getKey();
+            String nextKey = ((Rotation) solution.get(i)).getKey();
+
+            if (key.endsWith("'") && key.substring(0, 1).equals(nextKey)
+                || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key)) {
+                solution.remove(i+1);
+                solution.remove(i);
             }
         }
     }

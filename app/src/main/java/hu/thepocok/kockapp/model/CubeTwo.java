@@ -63,6 +63,9 @@ public class CubeTwo extends Cube{
 
         /* Last task: swap the two pieces not matching on the bottom layer*/
         swapNotMatchingPieces();
+
+        /* During the solution, is it possible, that more steps were made, then necessary. */
+        simplifySolution();
     }
 
     private void swapNotMatchingPieces() throws UnsolvableCubeException {
