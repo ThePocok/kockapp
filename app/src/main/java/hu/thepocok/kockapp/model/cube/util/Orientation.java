@@ -1,8 +1,9 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 
 public class Orientation {

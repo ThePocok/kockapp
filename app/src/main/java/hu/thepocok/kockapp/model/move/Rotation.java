@@ -1,6 +1,6 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.move;
 
-public class Rotation extends Move{
+public class Rotation extends Move {
     private String key;
 
     public Rotation(String key) {

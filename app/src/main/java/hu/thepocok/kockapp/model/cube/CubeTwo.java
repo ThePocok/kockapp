@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,8 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.cube.component.Piece;
+import hu.thepocok.kockapp.model.cube.component.Position;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.model.piecemap.CubeTwoPieceMap;
 
 public class CubeTwo extends Cube{
     private Piece referencePiece;

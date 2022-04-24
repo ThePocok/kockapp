@@ -4,11 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import hu.thepocok.kockapp.model.Color;
-import hu.thepocok.kockapp.model.CubeThree;
-import hu.thepocok.kockapp.model.CubeTwo;
-import hu.thepocok.kockapp.model.Face;
-import hu.thepocok.kockapp.model.Layer;
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.CubeThree;
+import hu.thepocok.kockapp.model.cube.component.Face;
+import hu.thepocok.kockapp.model.cube.component.Layer;
 
 public class ThreeTimesThreeCubeTest {
     private CubeThree cube;

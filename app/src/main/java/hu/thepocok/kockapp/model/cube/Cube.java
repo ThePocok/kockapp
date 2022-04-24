@@ -1,11 +1,21 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Face;
+import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.cube.component.Piece;
+import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.model.move.Move;
+import hu.thepocok.kockapp.model.move.Reorientation;
+import hu.thepocok.kockapp.model.move.Rotation;
+import hu.thepocok.kockapp.model.piecemap.PieceMap;
 
 /**
  * The Cube class models an abstract Rubik's cube.

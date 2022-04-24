@@ -8,18 +8,17 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import hu.thepocok.kockapp.model.Color;
-import hu.thepocok.kockapp.model.Cube;
-import hu.thepocok.kockapp.model.CubeTwo;
-import hu.thepocok.kockapp.model.CubeTwoPieceMap;
-import hu.thepocok.kockapp.model.Face;
-import hu.thepocok.kockapp.model.Layer;
-import hu.thepocok.kockapp.model.Move;
-import hu.thepocok.kockapp.model.Piece;
-import hu.thepocok.kockapp.model.Position;
-import hu.thepocok.kockapp.model.Reorientation;
-import hu.thepocok.kockapp.model.Rotation;
-import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.Cube;
+import hu.thepocok.kockapp.model.cube.CubeTwo;
+import hu.thepocok.kockapp.model.piecemap.CubeTwoPieceMap;
+import hu.thepocok.kockapp.model.cube.component.Face;
+import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.move.Move;
+import hu.thepocok.kockapp.model.cube.component.Piece;
+import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.move.Reorientation;
+import hu.thepocok.kockapp.model.move.Rotation;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 public class TwoTimesTwoCubeTest {

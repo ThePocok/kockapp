@@ -1,7 +1,6 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.move;
 
-import hu.thepocok.kockapp.model.Move;
-import hu.thepocok.kockapp.model.Orientation;
+import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 
 public class Reorientation extends Move {

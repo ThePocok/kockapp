@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube.component;
 
 import java.util.Objects;
 

@@ -1,9 +1,13 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.piecemap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CubeTwoPieceMap extends PieceMap{
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Piece;
+import hu.thepocok.kockapp.model.cube.component.Position;
+
+public class CubeTwoPieceMap extends PieceMap {
 
     public CubeTwoPieceMap() {
         pieces = new ArrayList<>();

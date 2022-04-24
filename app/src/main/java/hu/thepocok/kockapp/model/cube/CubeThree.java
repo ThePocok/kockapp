@@ -1,4 +1,9 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube;
+
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Piece;
+import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.piecemap.PieceMap;
 
 public class CubeThree extends Cube{
 

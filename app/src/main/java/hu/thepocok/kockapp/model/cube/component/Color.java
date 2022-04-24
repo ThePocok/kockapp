@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.model;
+package hu.thepocok.kockapp.model.cube.component;
 
 public enum Color implements Comparable<Color>{
     WHITE("W"),
