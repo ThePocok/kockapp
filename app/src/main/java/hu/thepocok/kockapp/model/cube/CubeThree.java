@@ -22,11 +22,46 @@ public class CubeThree extends Cube{
     @Override
     public void solve() throws UnsolvableCubeException {
         solution.clear();
-        /* First task: create a white cross on the yellow face*/
+        /* First task: create a white cross on the yellow face */
         createWhiteCross();
+
+        /* Second task: turn the white pieces from the cross to the right place */
+        createWhiteCrossOnWhiteFace();
     }
 
-    public void createWhiteCross() throws UnsolvableCubeException {
+    private void createWhiteCrossOnWhiteFace() throws UnsolvableCubeException {
+        ArrayList<Piece> whitePieces = getWhitePiecesInCross();
+        int rotationCount = 0;
+
+        while (rotationCount < 4 && whitePieces.size() != 0) {
+            for (Piece piece : whitePieces) {
+                Position sidePosition = piece.getOtherColor(Color.WHITE);
+                if (sidePosition.getFace().equals(sidePosition.getColor())) {
+                    try {
+                        setOrientation(Color.YELLOW, sidePosition.getFace());
+                    } catch (InvalidOrientationException e) {
+                        e.printStackTrace();
+                    }
+
+                    mapKeysToRotation("F", "F");
+                }
+            }
+            mapKeyToRotation("U");
+            rotationCount++;
+            whitePieces = getWhitePiecesInCross();
+
+            if (whitePieces.size() == 0) {
+                mapKeyToRotation("U'"); //It will counter the last turn, which is necessary for the loop condition, but unnecessary for the solution
+                rotationCount--;
+            }
+        }
+
+        if (rotationCount == 4) {
+            throw new UnsolvableCubeException();
+        }
+    }
+
+    private void createWhiteCross() throws UnsolvableCubeException {
         try {
             setOrientation(Color.YELLOW, Color.ORANGE);
         } catch (InvalidOrientationException e) {

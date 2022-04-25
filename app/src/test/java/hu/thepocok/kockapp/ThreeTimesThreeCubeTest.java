@@ -14,6 +14,7 @@ import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.move.Move;
 import hu.thepocok.kockapp.model.move.Reorientation;
@@ -754,8 +755,9 @@ public class ThreeTimesThreeCubeTest {
         }
         System.out.println(sb);
         System.out.println(cube);
+        cube.getSolution().clear();
 
-        Method method = CubeThree.class.getMethod("createWhiteCross");
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
         method.setAccessible(true);
 
         method.invoke(cube);
@@ -767,6 +769,51 @@ public class ThreeTimesThreeCubeTest {
             Assert.assertEquals(Color.WHITE, cube.getColorFromPosition(new Position(Color.YELLOW, 2, 1)));
         } catch (AssertionError e) {
             System.out.println("White cross has not been created!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
+    public void whiteCrossOnWhiteFaceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //cube.mapKeysToRotation("U", "F'", "L", "R", "F'", "U'", "R'", "U");
+        cube.randomScramble(8);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertEquals(Color.RED, cube.getPieceByColor(Color.WHITE, Color.RED).getPosition(Color.RED).getFace());
+            Assert.assertEquals(Color.GREEN, cube.getPieceByColor(Color.WHITE, Color.GREEN).getPosition(Color.GREEN).getFace());
+            Assert.assertEquals(Color.ORANGE, cube.getPieceByColor(Color.WHITE, Color.ORANGE).getPosition(Color.ORANGE).getFace());
+            Assert.assertEquals(Color.BLUE, cube.getPieceByColor(Color.WHITE, Color.BLUE).getPosition(Color.BLUE).getFace());
+        } catch (AssertionError e) {
+            System.out.println("White cross has not been created on white face!");
 
             System.out.println(cube.getSolutionString());
             throw e;

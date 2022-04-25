@@ -660,7 +660,7 @@ public abstract class Cube {
     }
 
     public Position getPositionByColor(Color... colors) {
-        if (colors.length != 3) {
+        if (dimensions == 2 && colors.length != 3) {
             return null;
         }
 
@@ -676,7 +676,7 @@ public abstract class Cube {
     }
 
     public Piece getPieceByColor(Color... colors) {
-        if (colors.length != 3) {
+        if (dimensions == 2 && colors.length != 3) {
             return null;
         }
 
@@ -684,7 +684,7 @@ public abstract class Cube {
             Piece positionsWithColor = mapPieceToColorInPlace(piece);
             List<Color> colorsInPiece = positionsWithColor.getPositions().stream().map(Position::getColor).collect(Collectors.toList());
 
-            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
+            if (colorsInPiece.containsAll(Arrays.asList(colors)) && colorsInPiece.size() == colors.length) {
                 return piece;
             }
         }
@@ -693,7 +693,7 @@ public abstract class Cube {
     }
 
     public Piece getPieceByFaceColor(Color... colors) {
-        if (colors.length != 3) {
+        if (dimensions == 2 && colors.length != 3) {
             return null;
         }
 
@@ -701,7 +701,7 @@ public abstract class Cube {
             Piece positionsWithColor = mapPieceToColorInPlace(piece);
             List<Color> colorsInPiece = positionsWithColor.getPositions().stream().map(Position::getFace).collect(Collectors.toList());
 
-            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
+            if (colorsInPiece.containsAll(Arrays.asList(colors)) && colorsInPiece.size() == colors.length) {
                 return piece;
             }
         }
