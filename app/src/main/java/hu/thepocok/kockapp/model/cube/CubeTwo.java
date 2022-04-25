@@ -26,25 +26,9 @@ public class CubeTwo extends Cube{
     @Override
     public void solve() throws UnsolvableCubeException {
         solution.clear();
-        /* First task: find the reference piece, and orient the cuba in a way,
+        /* First task: find the reference piece, and orient the cube in a way,
            that the reference piece's white color faces up */
-
-        referencePiece = findReferencePiece();
-        Color faceUp = null;
-        Color faceFront = null;
-        for (Position p : referencePiece.getPositions()) {
-            if (p.getColor().equals(Color.WHITE)) {
-                faceUp = p.getFace();
-            }
-            if (p.getColor().equals(Color.RED)) {
-                faceFront = p.getFace();
-            }
-        }
-        try {
-            setOrientation(faceUp, faceFront);
-        } catch (InvalidOrientationException e) {
-            throw new UnsolvableCubeException();
-        }
+        setInitialOrientation();
 
         /* Second task: solve the white-blue-orange piece */
         solveSecondPiece();
@@ -426,6 +410,25 @@ public class CubeTwo extends Cube{
                 secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
             }
             mapKeysToRotation("B'", "D", "D", "B", "D'", "B'", "D", "B");
+        }
+    }
+
+    private void setInitialOrientation() throws UnsolvableCubeException {
+        referencePiece = findReferencePiece();
+        Color faceUp = null;
+        Color faceFront = null;
+        for (Position p : referencePiece.getPositions()) {
+            if (p.getColor().equals(Color.WHITE)) {
+                faceUp = p.getFace();
+            }
+            if (p.getColor().equals(Color.RED)) {
+                faceFront = p.getFace();
+            }
+        }
+        try {
+            setOrientation(faceUp, faceFront);
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
         }
     }
 

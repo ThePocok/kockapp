@@ -71,7 +71,7 @@ public abstract class Cube {
      * Turning the white face clockwise.
      * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
      */
-    public void rotateUpClockwise() {
+    private void rotateUpClockwise() {
         whiteFace.rotateClockwise();
 
         Layer layerToRotate = greenFace.getNthRow(0);
@@ -93,7 +93,7 @@ public abstract class Cube {
      * Turning the white face counterclockwise.
      * Affected layers: Whole white face, first layer of red, orange, green and blue faces.
      */
-    public void rotateUpCounterClockwise() {
+    private void rotateUpCounterClockwise() {
         whiteFace.rotateCounterClockwise();
 
         Layer layerToRotate = blueFace.getNthRow(0);
@@ -115,7 +115,7 @@ public abstract class Cube {
      * Turning the yellow face clockwise.
      * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
      */
-    public void rotateDownClockwise() {
+    private void rotateDownClockwise() {
         yellowFace.rotateClockwise();
 
         Layer layerToRotate = blueFace.getNthRow(blueFace.getDimensions() - 1);
@@ -137,7 +137,7 @@ public abstract class Cube {
      * Turning the yellow face counterclockwise.
      * Affected faces: Whole yellow face, last layer of red, orange, green and blue faces.
      */
-    public void rotateDownCounterClockwise() {
+    private void rotateDownCounterClockwise() {
         yellowFace.rotateCounterClockwise();
 
         Layer layerToRotate = greenFace.getNthRow(greenFace.getDimensions() - 1);
@@ -159,7 +159,7 @@ public abstract class Cube {
      * Turning the green face clockwise.
      * Affected faces: Whole green face, right column of white, red, yellow and orange faces.
      */
-    public void rotateLeftClockwise() {
+    private void rotateLeftClockwise() {
         greenFace.rotateClockwise();
 
         Layer layerToRotate = redFace.getNthColumn(0);
@@ -181,7 +181,7 @@ public abstract class Cube {
      * Turning the green face counterclockwise.
      * Affected faces: Whole green face, right column of white, red, yellow and orange faces.
      */
-    public void rotateLeftCounterClockwise() {
+    private void rotateLeftCounterClockwise() {
         greenFace.rotateCounterClockwise();
 
         Layer layerToRotate = orangeFace.getNthColumn(orangeFace.getDimensions() - 1);
@@ -203,7 +203,7 @@ public abstract class Cube {
      * Turning the blue face clockwise.
      * Affected faces: Whole blue face, right column of white, red, yellow and orange faces.
      */
-    public void rotateRightClockwise() {
+    private void rotateRightClockwise() {
         blueFace.rotateClockwise();
 
         Layer layerToRotate = orangeFace.getNthColumn(0);
@@ -225,7 +225,7 @@ public abstract class Cube {
      * Turning the blue face counterclockwise.
      * Affected faces: Whole blue face, right column of white, red, yellow and orange faces.
      */
-    public void rotateRightCounterClockwise() {
+    private void rotateRightCounterClockwise() {
         blueFace.rotateCounterClockwise();
 
         Layer layerToRotate = redFace.getNthColumn(redFace.getDimensions() - 1);
@@ -248,7 +248,7 @@ public abstract class Cube {
      * Affected faces: Whole red face, bottom row of white face, left column of blue face,
      * top row of yellow face, right column of green face
      */
-    public void rotateFrontClockwise() {
+    private void rotateFrontClockwise() {
         redFace.rotateClockwise();
 
         Layer layerToRotate = blueFace.getNthColumn(0);
@@ -271,7 +271,7 @@ public abstract class Cube {
      * Affected faces: Whole red face, bottom row of white face, left column of blue face,
      * top row of yellow face, right column of green face
      */
-    public void rotateFrontCounterClockwise() {
+    private void rotateFrontCounterClockwise() {
         redFace.rotateCounterClockwise();
 
         Layer layerToRotate = greenFace.getNthColumn(greenFace.getDimensions() - 1);
@@ -294,7 +294,7 @@ public abstract class Cube {
      * Affected faces: Whole orange face, top row of white face, right column of blue face,
      * bottom row of yellow face, left column of green face
      */
-    public void rotateBackClockwise() {
+    private void rotateBackClockwise() {
         orangeFace.rotateClockwise();
 
         Layer layerToRotate = greenFace.getNthColumn(0);
@@ -317,7 +317,7 @@ public abstract class Cube {
      * Affected faces: Whole orange face, top row of white face, right column of blue face,
      * bottom row of yellow face, left column of green face
      */
-    public void rotateBackCounterClockwise() {
+    private void rotateBackCounterClockwise() {
         orangeFace.rotateCounterClockwise();
 
         Layer layerToRotate = blueFace.getNthColumn(blueFace.getDimensions() - 1);
