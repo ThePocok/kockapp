@@ -157,6 +157,16 @@ public class Piece {
         return l;
     }
 
+    public boolean hasColor(Color color) {
+        boolean l = false;
+
+        for (Position p : positions) {
+            l = l || p.getColor().equals(color);
+        }
+
+        return l;
+    }
+
     public ArrayList<Color> getColors() {
         ArrayList<Color> colors = new ArrayList<>();
 
@@ -171,6 +181,62 @@ public class Piece {
         for (Position p : positions) {
             if (p.getFace().equals(face)) {
                 return p.getColor();
+            }
+        }
+
+        return null;
+    }
+
+    public Position getOtherColor(Color color) {
+        if (positions.size() != 2) {
+            return null;
+        }
+
+        for (Position p : positions) {
+            if (!p.getColor().equals(color)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public Position getOtherColor(Color color1, Color color2) {
+        if (positions.size() != 3) {
+            return null;
+        }
+
+        for (Position p : positions) {
+            if (!p.getColor().equals(color1) && !p.getColor().equals(color2)) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public Color getOtherFace(Color face) {
+        if (positions.size() != 2) {
+            return null;
+        }
+
+        for (Position p : positions) {
+            if (!p.getFace().equals(face)) {
+                return p.getFace();
+            }
+        }
+
+        return null;
+    }
+
+    public Color getOtherFace(Color face1, Color face2) {
+        if (positions.size() != 3) {
+            return null;
+        }
+
+        for (Position p : positions) {
+            if (!p.getFace().equals(face1) && !p.getFace().equals(face2)) {
+                return p.getFace();
             }
         }
 

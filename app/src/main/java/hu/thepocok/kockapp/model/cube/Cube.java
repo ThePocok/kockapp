@@ -766,11 +766,11 @@ public abstract class Cube {
     @Override
     public String toString() {
         String cube = "Cube: \n" +
-                whiteFace.toString() +
-                redFace.toString() +
-                greenFace.toString() +
-                orangeFace.toString() +
-                blueFace.toString() +
+                whiteFace.toString() + "\n" +
+                redFace.toString() + "\n" +
+                greenFace.toString() + "\n" +
+                orangeFace.toString() + "\n" +
+                blueFace.toString() + "\n" +
                 yellowFace.toString();
         return cube;
     }

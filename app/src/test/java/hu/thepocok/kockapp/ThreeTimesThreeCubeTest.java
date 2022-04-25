@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,6 +14,10 @@ import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.model.move.Move;
+import hu.thepocok.kockapp.model.move.Reorientation;
+import hu.thepocok.kockapp.model.move.Rotation;
 import hu.thepocok.kockapp.model.piecemap.CubeThreePieceMap;
 
 public class ThreeTimesThreeCubeTest {
@@ -729,5 +735,43 @@ public class ThreeTimesThreeCubeTest {
         Assert.assertTrue(cube.isValidCube());
         cube.makeCubeInvalid();
         Assert.assertFalse(cube.isValidCube());
+    }
+
+    @Test
+    public void whiteCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        cube.randomScramble(8);
+        ArrayList<Move> scramble = cube.getSolution();
+        System.out.println("Scramble:");
+        StringBuilder sb = new StringBuilder();
+        for (Move m : scramble) {
+            if (m instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) m;
+                sb.append(reorientation + "\n");
+            } else {
+                Rotation rotation = (Rotation) m;
+                sb.append(rotation + "\n");
+            }
+        }
+        System.out.println(sb);
+        System.out.println(cube);
+
+        Method method = CubeThree.class.getMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertEquals(Color.WHITE, cube.getColorFromPosition(new Position(Color.YELLOW, 0, 1)));
+            Assert.assertEquals(Color.WHITE, cube.getColorFromPosition(new Position(Color.YELLOW, 1, 0)));
+            Assert.assertEquals(Color.WHITE, cube.getColorFromPosition(new Position(Color.YELLOW, 1, 2)));
+            Assert.assertEquals(Color.WHITE, cube.getColorFromPosition(new Position(Color.YELLOW, 2, 1)));
+        } catch (AssertionError e) {
+            System.out.println("White cross has not been created!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
     }
 }
