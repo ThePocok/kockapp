@@ -444,7 +444,7 @@ public abstract class Cube {
             // If three rotation with the same key was made, they can be replaced with one counter rotation
             String key = ((Rotation) solution.get(i)).getKey();
             int j = i;
-            while (j < i + 3 && !(solution.get(j) instanceof Rotation) &&((Rotation) solution.get(j)).getKey().equals(key)) {
+            while (j < i + 3 && solution.get(j) instanceof Rotation &&((Rotation) solution.get(j)).getKey().equals(key)) {
                 j++;
             }
 
