@@ -345,14 +345,10 @@ public class CubeTwo extends Cube{
                         secondPiece.isAdjacent(referencePiece, 2)) {
                     mapKeysToRotation("L", "D'", "L'");
                 } else {
-                    try {
-                        //Hold the cube in a way, when the white-blue-orange piece is on the top left position
-                        while (!secondPiece.isFacing(orientation.getFaceUp(), orientation.getFaceFront(),
-                                orientation.getFaceRight())) {
-                            turnCubeClockwise();
-                        }
-                    } catch (InvalidOrientationException e) {
-                        throw new UnsolvableCubeException();
+                    //Hold the cube in a way, when the white-blue-orange piece is on the top left position
+                    while (!secondPiece.isFacing(orientation.getFaceUp(), orientation.getFaceFront(),
+                            orientation.getFaceRight())) {
+                        turnCubeClockwise();
                     }
 
                     mapKeysToRotation("R'", "D'", "R");

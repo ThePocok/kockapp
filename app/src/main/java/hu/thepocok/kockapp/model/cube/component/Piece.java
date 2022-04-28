@@ -177,6 +177,16 @@ public class Piece {
         return colors;
     }
 
+    public ArrayList<Color> getFaceColors() {
+        ArrayList<Color> colors = new ArrayList<>();
+
+        for (Position p : positions) {
+            colors.add(p.getFace());
+        }
+
+        return colors;
+    }
+
     public Color getColorOnFace(Color face) {
         for (Position p : positions) {
             if (p.getFace().equals(face)) {

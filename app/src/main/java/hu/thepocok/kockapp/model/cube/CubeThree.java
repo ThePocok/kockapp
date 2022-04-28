@@ -27,6 +27,112 @@ public class CubeThree extends Cube{
 
         /* Second task: turn the white pieces from the cross to the right place */
         createWhiteCrossOnWhiteFace();
+
+        /* Third task: solve white edges */
+        solveWhiteCorners();
+    }
+
+    private void solveWhiteCorners() throws UnsolvableCubeException {
+        try {
+            setOrientation(Color.WHITE, Color.RED);
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException(); // This will never occur
+        }
+
+        ArrayList<Piece> whiteCorners = getWhiteCorners();
+
+        while (whiteCorners.stream().filter(this::isPieceInCorrectPosition).count() != 4) {
+            int i = 0;
+            while (isPieceInCorrectPosition(whiteCorners.get(i))) {
+                i++;
+            }
+            Piece piece = whiteCorners.get(i);
+            ArrayList<Color> colorsOnPiece = piece.getColors();
+            // If the piece is on the white face, it should be moved to the bottom
+            if (piece.hasFace(Color.WHITE)) {
+                Piece finalPiece = piece;
+                boolean hasFrontFacingPiece = colorsOnPiece.stream().filter(color -> finalPiece.getPosition(color).getFace().equals(orientation.getFaceFront())).count() == 1;
+                boolean hasRightFacingPiece = colorsOnPiece.stream().filter(color -> finalPiece.getPosition(color).getFace().equals(orientation.getFaceRight())).count() == 1;
+                while (!hasFrontFacingPiece || !hasRightFacingPiece) {
+                    turnCubeClockwise();
+                    Piece updatedPiece = getPieceByColor(colorsOnPiece.toArray(new Color[3]));
+
+                    hasFrontFacingPiece = colorsOnPiece.stream().filter(color -> updatedPiece.getPosition(color).getFace().equals(orientation.getFaceFront())).count() == 1;
+                    hasRightFacingPiece = colorsOnPiece.stream().filter(color -> updatedPiece.getPosition(color).getFace().equals(orientation.getFaceRight())).count() == 1;
+                }
+                piece = getPieceByColor(colorsOnPiece.toArray(new Color[3]));
+                if (piece.getPosition(Color.WHITE).getFace().equals(Color.WHITE) || piece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceRight())) {
+                    mapKeysToRotation("R'", "D'", "R");
+                } else if (piece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceFront())){
+                    mapKeysToRotation("R'", "D", "R");
+                }
+
+            }
+            piece = getPieceByColor(colorsOnPiece.toArray(new Color[3]));
+
+            while(!isCornerInCorrectPositionOnTheBottom(piece)) {
+                mapKeyToRotation("D");
+                piece = mapPieceToColorInPlace(getPieceByColor(colorsOnPiece.toArray(new Color[3])));
+            }
+
+            // If the white tile faces down, it should be flipped to side
+            if (piece.getPosition(Color.WHITE).getFace().equals(Color.YELLOW)) {
+                while (!isPieceOnRightSide(piece)) {
+                    turnCubeCounterClockwise();
+                }
+                mapKeysToRotation("F", "D'", "F'", "D", "D");
+                piece = mapPieceToColorInPlace(getPieceByColor(colorsOnPiece.toArray(new Color[3])));
+            }
+
+            try {
+                setOrientation(Color.WHITE, piece.getPosition(Color.WHITE).getFace());
+            } catch (InvalidOrientationException e) {
+                throw new UnsolvableCubeException(); // The white tile was on the yellow face
+            }
+
+            if (isPieceOnLeftSide(piece)) {
+                mapKeysToRotation("D", "L", "D'", "L'");
+            } else {
+                mapKeysToRotation("D'", "R'", "D", "R");
+            }
+
+            whiteCorners = getWhiteCorners();
+        }
+    }
+
+    private boolean isCornerInCorrectPositionOnTheBottom(Piece piece) {
+        ArrayList<Color> colorsOnPiece = piece.getColors();
+        colorsOnPiece.remove(Color.WHITE);
+        ArrayList<Color> faceColorsOnPiece = piece.getFaceColors();
+        faceColorsOnPiece.remove(Color.YELLOW);
+
+
+        boolean isInCorrectPosition = true;
+        for (Color color : colorsOnPiece) {
+            isInCorrectPosition = isInCorrectPosition && faceColorsOnPiece.contains(color);
+        }
+        return isInCorrectPosition;
+    }
+
+    public boolean isPieceInCorrectPosition(Piece piece) {
+        boolean isInCorrectPosition = true;
+        int positionIndex = 0;
+        while (positionIndex < piece.getPositions().size() && isInCorrectPosition) {
+            Position position = piece.getPosition(piece.getColors().get(positionIndex));
+            isInCorrectPosition = isInCorrectPosition && position.getFace().equals(position.getColor());
+            positionIndex++;
+        }
+        return isInCorrectPosition;
+    }
+
+    private ArrayList<Piece> getWhiteCorners() {
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.add(getPieceByColor(Color.WHITE, Color.RED, Color.GREEN));
+        pieces.add(getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN));
+        pieces.add(getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE));
+        pieces.add(getPieceByColor(Color.WHITE, Color.RED, Color.BLUE));
+
+        return pieces;
     }
 
     private void createWhiteCrossOnWhiteFace() throws UnsolvableCubeException {

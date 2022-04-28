@@ -628,11 +628,33 @@ public abstract class Cube {
         return sb.toString();
     }
 
-    public void turnCubeClockwise() throws InvalidOrientationException {
+    public void turnCubeClockwise() {
         Color faceRight = orientation.getFaceRight();
-        Color faceFront = orientation.getFaceFront();
 
-        setOrientation(orientation.getFaceUp(), faceRight);//, faceFront);
+        try {
+            setOrientation(orientation.getFaceUp(), faceRight);
+        } catch (InvalidOrientationException e) {
+            e.printStackTrace(); // This will never occur
+        }
+    }
+
+
+    public void turnCubeCounterClockwise() {
+        Color faceLeft = orientation.getFaceLeft();
+
+        try {
+            setOrientation(orientation.getFaceUp(), faceLeft);
+        } catch (InvalidOrientationException e) {
+            e.printStackTrace(); // This will never occur
+        }
+    }
+
+    public boolean isPieceOnLeftSide(Piece piece) {
+        return piece.hasFace(orientation.getFaceFront()) && piece.hasFace(orientation.getFaceLeft());
+    }
+
+    public boolean isPieceOnRightSide(Piece piece) {
+        return piece.hasFace(orientation.getFaceFront()) && piece.hasFace(orientation.getFaceRight());
     }
 
     public boolean isSolved() {

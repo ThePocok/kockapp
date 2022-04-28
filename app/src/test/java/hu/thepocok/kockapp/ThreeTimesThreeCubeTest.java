@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import hu.thepocok.kockapp.model.cube.CubeTwo;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Face;
@@ -740,7 +741,8 @@ public class ThreeTimesThreeCubeTest {
 
     @Test
     public void whiteCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        cube.randomScramble(8);
+        cube.mapKeysToRotation("L", "R", "D'", "U", "U'", "L'", "L", "U'", "D", "F'", "R'", "F", "R'", "F", "D'", "F'");
+        //cube.randomScramble(8);
         ArrayList<Move> scramble = cube.getSolution();
         System.out.println("Scramble:");
         StringBuilder sb = new StringBuilder();
@@ -779,22 +781,24 @@ public class ThreeTimesThreeCubeTest {
 
     @Test
     public void whiteCrossOnWhiteFaceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        //cube.mapKeysToRotation("U", "F'", "L", "R", "F'", "U'", "R'", "U");
-        cube.randomScramble(8);
-        ArrayList<Move> scramble = cube.getSolution();
-        System.out.println("Scramble:");
-        StringBuilder sb = new StringBuilder();
-        for (Move m : scramble) {
-            if (m instanceof Reorientation) {
-                Reorientation reorientation = (Reorientation) m;
-                sb.append(reorientation + "\n");
-            } else {
-                Rotation rotation = (Rotation) m;
-                sb.append(rotation + "\n");
+        if (cube.isSolved()) {
+            //cube.mapKeysToRotation("U", "F'", "L", "R", "F'", "U'", "R'", "U");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
             }
+            System.out.println(sb);
+            System.out.println(cube);
         }
-        System.out.println(sb);
-        System.out.println(cube);
         cube.getSolution().clear();
 
         Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
@@ -820,5 +824,90 @@ public class ThreeTimesThreeCubeTest {
         }
 
         System.out.println(cube.getSolutionString());
+    }
+
+    @Test
+    public void solveWhiteCornersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (cube.isSolved()) {
+            //cube.mapKeysToRotation("F", "L", "F", "B'", "U'", "F", "L", "B");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+        }
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveWhiteCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertEquals(Color.RED, cube.getPieceByColor(Color.WHITE, Color.RED).getPosition(Color.RED).getFace());
+            Assert.assertEquals(Color.GREEN, cube.getPieceByColor(Color.WHITE, Color.GREEN).getPosition(Color.GREEN).getFace());
+            Assert.assertEquals(Color.ORANGE, cube.getPieceByColor(Color.WHITE, Color.ORANGE).getPosition(Color.ORANGE).getFace());
+            Assert.assertEquals(Color.BLUE, cube.getPieceByColor(Color.WHITE, Color.BLUE).getPosition(Color.BLUE).getFace());
+
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.RED, Color.GREEN))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.RED, Color.BLUE))));
+        } catch (AssertionError e) {
+            System.out.println("White corners has not been solved, or white cross did not remain intact!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
+    public void hundredRandomTest() throws UnsolvableCubeException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+        for(int i = 0; i < 100; i++) {
+            System.out.println("Teszt " + (i+1));
+            cube = new CubeThree();
+
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+
+            whiteCrossTest();
+            whiteCrossOnWhiteFaceTest();
+            solveWhiteCornersTest();
+        }
     }
 }
