@@ -776,8 +776,12 @@ public abstract class Cube {
         return faces.iterator();
     }
 
-    public void setOrientation(Color faceUp, Color faceTowardsPlayer) throws InvalidOrientationException {
-        orientation.setOrientation(faceUp, faceTowardsPlayer);
+    public void setOrientation(Color faceUp, Color faceFront) throws InvalidOrientationException {
+        if (orientation.getFaceUp().equals(faceUp) && orientation.getFaceFront().equals(faceFront)) {
+            return;
+        }
+
+        orientation.setOrientation(faceUp, faceFront);
         solution.add(new Reorientation(orientation));
     }
 
