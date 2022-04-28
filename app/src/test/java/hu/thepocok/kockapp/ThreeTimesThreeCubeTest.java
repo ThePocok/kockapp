@@ -14,6 +14,7 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
@@ -885,11 +886,70 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
+    public void solveMiddleLayerTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (cube.isSolved()) {
+//            cube.mapKeysToRotation("B", "L", "B", "B'", "L", "F'", "B'", "D");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+        }
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveWhiteCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveMiddleLayer");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            ArrayList<Piece> sidePieces = cube.getSideMiddlePieces();
+
+            for (Piece piece : sidePieces) {
+                for (Position position : piece.getPositions()) {
+                    Assert.assertEquals(position.getFace(), position.getColor());
+                }
+            }
+        } catch (AssertionError e) {
+            System.out.println("Middle layer has not been solved!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
     public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeThree();
-
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -909,6 +969,7 @@ public class ThreeTimesThreeCubeTest {
             whiteCrossTest();
             whiteCrossOnWhiteFaceTest();
             solveWhiteCornersTest();
+            solveMiddleLayerTest();
         }
     }
 }

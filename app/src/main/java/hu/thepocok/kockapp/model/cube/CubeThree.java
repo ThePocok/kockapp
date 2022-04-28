@@ -30,6 +30,145 @@ public class CubeThree extends Cube{
 
         /* Third task: solve white edges */
         solveWhiteCorners();
+
+        /* Fourth task: solve the middle layer*/
+        solveMiddleLayer();
+    }
+
+    private void solveMiddleLayer() throws UnsolvableCubeException {
+        try {
+            setOrientation(Color.YELLOW, orientation.getFaceFront());
+        } catch (InvalidOrientationException e) {
+            e.printStackTrace(); // This will never occur
+        }
+        // Get all the side middle pieces, which are not in their correct place
+        ArrayList<Piece> misplacedMiddlePieces = getMisplacedMiddlePieces();
+
+        while (misplacedMiddlePieces.size() != 0) {
+            Piece piece = misplacedMiddlePieces.get(0);
+            ArrayList<Color> colorsOnPiece = piece.getColors();
+
+            if (piece.hasFace(Color.YELLOW)) {
+                // Get the color, which has to match with the side face's center piece
+                Position sidePosition = piece.getOtherColor(piece.getColorOnFace(Color.YELLOW));
+                int rotationCount = 0;
+                // Match color with the center piece
+                while (rotationCount < 4 && !sidePosition.getFace().equals(sidePosition.getColor())) {
+                    mapKeyToRotation("U");
+
+                    piece = getPieceByColor(colorsOnPiece.toArray(new Color[2]));
+                    sidePosition = piece.getOtherColor(piece.getColorOnFace(Color.YELLOW));
+                    rotationCount++;
+                }
+
+                if (rotationCount == 4) {
+                    throw new UnsolvableCubeException();
+                }
+
+                try {
+                    setOrientation(Color.YELLOW, sidePosition.getFace());
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
+
+                Color otherColor = piece.getOtherColor(orientation.getFaceFront()).getColor();
+                if (otherColor.equals(orientation.getFaceLeft())) {
+                    mapKeysToRotation("U'", "L'", "U", "L", "U", "F", "U'", "F'");
+                } else {
+                    mapKeysToRotation("U", "R", "U'", "R'", "U'", "F'", "U", "F");
+                }
+            } else {
+                try {
+                    setOrientation(Color.YELLOW, piece.getPositions().get(0).getFace());
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
+
+                if (isPieceOnLeftSide(piece)) {
+                    // Get piece to the top
+                    mapKeysToRotation("U'", "L'", "U", "L", "U", "F", "U'", "F'");
+
+                    // Orient it correctly
+                    piece = getPieceByColor(colorsOnPiece.toArray(new Color[2]));
+                    Color sideColorOnPiece = piece.getOtherColor(piece.getColorOnFace(Color.YELLOW)).getColor();
+                    int rotationCount = 0;
+                    while (rotationCount < 4 && !piece.getPosition(sideColorOnPiece).getFace().equals(sideColorOnPiece)) {
+                        mapKeyToRotation("U");
+                        piece = getPieceByColor(colorsOnPiece.toArray(new Color[2]));
+                        rotationCount++;
+                    }
+
+                    if (rotationCount == 4) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    try {
+                        setOrientation(Color.YELLOW, sideColorOnPiece);
+                    } catch (InvalidOrientationException e) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    // Put piece back in a correct way
+                    mapKeysToRotation("U'", "L'", "U", "L", "U", "F", "U'", "F'");
+                } else {
+                    // Get piece to the top
+                    mapKeysToRotation("U", "R", "U'", "R'", "U'", "F'", "U", "F");
+
+                    // Orient it correctly
+                    piece = getPieceByColor(colorsOnPiece.toArray(new Color[2]));
+                    Color sideColorOnMisplacedPiece = piece.getOtherColor(piece.getColorOnFace(Color.YELLOW)).getColor();
+                    int rotationCount = 0;
+                    while (rotationCount < 4 && !piece.getPosition(sideColorOnMisplacedPiece).getFace().equals(sideColorOnMisplacedPiece)) {
+                        mapKeyToRotation("U");
+                        piece = getPieceByColor(colorsOnPiece.toArray(new Color[2]));
+                        rotationCount++;
+                    }
+
+                    if (rotationCount == 4) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    try {
+                        setOrientation(Color.YELLOW, sideColorOnMisplacedPiece);
+                    } catch (InvalidOrientationException e) {
+                        throw new UnsolvableCubeException();
+                    }
+
+                    // Put piece back in a correct way
+                    mapKeysToRotation("U", "R", "U'", "R'", "U'", "F'", "U", "F");
+                }
+            }
+
+            misplacedMiddlePieces = getMisplacedMiddlePieces();
+        }
+    }
+
+    private ArrayList<Piece> getMisplacedMiddlePieces() {
+        ArrayList<Piece> pieces = getSideMiddlePieces();
+        ArrayList<Piece> piecesToReturn = new ArrayList<>();
+        for (Piece piece : pieces) {
+            boolean l = true;
+
+            for (Position position : piece.getPositions()) {
+                l = l && position.getFace().equals(position.getColor());
+            }
+
+            if (!l) {
+                piecesToReturn.add(piece);
+            }
+        }
+
+        return piecesToReturn;
+    }
+
+    public ArrayList<Piece> getSideMiddlePieces() {
+        ArrayList<Piece> pieces = new ArrayList<>();
+        pieces.add(getPieceByColor(Color.GREEN, Color.RED));
+        pieces.add(getPieceByColor(Color.GREEN, Color.ORANGE));
+        pieces.add(getPieceByColor(Color.BLUE, Color.ORANGE));
+        pieces.add(getPieceByColor(Color.BLUE, Color.RED));
+
+        return pieces;
     }
 
     private void solveWhiteCorners() throws UnsolvableCubeException {
@@ -210,7 +349,11 @@ public class CubeThree extends Cube{
                     throw new UnsolvableCubeException();
                 }
 
-                mapKeyToRotation("F'"); //Ha jobb oldalon van, ha bal akkor F
+                if (isPieceOnLeftSide(piece)) {
+                    mapKeyToRotation("F");
+                } else {
+                    mapKeyToRotation("F'");
+                }
                 whitePiecesInCross = getWhitePiecesInCross();
 
                 piecesInMiddleLayer.clear();
