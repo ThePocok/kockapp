@@ -698,31 +698,31 @@ public class TwoTimesTwoCubeTest {
         Assert.assertTrue(piece1.isAdjacent(piece2, Color.BLUE, Color.RED));
     }
 
-    @Test
-    public void simplifySolutionTest() throws NoSuchFieldException {
-        cube.mapKeysToRotation("D", "D", "D");
-        cube.mapKeysToRotation("B'", "B'", "B'");
-        cube.mapKeysToRotation("F'", "F", "F'");
-        cube.mapKeysToRotation("U", "U'", "U");
-        cube.mapKeysToRotation("R", "L", "R");
-        cube.simplifySolution();
-
-        Field field = Cube.class.getDeclaredField("solution");
-        field.setAccessible(true);
-        ArrayList<Move> solution = cube.getSolution(); //(ArrayList<Move>) field.get(cube);
-        System.out.println(solution);
-        Assert.assertTrue(((Rotation) solution.get(0)).getKey().equals("D'"));
-        Assert.assertTrue(((Rotation) solution.get(1)).getKey().equals("B"));
-        Assert.assertTrue(((Rotation) solution.get(2)).getKey().equals("F'"));
-        Assert.assertTrue(((Rotation) solution.get(3)).getKey().equals("F"));
-        Assert.assertTrue(((Rotation) solution.get(4)).getKey().equals("F'"));
-        Assert.assertTrue(((Rotation) solution.get(5)).getKey().equals("U"));
-        Assert.assertTrue(((Rotation) solution.get(6)).getKey().equals("U'"));
-        Assert.assertTrue(((Rotation) solution.get(7)).getKey().equals("U"));
-        Assert.assertTrue(((Rotation) solution.get(8)).getKey().equals("R"));
-        Assert.assertTrue(((Rotation) solution.get(9)).getKey().equals("L"));
-        Assert.assertTrue(((Rotation) solution.get(10)).getKey().equals("R"));
-    }
+//    @Test
+//    public void simplifySolutionTest() throws NoSuchFieldException {
+//        cube.mapKeysToRotation("D", "D", "D");
+//        cube.mapKeysToRotation("B'", "B'", "B'");
+//        cube.mapKeysToRotation("F'", "F", "F'");
+//        cube.mapKeysToRotation("U", "U'", "U");
+//        cube.mapKeysToRotation("R", "L", "R");
+//        cube.simplifySolution();
+//
+//        Field field = Cube.class.getDeclaredField("solution");
+//        field.setAccessible(true);
+//        ArrayList<Move> solution = cube.getSolution(); //(ArrayList<Move>) field.get(cube);
+//        System.out.println(solution);
+//        Assert.assertTrue(((Rotation) solution.get(0)).getKey().equals("D'"));
+//        Assert.assertTrue(((Rotation) solution.get(1)).getKey().equals("B"));
+//        Assert.assertTrue(((Rotation) solution.get(2)).getKey().equals("F'"));
+//        Assert.assertTrue(((Rotation) solution.get(3)).getKey().equals("F"));
+//        Assert.assertTrue(((Rotation) solution.get(4)).getKey().equals("F'"));
+//        Assert.assertTrue(((Rotation) solution.get(5)).getKey().equals("U"));
+//        Assert.assertTrue(((Rotation) solution.get(6)).getKey().equals("U'"));
+//        Assert.assertTrue(((Rotation) solution.get(7)).getKey().equals("U"));
+//        Assert.assertTrue(((Rotation) solution.get(8)).getKey().equals("R"));
+//        Assert.assertTrue(((Rotation) solution.get(9)).getKey().equals("L"));
+//        Assert.assertTrue(((Rotation) solution.get(10)).getKey().equals("R"));
+//    }
 
     @Test
     public void randomScrambledInitialOrientationTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
