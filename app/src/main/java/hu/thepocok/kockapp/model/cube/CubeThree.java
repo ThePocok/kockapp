@@ -177,99 +177,97 @@ public class CubeThree extends Cube{
         ArrayList<Piece> whitePiecesInCross = getWhitePiecesInCross();
         int whiteTilesInCross = whitePiecesInCross.size();
 
-        if (whiteTilesInCross == 4) {
-            return; //The cross is complete
-        }
-
-        ArrayList<Piece> piecesInMiddleLayer = new ArrayList<>();
-        piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 0)));
-        piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 2)));
-        piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 0)));
-        piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 2)));
-        ArrayList<Piece> whitePiecesInMiddleLayer = (ArrayList<Piece>) piecesInMiddleLayer.stream()
-                .map(this::mapPieceToColorInPlace)
-                .filter(piece -> piece.hasColor(Color.WHITE))
-                .collect(Collectors.toList());
-
-        while (whitePiecesInMiddleLayer.size() != 0) {
-            Piece piece = whitePiecesInMiddleLayer.get(0);
-
-            try {
-                setOrientation(orientation.getFaceUp(), piece.getOtherColor(Color.WHITE).getFace());
-            } catch (InvalidOrientationException e) {
-                throw new UnsolvableCubeException();
-            }
-
-            Piece pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
-            int rotationCount = 0;
-            while (rotationCount < 4 && whitePiecesInCross.contains(pieceOnTop)) {
-                mapKeyToRotation("U");
-                pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
-                whitePiecesInCross = getWhitePiecesInCross();
-                rotationCount++;
-            }
-
-            if (rotationCount == 4) {
-                throw new UnsolvableCubeException();
-            }
-
-            mapKeyToRotation("F'");
-            whitePiecesInCross = getWhitePiecesInCross();
-
-            piecesInMiddleLayer.clear();
+        if (whiteTilesInCross != 4) {
+            ArrayList<Piece> piecesInMiddleLayer = new ArrayList<>();
             piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 0)));
             piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 2)));
             piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 0)));
             piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 2)));
-            whitePiecesInMiddleLayer = (ArrayList<Piece>) piecesInMiddleLayer.stream()
+            ArrayList<Piece> whitePiecesInMiddleLayer = (ArrayList<Piece>) piecesInMiddleLayer.stream()
                     .map(this::mapPieceToColorInPlace)
-                    .filter(p -> p.hasColor(Color.WHITE))
+                    .filter(piece -> piece.hasColor(Color.WHITE))
                     .collect(Collectors.toList());
+
+            while (whitePiecesInMiddleLayer.size() != 0) {
+                Piece piece = whitePiecesInMiddleLayer.get(0);
+
+                try {
+                    setOrientation(orientation.getFaceUp(), piece.getOtherColor(Color.WHITE).getFace());
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
+
+                Piece pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
+                int rotationCount = 0;
+                while (rotationCount < 4 && whitePiecesInCross.contains(pieceOnTop)) {
+                    mapKeyToRotation("U");
+                    pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
+                    whitePiecesInCross = getWhitePiecesInCross();
+                    rotationCount++;
+                }
+
+                if (rotationCount == 4) {
+                    throw new UnsolvableCubeException();
+                }
+
+                mapKeyToRotation("F'"); //Ha jobb oldalon van, ha bal akkor F
+                whitePiecesInCross = getWhitePiecesInCross();
+
+                piecesInMiddleLayer.clear();
+                piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 0)));
+                piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 1, 2)));
+                piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 0)));
+                piecesInMiddleLayer.add(pieceMap.getPieceByPosition(new Position(orientation.getFaceBack(), 1, 2)));
+                whitePiecesInMiddleLayer = (ArrayList<Piece>) piecesInMiddleLayer.stream()
+                        .map(this::mapPieceToColorInPlace)
+                        .filter(p -> p.hasColor(Color.WHITE))
+                        .collect(Collectors.toList());
+            }
         }
 
         // At this point, all 2 tiled pieces from the middle layer, which contains white tile, should be in the cross
 
         whiteTilesInCross = whitePiecesInCross.size();
 
-        if (whiteTilesInCross == 4) {
-            return; //The cross is complete
-        }
+        if (whiteTilesInCross != 4) {
+            ArrayList<Piece> piecesInBottomLayer = new ArrayList<>();
+            piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.RED, 0, 1)));
+            piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.GREEN, 0, 1)));
+            piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 0, 1)));
+            piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.BLUE, 0, 1)));
 
-        ArrayList<Piece> piecesInBottomLayer = new ArrayList<>();
-        piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.RED, 0, 1)));
-        piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.GREEN, 0, 1)));
-        piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.ORANGE, 0, 1)));
-        piecesInBottomLayer.add(pieceMap.getPieceByPosition(new Position(Color.BLUE, 0, 1)));
+            ArrayList<Piece> whitePiecesInBottomLayer = (ArrayList<Piece>) piecesInBottomLayer.stream()
+                    .map(this::mapPieceToColorInPlace)
+                    .filter(piece -> piece.hasColor(Color.WHITE))
+                    .collect(Collectors.toList());
 
-        ArrayList<Piece> whitePiecesInBottomLayer = (ArrayList<Piece>) piecesInBottomLayer.stream()
-                .map(this::mapPieceToColorInPlace)
-                .filter(piece -> piece.hasColor(Color.WHITE))
-                .collect(Collectors.toList());
+            for (Piece piece : whitePiecesInBottomLayer) {
+                try {
+                    setOrientation(orientation.getFaceUp(), piece.getOtherFace(Color.WHITE));
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
 
-        for (Piece piece : whitePiecesInBottomLayer) {
-            try {
-                setOrientation(orientation.getFaceUp(), piece.getOtherFace(Color.WHITE));
-            } catch (InvalidOrientationException e) {
-                throw new UnsolvableCubeException();
-            }
-
-            whitePiecesInCross = getWhitePiecesInCross();
-            Piece pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
-            int rotationCount = 0;
-            while (rotationCount < 4 && whitePiecesInCross.contains(pieceOnTop)) {
-                mapKeyToRotation("U");
-                pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
                 whitePiecesInCross = getWhitePiecesInCross();
-                rotationCount++;
-            }
+                Piece pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
+                int rotationCount = 0;
+                while (rotationCount < 4 && whitePiecesInCross.contains(pieceOnTop)) {
+                    mapKeyToRotation("U");
+                    pieceOnTop = mapPieceToColorInPlace(pieceMap.getPieceByPosition(new Position(orientation.getFaceFront(), 2, 1)));
+                    whitePiecesInCross = getWhitePiecesInCross();
+                    rotationCount++;
+                }
 
-            if (rotationCount == 4) {
-                throw new UnsolvableCubeException();
-            }
+                if (rotationCount == 4) {
+                    throw new UnsolvableCubeException();
+                }
 
-            mapKeysToRotation("F", "F");
-            whitePiecesInCross = getWhitePiecesInCross();
+                mapKeysToRotation("F", "F");
+                whitePiecesInCross = getWhitePiecesInCross();
+            }
         }
+
+        whitePiecesInCross = getWhitePiecesInCross();
 
         if (whitePiecesInCross.size() != 4) {
             throw new UnsolvableCubeException();

@@ -741,22 +741,23 @@ public class ThreeTimesThreeCubeTest {
 
     @Test
     public void whiteCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        cube.mapKeysToRotation("L", "R", "D'", "U", "U'", "L'", "L", "U'", "D", "F'", "R'", "F", "R'", "F", "D'", "F'");
-        //cube.randomScramble(8);
-        ArrayList<Move> scramble = cube.getSolution();
-        System.out.println("Scramble:");
-        StringBuilder sb = new StringBuilder();
-        for (Move m : scramble) {
-            if (m instanceof Reorientation) {
-                Reorientation reorientation = (Reorientation) m;
-                sb.append(reorientation + "\n");
-            } else {
-                Rotation rotation = (Rotation) m;
-                sb.append(rotation + "\n");
+        if (cube.isSolved()) {
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
             }
+            System.out.println(sb);
+            System.out.println(cube);
         }
-        System.out.println(sb);
-        System.out.println(cube);
         cube.getSolution().clear();
 
         Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
@@ -884,7 +885,7 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
-    public void hundredRandomTest() throws UnsolvableCubeException, InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeThree();
