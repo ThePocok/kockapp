@@ -4,15 +4,14 @@ import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 
 public class Reorientation extends Move {
-    private Orientation orientation;
+    private final Orientation orientation;
 
     public Reorientation(Orientation orientation) {
         this.orientation = new Orientation();
         try {
             this.orientation.setOrientation(orientation.getFaceUp(), orientation.getFaceFront());
         } catch (InvalidOrientationException e) {
-            //This can not occur
-            e.printStackTrace();
+            e.printStackTrace(); //This will never occur
         }
     }
 

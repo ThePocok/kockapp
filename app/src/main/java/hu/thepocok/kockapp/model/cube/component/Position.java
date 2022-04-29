@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class Position {
     private Color color;
-    private Color faceColor;
-    private int row;
-    private int column;
+    private final Color faceColor;
+    private final int row;
+    private final int column;
 
     public Position(Color faceColor, int row, int column) {
         this.color = null;
@@ -34,24 +34,12 @@ public class Position {
         return faceColor;
     }
 
-    public void setFace(Color face) {
-        this.faceColor = face;
-    }
-
     public int getRow() {
         return row;
     }
 
-    public void setRow(int row) {
-        this.row = row;
-    }
-
     public int getColumn() {
         return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
     }
 
     public Position getPositionAcross(int cubeDimension) {

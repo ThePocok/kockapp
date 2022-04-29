@@ -1,10 +1,7 @@
 package hu.thepocok.kockapp.model.cube;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Layer;
@@ -235,10 +232,8 @@ public class CubeTwo extends Cube{
 
         if (fourthPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceFront())) {
             mapKeysToRotation("D'", "R'", "D", "R");
-            return;
         } else if(fourthPiece.getPosition(Color.GREEN).getFace().equals(orientation.getFaceFront())) {
             mapKeysToRotation("R'", "D'", "R");
-            return;
         } else {
             throw new UnsolvableCubeException();
         }
@@ -390,13 +385,10 @@ public class CubeTwo extends Cube{
 
             if (secondPiece.getPosition(Color.WHITE).getFace().equals(referencePiece.getPosition(Color.BLUE).getFace())) {
                 mapKeyToRotation("R");
-                return;
             } else if(secondPiece.getPosition(Color.BLUE).getFace().equals(referencePiece.getPosition(Color.BLUE).getFace())) {
                 mapKeysToRotation("R'", "D'", "R");
-                return;
             } else {
                 mapKeysToRotation("D", "R", "R");
-                return;
             }
 
         } else {
@@ -433,16 +425,6 @@ public class CubeTwo extends Cube{
      */
     public Piece findReferencePiece() {
         return getPieceByColor(Color.WHITE, Color.RED, Color.BLUE);
-    }
-
-    public void getPiece(Color faceColor, int row, int column) {
-        Position positionToFind = new Position(faceColor, row, column);
-        Piece piece = pieceMap.getPieceByPosition(positionToFind);
-
-        ArrayList<Color> colors = new ArrayList<>();
-        for (Position p : piece.getPositions()) {
-            colors.add(getColorFromPosition(p));
-        }
     }
 
     @Override

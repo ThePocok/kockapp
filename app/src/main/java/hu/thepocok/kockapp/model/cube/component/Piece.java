@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Piece {
-    private ArrayList<Position> positions;
+    private final ArrayList<Position> positions;
 
     public Piece(Position... positions) {
         this.positions = new ArrayList<>();
@@ -75,45 +75,6 @@ public class Piece {
         }
 
         return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Piece that = (Piece) o;
-        List<Color> colorsOnThis = positions.stream().map(Position::getColor).collect(Collectors.toList());
-        List<Color> colorsOnThat = that.positions.stream().map(Position::getColor).collect(Collectors.toList());
-
-        if (colorsOnThis.size() != colorsOnThat.size()) {
-            return false;
-        }
-        Collections.sort(colorsOnThis);
-        Collections.sort(colorsOnThat);
-
-        boolean l = true;
-        int i = 0;
-
-        while (i < colorsOnThis.size() && l) {
-            l = l && colorsOnThis.get(i).equals(colorsOnThat.get(i));
-            i++;
-        }
-
-        return l && i == colorsOnThat.size();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Piece{");
-
-        for(Position p : positions) {
-            sb.append(p.getColor() + " ");
-        }
-
-        sb.append("}");
-
-        return sb.toString();
     }
 
     public boolean hasCommonFace(Piece that) {
@@ -251,5 +212,44 @@ public class Piece {
         }
 
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Piece that = (Piece) o;
+        List<Color> colorsOnThis = positions.stream().map(Position::getColor).collect(Collectors.toList());
+        List<Color> colorsOnThat = that.positions.stream().map(Position::getColor).collect(Collectors.toList());
+
+        if (colorsOnThis.size() != colorsOnThat.size()) {
+            return false;
+        }
+        Collections.sort(colorsOnThis);
+        Collections.sort(colorsOnThat);
+
+        boolean l = true;
+        int i = 0;
+
+        while (i < colorsOnThis.size() && l) {
+            l = l && colorsOnThis.get(i).equals(colorsOnThat.get(i));
+            i++;
+        }
+
+        return l && i == colorsOnThat.size();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Piece{");
+
+        for(Position p : positions) {
+            sb.append(p.getColor()).append(" ");
+        }
+
+        sb.append("}");
+
+        return sb.toString();
     }
 }

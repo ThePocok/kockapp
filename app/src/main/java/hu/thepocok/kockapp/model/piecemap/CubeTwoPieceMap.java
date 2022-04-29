@@ -1,8 +1,5 @@
 package hu.thepocok.kockapp.model.piecemap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
@@ -37,22 +34,5 @@ public class CubeTwoPieceMap extends PieceMap {
         pieces.add(new Piece(new Position(Color.YELLOW, 1, 1),
                 new Position(Color.BLUE, 1, 1),
                 new Position(Color.ORANGE, 1, 0)));
-    }
-
-    public boolean isExistingPiece(Color... color) {
-        ArrayList<Color> colorsOnPiece = new ArrayList<>();
-
-        for (Piece positionList : pieces) {
-            for (Position p : positionList.getPositions()) {
-                colorsOnPiece.add(p.getFace());
-            }
-            if (colorsOnPiece.containsAll(Arrays.asList(color))) {
-                return true;
-            } else {
-                colorsOnPiece.clear();
-            }
-        }
-
-        return false;
     }
 }

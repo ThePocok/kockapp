@@ -516,58 +516,6 @@ public abstract class Cube {
         return positions;
     }
 
-    /**
-     * Determines the faces next to the face of the given color
-     * @param color
-     * @return ArrayList of the side faces in the following order: <br>
-     * Face on top, face on right, face on bottom, face on left
-     */
-    protected ArrayList<Face> determineSideFaces(Color color) {
-        ArrayList<Face> faces = new ArrayList<>();
-        switch (color) {
-            case WHITE:
-                faces.add(orangeFace);
-                faces.add(blueFace);
-                faces.add(redFace);
-                faces.add(greenFace);
-                break;
-            case YELLOW:
-                faces.add(redFace);
-                faces.add(blueFace);
-                faces.add(orangeFace);
-                faces.add(greenFace);
-                break;
-            case RED:
-                faces.add(whiteFace);
-                faces.add(blueFace);
-                faces.add(yellowFace);
-                faces.add(greenFace);
-                break;
-            case GREEN:
-                faces.add(whiteFace);
-                faces.add(redFace);
-                faces.add(yellowFace);
-                faces.add(orangeFace);
-                break;
-            case ORANGE:
-                faces.add(whiteFace);
-                faces.add(greenFace);
-                faces.add(yellowFace);
-                faces.add(blueFace);
-                break;
-            case BLUE:
-                faces.add(whiteFace);
-                faces.add(orangeFace);
-                faces.add(yellowFace);
-                faces.add(redFace);
-                break;
-            default:
-                break;
-        }
-
-        return faces;
-    }
-
     public Color getColorFromPosition(Position position) {
         return getFace(position.getFace()).getNthColumn(position.getColumn()).getNthPiece(position.getRow());
     }
@@ -615,10 +563,10 @@ public abstract class Cube {
         for (Move m : solution) {
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
-                sb.append(reorientation + "\n");
+                sb.append(reorientation).append("\n");
             } else {
                 Rotation rotation = (Rotation) m;
-                sb.append(rotation + "\n");
+                sb.append(rotation).append("\n");
             }
         }
 
@@ -728,24 +676,6 @@ public abstract class Cube {
         return null;
     }
 
-    public ArrayList<Piece> getPiecesByFaceAndColor(Color face, Color tileColor) {
-        if (getFace(face).getColorCount(tileColor) == 0) {
-            return null;
-        }
-
-        ArrayList<Piece> pieces = new ArrayList<>();
-
-        for (Piece piece : pieceMap.getAllPieces()) {
-            Position position = piece.getPosition(tileColor);
-            if (position != null && position.getFace().equals(face)) {
-                pieces.add(piece);
-                continue;
-            }
-        }
-
-        return pieces;
-    }
-
     public Orientation getOrientation() {
         return orientation;
     }
@@ -788,13 +718,12 @@ public abstract class Cube {
 
     @Override
     public String toString() {
-        String cube = "Cube: \n" +
+        return "Cube: \n" +
                 whiteFace.toString() + "\n" +
                 redFace.toString() + "\n" +
                 greenFace.toString() + "\n" +
                 orangeFace.toString() + "\n" +
                 blueFace.toString() + "\n" +
                 yellowFace.toString();
-        return cube;
     }
 }

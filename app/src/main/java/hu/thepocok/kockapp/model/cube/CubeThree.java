@@ -189,9 +189,7 @@ public class CubeThree extends Cube{
             foundCorrectStartingState = foundCorrectStartingState ||
                     getFaceWithCurrentOrientation(Color.YELLOW)
                             .matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "_", "_", "_", "_");
-            //foundCorrectStartingState = foundCorrectStartingState ||
-            //        getFaceWithCurrentOrientation(Color.YELLOW)
-            //                .matchPattern("_", "_", "_", "_", "Y", "_", "_", "_", "_");
+
             int turnCount = 0;
             while (turnCount < 4 && !foundCorrectStartingState) {
                 turnCubeClockwise();
@@ -201,9 +199,6 @@ public class CubeThree extends Cube{
                 foundCorrectStartingState = foundCorrectStartingState ||
                         getFaceWithCurrentOrientation(Color.YELLOW)
                                 .matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "_", "_", "_", "_");
-                //foundCorrectStartingState = foundCorrectStartingState ||
-                //        getFaceWithCurrentOrientation(Color.YELLOW)
-                //                .matchPattern("_", "_", "_", "_", "Y", "_", "_", "_", "_");
 
                 turnCount++;
             }
