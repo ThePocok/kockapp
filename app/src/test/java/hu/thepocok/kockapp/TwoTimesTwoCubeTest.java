@@ -698,31 +698,61 @@ public class TwoTimesTwoCubeTest {
         Assert.assertTrue(piece1.isAdjacent(piece2, Color.BLUE, Color.RED));
     }
 
-//    @Test
-//    public void simplifySolutionTest() throws NoSuchFieldException {
-//        cube.mapKeysToRotation("D", "D", "D");
-//        cube.mapKeysToRotation("B'", "B'", "B'");
-//        cube.mapKeysToRotation("F'", "F", "F'");
-//        cube.mapKeysToRotation("U", "U'", "U");
-//        cube.mapKeysToRotation("R", "L", "R");
-//        cube.simplifySolution();
-//
-//        Field field = Cube.class.getDeclaredField("solution");
-//        field.setAccessible(true);
-//        ArrayList<Move> solution = cube.getSolution(); //(ArrayList<Move>) field.get(cube);
-//        System.out.println(solution);
-//        Assert.assertTrue(((Rotation) solution.get(0)).getKey().equals("D'"));
-//        Assert.assertTrue(((Rotation) solution.get(1)).getKey().equals("B"));
-//        Assert.assertTrue(((Rotation) solution.get(2)).getKey().equals("F'"));
-//        Assert.assertTrue(((Rotation) solution.get(3)).getKey().equals("F"));
-//        Assert.assertTrue(((Rotation) solution.get(4)).getKey().equals("F'"));
-//        Assert.assertTrue(((Rotation) solution.get(5)).getKey().equals("U"));
-//        Assert.assertTrue(((Rotation) solution.get(6)).getKey().equals("U'"));
-//        Assert.assertTrue(((Rotation) solution.get(7)).getKey().equals("U"));
-//        Assert.assertTrue(((Rotation) solution.get(8)).getKey().equals("R"));
-//        Assert.assertTrue(((Rotation) solution.get(9)).getKey().equals("L"));
-//        Assert.assertTrue(((Rotation) solution.get(10)).getKey().equals("R"));
-//    }
+    @Test
+    public void simplifySolutionTest() throws UnsolvableCubeException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        cube.randomScramble(8);
+        ArrayList<Move> scramble = cube.getSolution();
+
+        cube.getSolution().clear();
+
+        Method method = CubeTwo.class.getDeclaredMethod("setInitialOrientation");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeTwo.class.getDeclaredMethod("solveSecondPiece");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeTwo.class.getDeclaredMethod("solveThirdPiece");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeTwo.class.getDeclaredMethod("solveFourthPiece");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeTwo.class.getDeclaredMethod("moveYellowTilesUp");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeTwo.class.getDeclaredMethod("swapNotMatchingPieces");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertTrue(cube.isSolved());
+
+            cube.getSolution().clear();
+            cube.solveBySolutionArray(scramble);
+            cube.solve();
+            Assert.assertTrue(cube.isSolved());
+        } catch (AssertionError e) {
+            System.out.println("The simplified solution cannot solve the cube!");
+
+            System.out.println("Scramble:");
+            System.out.println(scramble);
+
+            System.out.println("Solution:");
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+    }
 
     @Test
     public void randomScrambledInitialOrientationTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {

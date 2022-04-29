@@ -9,14 +9,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import hu.thepocok.kockapp.model.cube.CubeTwo;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
-import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.move.Move;
 import hu.thepocok.kockapp.model.move.Reorientation;
@@ -738,6 +736,72 @@ public class ThreeTimesThreeCubeTest {
         Assert.assertTrue(cube.isValidCube());
         cube.makeCubeInvalid();
         Assert.assertFalse(cube.isValidCube());
+    }
+
+    @Test
+    public void simplifySolutionTest() throws UnsolvableCubeException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        cube.randomScramble(8);
+        ArrayList<Move> scramble = cube.getSolution();
+
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveWhiteCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveMiddleLayer");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createYellowCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("completeYellowFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("repositionYellowCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveMiddlePiecesOnYellowFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertTrue(cube.isSolved());
+
+            cube.getSolution().clear();
+            cube.solveBySolutionArray(scramble);
+            cube.solve();
+            Assert.assertTrue(cube.isSolved());
+        } catch (AssertionError e) {
+            System.out.println("The simplified solution cannot solve the cube!");
+
+            System.out.println("Scramble:");
+            System.out.println(scramble);
+
+            System.out.println("Solution:");
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
     }
 
     @Test

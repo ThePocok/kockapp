@@ -431,10 +431,12 @@ public abstract class Cube {
     }
 
     public void simplifySolution() {
-        for (int i = 0; i < solution.size() - 2; i++) {
+        for (int i = 0; i < solution.size() - 3; i++) {
             // If two reorientations were made, the first one is unnecessary
             if (solution.get(i) instanceof Reorientation && solution.get(i+1) instanceof Reorientation) {
                 solution.remove(i);
+                i--;
+                continue; //maybe
             }
 
             if (solution.get(i) instanceof Reorientation) {
@@ -443,30 +445,52 @@ public abstract class Cube {
 
             // If three rotation with the same key was made, they can be replaced with one counter rotation
             String key = ((Rotation) solution.get(i)).getKey();
-            int j = i;
+            int j = i+1; //i+1
             while (j < i + 3 && solution.get(j) instanceof Rotation &&((Rotation) solution.get(j)).getKey().equals(key)) {
                 j++;
             }
 
-            if (!(solution.get(j) instanceof Rotation)) {
+            // Must subtract one, since the loop ends one step after it found the third same rotation
+            if (j == i+3) {
+                if (solution.get(j-1) instanceof Rotation) {
+                    String newKey = (key.endsWith("'")) ? (key.substring(0, 1)) : key + "'";
+
+                    ((Rotation) solution.get(i)).setKey(newKey);
+                    solution.remove(i+1);
+                    solution.remove(i+1);
+                }
+            }
+
+            // If the reason for breaking out of the loop was not that it found a reorientation, we can simplify
+
+
+            // If one rotation and its counter rotation were made, they both can be eliminated
+            // First, we must check, that the next step in the solution is also a rotation
+            if (solution.get(i+1) instanceof Reorientation) {
                 continue;
             }
 
-            if (j == i+3) {
-                String newKey = (key.endsWith("'")) ? (key.substring(0, 1)) : key + "'";
-
-                ((Rotation) solution.get(i)).setKey(newKey);
-                solution.remove(i+1);
-                solution.remove(i+1);
-            }
-
-            // If one rotation and its counter rotation were made, they both can be eliminated
             key = ((Rotation) solution.get(i)).getKey();
-            String nextKey = ((Rotation) solution.get(i)).getKey();
+            String nextKey = ((Rotation) solution.get(i+1)).getKey();
 
             if (areCounterRotations(key, nextKey)) {
                 solution.remove(i+1);
                 solution.remove(i);
+            }
+        }
+    }
+
+    public void solveBySolutionArray(ArrayList<Move> solution) throws UnsolvableCubeException {
+        for (Move move : solution) {
+            if (move instanceof Rotation) {
+                mapKeyToRotation(((Rotation) move).getKey());
+            } else if (move instanceof Reorientation) {
+                Reorientation reorientation = (Reorientation) move;
+                try {
+                    setOrientation(reorientation.getOrientation().getFaceUp(), reorientation.getOrientation().getFaceFront());
+                } catch (InvalidOrientationException e) {
+                    throw new UnsolvableCubeException();
+                }
             }
         }
     }

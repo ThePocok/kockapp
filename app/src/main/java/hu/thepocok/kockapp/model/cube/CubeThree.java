@@ -54,6 +54,9 @@ public class CubeThree extends Cube{
 
         /* Eighth task: solve middle pieces on yellow face */
         solveMiddlePiecesOnYellowFace();
+
+        /* During the solution, is it possible, that more steps were made, then necessary. */
+        simplifySolution();
     }
 
     private void solveMiddlePiecesOnYellowFace() throws UnsolvableCubeException {

@@ -51,7 +51,7 @@ public class CubeTwo extends Cube{
         swapNotMatchingPieces();
 
         /* During the solution, is it possible, that more steps were made, then necessary. */
-//        simplifySolution();
+        simplifySolution();
     }
 
     private void swapNotMatchingPieces() throws UnsolvableCubeException {
