@@ -18,7 +18,7 @@ public class Rotation extends Move {
     @Override
     public String toString() {
         return "Rotation{" +
-                "key='" + key + '\'' +
+                "key=" + key +
                 '}';
     }
 }

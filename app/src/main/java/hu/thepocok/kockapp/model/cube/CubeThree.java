@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
@@ -33,6 +34,52 @@ public class CubeThree extends Cube{
 
         /* Fourth task: solve the middle layer*/
         solveMiddleLayer();
+
+        /* Fifth task: create a yellow cross on the yellow face*/
+        createYellowCross();
+    }
+
+    private void createYellowCross() {
+        while (!isYellowCrossCompleted()) {
+            boolean foundCorrectStartingState = false;
+            foundCorrectStartingState = foundCorrectStartingState ||
+                    getFaceWithCurrentOrientation(Color.YELLOW)
+                            .matchPattern("_", "_", "_", "YELLOW", "YELLOW", "YELLOW", "_", "_", "_");
+            foundCorrectStartingState = foundCorrectStartingState ||
+                    getFaceWithCurrentOrientation(Color.YELLOW)
+                            .matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "_", "_", "_", "_");
+            //foundCorrectStartingState = foundCorrectStartingState ||
+            //        getFaceWithCurrentOrientation(Color.YELLOW)
+            //                .matchPattern("_", "_", "_", "_", "Y", "_", "_", "_", "_");
+            int turnCount = 0;
+            while (turnCount < 4 && !foundCorrectStartingState) {
+                turnCubeClockwise();
+                foundCorrectStartingState = foundCorrectStartingState ||
+                        getFaceWithCurrentOrientation(Color.YELLOW)
+                                .matchPattern("_", "_", "_", "YELLOW", "YELLOW", "YELLOW", "_", "_", "_");
+                foundCorrectStartingState = foundCorrectStartingState ||
+                        getFaceWithCurrentOrientation(Color.YELLOW)
+                                .matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "_", "_", "_", "_");
+                //foundCorrectStartingState = foundCorrectStartingState ||
+                //        getFaceWithCurrentOrientation(Color.YELLOW)
+                //                .matchPattern("_", "_", "_", "_", "Y", "_", "_", "_", "_");
+
+                turnCount++;
+            }
+
+            mapKeysToRotation("F", "U", "R", "U'", "R'", "F'");
+        }
+    }
+
+    private boolean isYellowCrossCompleted() {
+        boolean l = true;
+
+        l = l && getColorFromPosition(new Position(Color.YELLOW, 0, 1)).equals(Color.YELLOW);
+        l = l && getColorFromPosition(new Position(Color.YELLOW, 1, 0)).equals(Color.YELLOW);
+        l = l && getColorFromPosition(new Position(Color.YELLOW, 1, 2)).equals(Color.YELLOW);
+        l = l && getColorFromPosition(new Position(Color.YELLOW, 2, 1)).equals(Color.YELLOW);
+
+        return l;
     }
 
     private void solveMiddleLayer() throws UnsolvableCubeException {
@@ -444,6 +491,134 @@ public class CubeThree extends Cube{
         piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 2, 1)));
 
         return (ArrayList<Piece>) piecesInCross.stream().map(this::mapPieceToColorInPlace).filter(piece -> piece.hasColor(Color.WHITE)).collect(Collectors.toList());
+    }
+
+    public Face getFaceWithCurrentOrientation(Color faceColor) {
+        int rotationDegree = 0;
+        switch (faceColor) {
+            case WHITE:
+                switch (orientation.getFaceFront()) {
+                    case RED:
+                        rotationDegree = 0;
+                        break;
+                    case BLUE:
+                        rotationDegree = 90;
+                        break;
+                    case ORANGE:
+                        rotationDegree = 180;
+                        break;
+                    case GREEN:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+            case RED:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        rotationDegree = 180;
+                        break;
+                    case BLUE:
+                        rotationDegree = 90;
+                        break;
+                    case YELLOW:
+                        rotationDegree = 0;
+                        break;
+                    case GREEN:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+            case GREEN:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        rotationDegree = 180;
+                        break;
+                    case RED:
+                        rotationDegree = 90;
+                        break;
+                    case YELLOW:
+                        rotationDegree = 0;
+                        break;
+                    case ORANGE:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+            case ORANGE:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        rotationDegree = 180;
+                        break;
+                    case GREEN:
+                        rotationDegree = 90;
+                        break;
+                    case YELLOW:
+                        rotationDegree = 0;
+                        break;
+                    case BLUE:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+            case BLUE:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        rotationDegree = 180;
+                        break;
+                    case ORANGE:
+                        rotationDegree = 90;
+                        break;
+                    case YELLOW:
+                        rotationDegree = 0;
+                        break;
+                    case RED:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+            case YELLOW:
+                switch (orientation.getFaceFront()) {
+                    case RED:
+                        rotationDegree = 180;
+                        break;
+                    case BLUE:
+                        rotationDegree = 90;
+                        break;
+                    case ORANGE:
+                        rotationDegree = 0;
+                        break;
+                    case GREEN:
+                        rotationDegree = 270;
+                        break;
+                }
+                break;
+        }
+
+        Face face = null;
+        switch (rotationDegree) {
+            case 0:
+                face = new Face(getFace(faceColor).getNthRow(0),
+                        getFace(faceColor).getNthRow(1),
+                        getFace(faceColor).getNthRow(2));
+                break;
+            case 90:
+                face = new Face(getFace(faceColor).getNthColumn(0).reverse(),
+                        getFace(faceColor).getNthColumn(1).reverse(),
+                        getFace(faceColor).getNthColumn(2).reverse());
+                break;
+            case 180:
+                face = new Face(getFace(faceColor).getNthRow(2).reverse(),
+                        getFace(faceColor).getNthRow(1).reverse(),
+                        getFace(faceColor).getNthRow(0).reverse());
+                break;
+            case 270:
+                face = new Face(getFace(faceColor).getNthColumn(2),
+                        getFace(faceColor).getNthColumn(1),
+                        getFace(faceColor).getNthColumn(0));
+                break;
+        }
+
+        return face;
     }
 
     @Override

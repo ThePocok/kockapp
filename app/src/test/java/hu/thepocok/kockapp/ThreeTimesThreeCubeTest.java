@@ -946,6 +946,65 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
+    public void solveYellowCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (cube.isSolved()) {
+//            cube.mapKeysToRotation("F'", "R", "D'", "D'", "L", "B'", "L'", "F");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+        }
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveWhiteCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveMiddleLayer");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createYellowCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertTrue(cube.getFaceWithCurrentOrientation(Color.YELLOW).matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "YELLOW", "_", "YELLOW", "_"));
+        } catch (AssertionError e) {
+            System.out.println("Yellow cross has not been created!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
     public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));

@@ -160,6 +160,23 @@ public class Face {
         return true;
     }
 
+    public boolean matchPattern(String... pattern) {
+        boolean l = true;
+        int i = 0;
+        while (i < dimensions && l) {
+            int j = 0;
+            while (j < dimensions && l) {
+                if (!pattern[i*dimensions + j].equals("_")) {
+                    l = l && getNthRow(i).getNthPiece(j).equals(Color.valueOf(pattern[i*dimensions + j]));
+                }
+                j++;
+            }
+            i++;
+        }
+
+        return l;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(dimensions, layers);
