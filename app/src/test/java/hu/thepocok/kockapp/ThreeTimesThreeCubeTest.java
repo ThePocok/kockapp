@@ -1069,6 +1069,79 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
+    public void repositionYellowCornersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (cube.isSolved()) {
+//            cube.mapKeysToRotation("D", "R", "R", "R", "D'", "F'", "L", "L");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+        }
+        cube.getSolution().clear();
+
+        Method method = CubeThree.class.getDeclaredMethod("createWhiteCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createWhiteCrossOnWhiteFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveWhiteCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("solveMiddleLayer");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("createYellowCross");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("completeYellowFace");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        method = CubeThree.class.getDeclaredMethod("repositionYellowCorners");
+        method.setAccessible(true);
+
+        method.invoke(cube);
+
+        try {
+            Assert.assertEquals(9, cube.getFace(Color.YELLOW).getColorCount(Color.YELLOW));
+            Assert.assertTrue(cube.getFace(cube.getOrientation().getFaceFront()).getColorCount(cube.getOrientation().getFaceFront()) >= 8);
+            Assert.assertTrue(cube.getFace(cube.getOrientation().getFaceLeft()).getColorCount(cube.getOrientation().getFaceLeft()) >= 8);
+            Assert.assertTrue(cube.getFace(cube.getOrientation().getFaceBack()).getColorCount(cube.getOrientation().getFaceBack()) >= 8);
+            Assert.assertTrue(cube.getFace(cube.getOrientation().getFaceRight()).getColorCount(cube.getOrientation().getFaceRight()) >= 8);
+        } catch (AssertionError e) {
+            System.out.println("Yellow corners has not been solved!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
     public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
@@ -1095,6 +1168,7 @@ public class ThreeTimesThreeCubeTest {
             solveMiddleLayerTest();
             solveYellowCrossTest();
             solveYellowCornersTest();
+            repositionYellowCornersTest();
         }
     }
 }

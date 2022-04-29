@@ -44,6 +44,45 @@ public class CubeThree extends Cube{
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
+
+        /* Seventh task: Reposition yellow corners to their correct place */
+        try {
+            repositionYellowCorners();
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
+        }
+    }
+
+    private void repositionYellowCorners() throws InvalidOrientationException {
+        ArrayList<Piece> cornerPieces = getYellowCornerPieces();
+        int yellowCornersInCorrectPosition = (int) cornerPieces.stream().filter(this::isPieceInCorrectPosition).count();
+
+        while (yellowCornersInCorrectPosition != 4) {
+            while (yellowCornersInCorrectPosition < 2) {
+                mapKeyToRotation("U");
+
+                cornerPieces = getYellowCornerPieces();
+                yellowCornersInCorrectPosition = (int) cornerPieces.stream().filter(this::isPieceInCorrectPosition).count();
+            }
+
+            if (yellowCornersInCorrectPosition == 4) {
+                return;
+            }
+
+            // Check if the two matching corners are on the same place
+            if (getFace(orientation.getFaceLeft()).getColorCount(orientation.getFaceLeft()) == 8) {
+                turnCubeClockwise();
+            } else if (getFace(orientation.getFaceFront()).getColorCount(orientation.getFaceFront()) == 8) {
+                setOrientation(Color.YELLOW, orientation.getOppositeColor(orientation.getFaceFront()));
+            } else if (getFace(orientation.getFaceRight()).getColorCount(orientation.getFaceRight()) == 8) {
+                turnCubeCounterClockwise();
+            }
+
+            mapKeysToRotation("R'", "F", "R'", "B", "B", "R", "F'", "R'", "B", "B", "R", "R", "U'");
+
+            cornerPieces = getYellowCornerPieces();
+            yellowCornersInCorrectPosition = (int) cornerPieces.stream().filter(this::isPieceInCorrectPosition).count();
+        }
     }
 
     private void completeYellowFace() throws InvalidOrientationException, UnsolvableCubeException {
