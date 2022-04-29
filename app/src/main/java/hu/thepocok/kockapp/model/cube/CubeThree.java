@@ -47,18 +47,17 @@ public class CubeThree extends Cube{
     }
 
     private void completeYellowFace() throws InvalidOrientationException, UnsolvableCubeException {
-        Piece p1 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceLeft()));
-        Piece p2 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceLeft()));
-        Piece p3 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight()));
-        Piece p4 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceRight()));
+        ArrayList<Piece> cornerPieces = getYellowCornerPieces();
 
-        int yellowCornersOnTop = 0;
-        if (p1.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-        if (p2.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-        if (p3.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-        if (p4.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
+        int yellowCornersOnTop = (int) cornerPieces.stream()
+                .filter(p -> p.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW))
+                .count();
 
         while (yellowCornersOnTop != 4) {
+            Piece p1 = cornerPieces.get(0);
+            Piece p2 = cornerPieces.get(1);
+            Piece p3 = cornerPieces.get(2);
+            Piece p4 = cornerPieces.get(3);
             if (yellowCornersOnTop == 0) {
                 if (p2.getPosition(Color.YELLOW).getFace().equals(orientation.getFaceBack())) {
                     setOrientation(orientation.getFaceUp(), orientation.getFaceLeft());//, orientation.getFaceBack());
@@ -93,17 +92,23 @@ public class CubeThree extends Cube{
 
             mapKeysToRotation("R", "U", "R'", "U", "R", "U", "U", "R'");
 
-            p1 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceLeft()));
-            p2 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceLeft()));
-            p3 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight()));
-            p4 = mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceRight()));
+            cornerPieces = getYellowCornerPieces();
 
-            yellowCornersOnTop = 0;
-            if (p1.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-            if (p2.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-            if (p3.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
-            if (p4.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW)) yellowCornersOnTop++;
+            yellowCornersOnTop = (int) cornerPieces.stream()
+                    .filter(p -> p.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW))
+                    .count();
         }
+    }
+
+    private ArrayList<Piece> getYellowCornerPieces() {
+        ArrayList<Piece> pieces = new ArrayList<>();
+
+        pieces.add(mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceLeft())));
+        pieces.add(mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceLeft())));
+        pieces.add(mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceBack(), orientation.getFaceRight())));
+        pieces.add(mapPieceToColorInPlace(getPieceByFaceColor(orientation.getFaceUp(), orientation.getFaceFront(), orientation.getFaceRight())));
+
+        return pieces;
     }
 
     private void createYellowCross() {
