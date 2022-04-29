@@ -45,10 +45,40 @@ public class CubeThree extends Cube{
             throw new UnsolvableCubeException();
         }
 
-        /* Seventh task: Reposition yellow corners to their correct place */
+        /* Seventh task: reposition yellow corners to their correct place */
         try {
             repositionYellowCorners();
         } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
+        }
+
+        /* Eighth task: solve middle pieces on yellow face */
+        solveMiddlePiecesOnYellowFace();
+    }
+
+    private void solveMiddlePiecesOnYellowFace() throws UnsolvableCubeException {
+        if (isSolved()) {
+            return;
+        }
+
+        int algorithmCount = 0;
+        while (algorithmCount < 3 && !isSolved()) {
+            while (!(getFace(orientation.getFaceLeft()).getColorCount(orientation.getFaceLeft()) == 8 &&
+                    getFace(orientation.getFaceFront()).getColorCount(orientation.getFaceFront()) == 8 &&
+                    getFace(orientation.getFaceRight()).getColorCount(orientation.getFaceRight()) == 8)) {
+                turnCubeClockwise();
+            }
+
+            if (getColorFromPosition(new Position(orientation.getFaceFront(), 2, 1)).equals(orientation.getFaceLeft())) {
+                mapKeysToRotation("F", "F", "U", "L", "R'", "F", "F", "L'", "R", "U", "F", "F");
+            } else {
+                mapKeysToRotation("F", "F", "U'", "L", "R'", "F", "F", "L'", "R", "U'", "F", "F");
+            }
+
+            algorithmCount++;
+        }
+
+        if (algorithmCount == 3) {
             throw new UnsolvableCubeException();
         }
     }

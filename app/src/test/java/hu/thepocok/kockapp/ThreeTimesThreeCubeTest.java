@@ -1142,7 +1142,43 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
-    public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public void solveWholeCubeTest() throws UnsolvableCubeException {
+        if (cube.isSolved()) {
+//            cube.mapKeysToRotation("F", "U'", "B", "U'", "U", "D'", "D", "R");
+            cube.randomScramble(8);
+            ArrayList<Move> scramble = cube.getSolution();
+            System.out.println("Scramble:");
+            StringBuilder sb = new StringBuilder();
+            for (Move m : scramble) {
+                if (m instanceof Reorientation) {
+                    Reorientation reorientation = (Reorientation) m;
+                    sb.append(reorientation + "\n");
+                } else {
+                    Rotation rotation = (Rotation) m;
+                    sb.append(rotation + "\n");
+                }
+            }
+            System.out.println(sb);
+            System.out.println(cube);
+        }
+        cube.getSolution().clear();
+
+        cube.solve();
+
+        try {
+            Assert.assertTrue(cube.isSolved());
+        } catch (AssertionError e) {
+            System.out.println("Cube has not been solved!");
+
+            System.out.println(cube.getSolutionString());
+            throw e;
+        }
+
+        System.out.println(cube.getSolutionString());
+    }
+
+    @Test
+    public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, UnsolvableCubeException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeThree();
@@ -1169,6 +1205,7 @@ public class ThreeTimesThreeCubeTest {
             solveYellowCrossTest();
             solveYellowCornersTest();
             repositionYellowCornersTest();
+            solveWholeCubeTest();
         }
     }
 }
