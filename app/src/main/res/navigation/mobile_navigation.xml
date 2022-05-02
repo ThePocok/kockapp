@@ -13,9 +13,8 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="hu.thepocok.kockapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="hu.thepocok.kockapp.ui.cube.CubeFragment"
+        android:label="@string/title_dashboard"/>
 
     <fragment
         android:id="@+id/navigation_notifications"
