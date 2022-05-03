@@ -16,6 +16,7 @@ import org.opencv.android.OpenCVLoader;
 import hu.thepocok.kockapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
 
     private ActivityMainBinding binding;
 
@@ -40,6 +41,18 @@ public class MainActivity extends AppCompatActivity {
             Log.e("OpenCV", "Unable to load OpenCV!");
         else
             Log.d("OpenCV", "OpenCV loaded Successfully!");
+    }
+
+    static
+    {
+        if (OpenCVLoader.initDebug())
+        {
+            Log.d(TAG, "OpenCV is initialized");
+        }
+        else
+        {
+            Log.d(TAG, "OpenCV is not initialized");
+        }
     }
 
 }

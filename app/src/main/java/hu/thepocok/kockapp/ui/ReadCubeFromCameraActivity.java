@@ -17,7 +17,13 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
+
+import java.util.ArrayList;
 
 import hu.thepocok.kockapp.R;
 
@@ -27,6 +33,22 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
     private JavaCameraView camera;
     private BaseLoaderCallback baseLoaderCallback;
+
+    Mat frame;
+    ArrayList<CubeTile> cubeTiles = new ArrayList<>();
+    private long colorsLastProcessedTime = 0L;
+
+    private Point[] cubeThreePieceOffset = new Point[] {
+            new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
+            new Point(0, -1), new Point(0, 0), new Point(0, 1),
+            new Point(1, -1), new Point(1, 0), new Point(1, 1)
+    };
+
+    private Point[] cubeTwoPieceOffset = new Point[] {
+            new Point(-1, -1), new Point(-1, 1),
+            new Point(1, -1), new Point(1, 1)
+    };
+    private final int TILESIZE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +101,34 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        return null;
+        frame = inputFrame.rgba();
+        Mat mat = Imgcodecs.imread(null); //TODO overlay
+        // Checks cube every half seconds
+        if (System.currentTimeMillis() - colorsLastProcessedTime > 5000) {
+            cubeTiles = new ArrayList<>();
+            Point matCenterPoint = new Point(frame.width() / 2, frame.height() / 2);
+
+            for (Point point : cubeThreePieceOffset) {
+                cubeTiles.add(new CubeTile(new Point(point.x * TILESIZE + matCenterPoint.x,
+                        point.y * TILESIZE + matCenterPoint.y), 50));
+            }
+        }
+
+        processTiles();
+
+        return frame;
+    }
+
+    private void processTiles() {
+        for (CubeTile tile : cubeTiles) {
+            Mat subMat = frame.submat(tile.getRect());
+            Scalar color = Core.mean(subMat);
+
+            tile.setScalarColor(color);
+            System.out.println(tile.getTileColor());
+        }
+
+        colorsLastProcessedTime = System.currentTimeMillis();
     }
 
     private boolean checkCameraPermission() {
