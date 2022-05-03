@@ -19,4 +19,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_home"
+        android:layout_width="409dp"
+        android:layout_height="346dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="10dp"></LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

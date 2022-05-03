@@ -1,6 +1,7 @@
 package hu.thepocok.kockapp;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -9,6 +10,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import org.opencv.android.OpenCVLoader;
 
 import hu.thepocok.kockapp.databinding.ActivityMainBinding;
 
@@ -32,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        if (!OpenCVLoader.initDebug())
+            Log.e("OpenCV", "Unable to load OpenCV!");
+        else
+            Log.d("OpenCV", "OpenCV loaded Successfully!");
     }
 
 }
