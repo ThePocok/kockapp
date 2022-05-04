@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -58,6 +59,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_cube_from_camera);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
             tileColors.add(Color.EMPTY);
@@ -110,13 +113,16 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         frame = inputFrame.rgba();
+        Mat transformedMat = frame.t();
+        Core.flip(frame.t(), transformedMat, 1);
+        Imgproc.resize(transformedMat, transformedMat, frame.size());
         Mat hsvImage = new Mat();
-        Imgproc.cvtColor(frame, hsvImage, Imgproc.COLOR_RGB2HSV);
+        Imgproc.cvtColor(transformedMat, hsvImage, Imgproc.COLOR_RGB2HSV);
 
         // Check cube every half seconds
         if (System.currentTimeMillis() - colorsLastProcessedTime > 1000) {
             tileColors = new ArrayList<>();
-            Point matCenterPoint = new Point(frame.width() / 2, frame.height() / 2);
+            Point matCenterPoint = new Point(transformedMat.width() / 2, transformedMat.height() / 2);
 
             for (Point point : cubeThreePieceOffset) {
                 Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 25, point.y * TILESIZE + matCenterPoint.y - 25);
@@ -135,13 +141,13 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
             Point point = cubeThreePieceOffset[i];
 
-            Point matCenterPoint = new Point(frame.width() / 2, frame.height() / 2);
+            Point matCenterPoint = new Point(transformedMat.width() / 2, transformedMat.height() / 2);
 
             Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 25, point.y * TILESIZE + matCenterPoint.y - 25);
             Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 25, point.y * TILESIZE + matCenterPoint.y + 25);
 
             Scalar scalar = new Scalar(tileColors.get(i).redValue, tileColors.get(i).greenValue, tileColors.get(i).blueValue);
-            Imgproc.rectangle(frame, topLeft, bottomRight, scalar, 5);
+            Imgproc.rectangle(transformedMat, topLeft, bottomRight, scalar, 5);
         }
 
         //Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(10, 255, 255), filtered); //RED
@@ -152,7 +158,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         //Core.inRange(hsvImage, new Scalar(90, 50, 70), new Scalar(128, 255, 255), filtered); //BLUE
         //Core.inRange(hsvImage, new Scalar(0, 0, 200), new Scalar(180, 55, 255), filtered); //WHITE
 
-        return frame;
+        return transformedMat;
     }
 
     private Color getColorFromHSV(Scalar hsvValues) {
