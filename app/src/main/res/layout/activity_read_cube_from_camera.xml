@@ -6,9 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".ui.ReadCubeFromCameraActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75"/>
+
     <org.opencv.android.JavaCameraView
         android:id="@+id/javaCameraView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></org.opencv.android.JavaCameraView>
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_bottom" />
+
+    <Button
+        android:id="@+id/capture_face_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Capture"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline_bottom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
