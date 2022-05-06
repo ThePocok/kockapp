@@ -8,12 +8,16 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.catalinjurjiu.rubikdetector.RubikDetector;
+import com.catalinjurjiu.rubikdetector.config.DrawConfig;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -41,11 +45,18 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     private JavaCameraView camera;
+    private Camera androidCamera;
     private BaseLoaderCallback baseLoaderCallback;
 
     Mat frame;
     ArrayList<Color> tileColors = new ArrayList<>();
     private long colorsLastProcessedTime = 0L;
+
+    RubikDetector rubikDetector = new RubikDetector.Builder()
+            .inputFrameSize(720, 1280)
+            .inputFrameFormat(RubikDetector.ImageFormat.YUV_NV21)
+            .drawConfig(DrawConfig.Rectangles(3))
+            .build();
 
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
