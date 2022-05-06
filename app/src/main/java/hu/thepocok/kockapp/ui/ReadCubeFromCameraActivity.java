@@ -2,8 +2,13 @@ package hu.thepocok.kockapp.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,8 +21,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.catalinjurjiu.rubikdetector.RubikDetector;
-import com.catalinjurjiu.rubikdetector.config.DrawConfig;
+import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -34,6 +38,7 @@ import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
@@ -52,11 +57,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
     ArrayList<Color> tileColors = new ArrayList<>();
     private long colorsLastProcessedTime = 0L;
 
-    RubikDetector rubikDetector = new RubikDetector.Builder()
-            .inputFrameSize(720, 1280)
-            .inputFrameFormat(RubikDetector.ImageFormat.YUV_NV21)
-            .drawConfig(DrawConfig.Rectangles(3))
-            .build();
+    private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private PreviewView previewView;
 
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
@@ -87,6 +89,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         Button captureBtn = findViewById(R.id.capture_face_button);
         captureBtn.setOnClickListener(e -> setFace());
 
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
             tileColors.add(Color.EMPTY);
         }
@@ -94,14 +98,38 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         if (checkCameraPermission()) {
             Log.d(TAG, "Camera permission granted");
 
-            initCubeScanning();
+            //initCubeScanning();
         } else {
             requestCameraPermission();
         }
+        cameraProviderFuture.addListener(() -> {
+            try {
+                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+                bindPreview(cameraProvider);
+            } catch (ExecutionException | InterruptedException e) {
+                // No errors need to be handled for this Future.
+                // This should never be reached.
+            }
+        }, ContextCompat.getMainExecutor(this));
+        previewView = findViewById(R.id.previewView);
+
+    }
+
+    void bindPreview(ProcessCameraProvider cameraProvider) {
+        Preview preview = new Preview.Builder()
+                .build();
+
+        CameraSelector cameraSelector = new CameraSelector.Builder()
+                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+                .build();
+
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        androidx.camera.core.Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview);
     }
 
     private void initCubeScanning() {
-        camera = findViewById(R.id.javaCameraView);
+        //camera = findViewById(R.id.javaCameraView);
 
         camera.setVisibility(SurfaceView.VISIBLE);
         camera.setCameraPermissionGranted();
