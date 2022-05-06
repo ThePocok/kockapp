@@ -1,9 +1,11 @@
 package hu.thepocok.kockapp.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
@@ -46,6 +48,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     private Face orangeFace = null;
     private Face blueFace = null;
     private Face yellowFace = null;
+
+    private CubeThree cube;
 
     private ArrayList<Color> tileColors;
 
@@ -145,10 +149,14 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         } else if (yellowFace == null) {
             yellowFace = new Face(firstLayer, secondLayer, thirdLayer);
             Log.d(TAG, "Colors assigned to yellow face");
+        }
 
-            CubeThree cube = new CubeThree(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
+        if (yellowFace != null) {
+            cube = new CubeThree(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
             Log.d(TAG, "Cube created");
             Log.d(TAG, cube.toString());
+
+            checkCubeValidity();
 
             //TODO link to new activity
         }
@@ -157,6 +165,39 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         for (int i = 0; i < 9; i++) {
             tileColors.add(Color.WHITE);
         }
+        setEmptyTiles();
+    }
+
+    private void checkCubeValidity() {
+        if (!cube.isValidCube()) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("Invalid cube")
+                    .setMessage("Do you want to review the faces or reread the whole cube?")
+                    .setPositiveButton("Review", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    })
+                    .setNegativeButton("Reread", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            resetCube();
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    private void resetCube() {
+        whiteFace = null;
+        redFace = null;
+        greenFace = null;
+        orangeFace = null;
+        blueFace = null;
+        yellowFace = null;
+        cube = null;
+
         setEmptyTiles();
     }
 
