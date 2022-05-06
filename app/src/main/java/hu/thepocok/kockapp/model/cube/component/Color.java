@@ -1,7 +1,7 @@
 package hu.thepocok.kockapp.model.cube.component;
 
 public enum Color implements Comparable<Color>{
-    WHITE("W", 0, 0, 0),
+    WHITE("W", 255, 255, 255),
     RED("R", 183, 18, 52),
     GREEN("G", 0, 155, 72),
     BLUE("B", 0, 70, 173),

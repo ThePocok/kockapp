@@ -20,6 +20,11 @@ public class CubeThree extends Cube{
         pieceMap = new CubeThreePieceMap();
     }
 
+    public CubeThree(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
+        super(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace, 3);
+        pieceMap = new CubeThreePieceMap();
+    }
+
     @Override
     public void solve() throws UnsolvableCubeException {
         solution.clear();

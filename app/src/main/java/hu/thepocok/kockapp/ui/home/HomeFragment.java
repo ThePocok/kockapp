@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.databinding.FragmentHomeBinding;
 import hu.thepocok.kockapp.ui.ReadCubeFromCameraActivity;
+import hu.thepocok.kockapp.ui.ReadCubeManuallyActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -42,6 +43,15 @@ public class HomeFragment extends Fragment {
         });
 
         layout.addView(cubeByCameraBtn);
+
+        Button cubeManually = new Button(getContext());
+        cubeManually.setText("Read cube manually");
+        cubeManually.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
+            startActivity(intent);
+        });
+
+        layout.addView(cubeManually);
 
         return root;
     }

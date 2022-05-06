@@ -73,7 +73,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        Button captureBtn =  findViewById(R.id.capture_face_button);
+        Button captureBtn = findViewById(R.id.capture_face_button);
         captureBtn.setOnClickListener(e -> setFace());
 
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
@@ -123,16 +123,23 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
         if (whiteFace == null) {
             whiteFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to white face");
         } else if (redFace == null) {
             redFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to red face");
         } else if (greenFace == null) {
             greenFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to green face");
         } else if (orangeFace == null) {
             orangeFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to orange face");
         } else if (blueFace == null) {
             blueFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to blue face");
         } else if (yellowFace == null) {
             yellowFace = new Face(firstLayer, secondLayer, thirdLayer);
+            Log.d(TAG, "Colors assigned to yellow face");
+
             //TODO link to new activity
         }
     }
@@ -153,6 +160,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         Mat frameT = frame.t();
         Core.flip(frameT, frameT, 1);
         Imgproc.resize(frameT, frameT, frame.size());
+        frame.release();
 
         // Check cube every half seconds
         if (System.currentTimeMillis() - colorsLastProcessedTime > 2000) {

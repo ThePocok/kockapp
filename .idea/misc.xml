@@ -3,9 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.24365942028985507" />
+        <entry key="app/src/main/res/layout/activity_read_cube_manually.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_cube_solution.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
