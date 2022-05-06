@@ -28,6 +28,10 @@ public class CubeThree extends Cube{
     @Override
     public void solve() throws UnsolvableCubeException {
         solution.clear();
+
+        if (isSolved()) {
+            return;
+        }
         /* First task: create a white cross on the yellow face */
         createWhiteCross();
 

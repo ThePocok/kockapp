@@ -27,6 +27,7 @@ import hu.thepocok.kockapp.model.cube.CubeThree;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 
 public class ReadCubeManuallyActivity extends AppCompatActivity {
     private static final String TAG = "ReadCubeManually";
@@ -186,6 +187,22 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                         }
                     })
                     .show();
+        } else {
+            try {
+                cube.solve();
+            } catch (UnsolvableCubeException e) {
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Unsolvable cube")
+                        .setMessage("Unfortunately, we cannot solve this cube!")
+                        .setPositiveButton("Review", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                resetCube();
+                            }
+                        })
+                        .show();
+            }
+            Log.d(TAG, cube.getSolutionString());
         }
     }
 

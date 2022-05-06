@@ -23,6 +23,10 @@ public class CubeTwo extends Cube{
     @Override
     public void solve() throws UnsolvableCubeException {
         solution.clear();
+
+        if (isSolved()) {
+            return;
+        }
         /* First task: find the reference piece, and orient the cube in a way,
            that the reference piece's white color faces up */
         setInitialOrientation();
