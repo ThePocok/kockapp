@@ -2,18 +2,24 @@ package hu.thepocok.kockapp.ui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
+import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Camera;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageFormat;
+import android.graphics.YuvImage;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -25,21 +31,19 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.JavaCamera2View;
-import org.opencv.android.JavaCameraView;
 import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
-
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
@@ -48,10 +52,9 @@ import hu.thepocok.kockapp.model.cube.component.Layer;
 public class ReadCubeFromCameraActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
     private static final String TAG = "ReadCubeFromCameraActivity";
     private static final int PERMISSION_REQUEST_CODE = 100;
+    private static final int ANALYSISTRESHOLD = 1000;
 
-    private JavaCameraView camera;
-    private Camera androidCamera;
-    private BaseLoaderCallback baseLoaderCallback;
+    private ImageAnalysis imageAnalysis;
 
     Mat frame;
     ArrayList<Color> tileColors = new ArrayList<>();
@@ -89,6 +92,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         Button captureBtn = findViewById(R.id.capture_face_button);
         captureBtn.setOnClickListener(e -> setFace());
 
+        previewView = findViewById(R.id.previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
@@ -102,20 +106,20 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         } else {
             requestCameraPermission();
         }
+
+        imageAnalysis = setImageAnalysis();
+
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
-                // No errors need to be handled for this Future.
-                // This should never be reached.
+                Log.e(TAG, e.toString());
             }
         }, ContextCompat.getMainExecutor(this));
-        previewView = findViewById(R.id.previewView);
-
     }
 
-    void bindPreview(ProcessCameraProvider cameraProvider) {
+    private void bindPreview(ProcessCameraProvider cameraProvider) {
         Preview preview = new Preview.Builder()
                 .build();
 
@@ -125,10 +129,82 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
 
-        androidx.camera.core.Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview);
+        Camera camera = cameraProvider.bindToLifecycle(this, cameraSelector, imageAnalysis, preview);
     }
 
-    private void initCubeScanning() {
+
+    private ImageAnalysis setImageAnalysis() {
+        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                .setImageQueueDepth(24)
+                .build();
+
+        imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
+            System.out.println("Analyzing...");
+
+//            ByteBuffer byteBuffer = proxy.getBuffer();
+//            byte[] byteArray = new byte[byteBuffer.remaining()];
+//            byteBuffer.get(byteArray);
+
+            Bitmap bitmap = imageToBitmap(image);
+
+            if(bitmap != null && System.currentTimeMillis() - colorsLastProcessedTime > ANALYSISTRESHOLD) {
+                Mat mat = new Mat();
+                Utils.bitmapToMat(bitmap, mat);
+
+                Mat hsvImage = new Mat();
+                Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
+
+                tileColors = new ArrayList<>();
+                Point matCenterPoint = new Point(hsvImage.width() / 2, hsvImage.height() / 2);
+
+                for (Point point : cubeThreePieceOffset) {
+                    Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 50, point.y * TILESIZE + matCenterPoint.y - 50);
+                    Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 50, point.y * TILESIZE + matCenterPoint.y + 50);
+
+                    Rect rect = new Rect(topLeft, bottomRight);
+                    Mat hsvSubMat = hsvImage.submat(rect);
+                    Scalar hsvValues = Core.mean(hsvSubMat);
+
+                    tileColors.add(getColorFromHSV(hsvValues));
+                    Log.d("ReadColor", getColorFromHSV(hsvValues).stringValue);
+                }
+
+                mat.release();
+                hsvImage.release();
+
+                colorsLastProcessedTime = System.currentTimeMillis();
+            }
+
+            Log.d(TAG, "Analysis completed!");
+            image.close();
+        });
+
+        return imageAnalysis;
+    }
+
+    private Bitmap imageToBitmap(ImageProxy image) {
+        ByteBuffer yBuffer = image.getPlanes()[0].getBuffer();
+        ByteBuffer uBuffer = image.getPlanes()[1].getBuffer();
+        ByteBuffer vBuffer = image.getPlanes()[2].getBuffer();
+
+        int ySize = yBuffer.remaining();
+        int uSize = uBuffer.remaining();
+        int vSize = vBuffer.remaining();
+
+        byte[] nv21= new byte[ySize + uSize + vSize];
+        yBuffer.get(nv21, 0, ySize);
+        vBuffer.get(nv21, ySize, vSize);
+        uBuffer.get(nv21, ySize + vSize, uSize);
+
+        YuvImage yuvImage = new YuvImage(nv21, ImageFormat.NV21, image.getWidth(), image.getHeight(), null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        yuvImage.compressToJpeg(new android.graphics.Rect(0, 0, image.getWidth(), image.getHeight()), 50, outputStream);
+        byte[] bytes = outputStream.toByteArray();
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    /*private void initCubeScanning() {
         //camera = findViewById(R.id.javaCameraView);
 
         camera.setVisibility(SurfaceView.VISIBLE);
@@ -152,7 +228,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
                 }
             }
         };
-    }
+    }*/
 
     public void setFace() {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
