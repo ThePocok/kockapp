@@ -84,7 +84,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         nextButton.setOnClickListener(l -> setFace());
 
         Intent intent = getIntent();
-        dimensions = intent.getIntExtra("dimensions", 0);
+        dimensions = intent.getIntExtra("cubeDimensions", 0);
 
         whiteFace = (Face) intent.getSerializableExtra("whiteFace");
         redFace = (Face) intent.getSerializableExtra("redFace");
