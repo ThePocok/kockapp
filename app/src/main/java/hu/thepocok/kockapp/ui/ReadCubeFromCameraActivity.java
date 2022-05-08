@@ -49,19 +49,20 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 
-public class ReadCubeFromCameraActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
+public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private static final String TAG = "ReadCubeFromCameraActivity";
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int ANALYSISTRESHOLD = 1000;
+    public static final int TILESIZE = 100;
 
     private ImageAnalysis imageAnalysis;
 
-    Mat frame;
-    ArrayList<Color> tileColors = new ArrayList<>();
+    private ArrayList<Color> tileColors = new ArrayList<>();
     private long colorsLastProcessedTime = 0L;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private PreviewView previewView;
+    private CubeTileOverlayView cubeTileOverlayView;
 
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
@@ -73,7 +74,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
             new Point(-1, -1), new Point(-1, 1),
             new Point(1, -1), new Point(1, 1)
     };
-    private final int TILESIZE = 100;
 
     private Face whiteFace = null;
     private Face redFace = null;
@@ -93,6 +93,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         captureBtn.setOnClickListener(e -> setFace());
 
         previewView = findViewById(R.id.previewView);
+        cubeTileOverlayView = findViewById(R.id.cube_tile_overlay);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
         for (int i = 0; i < cubeThreePieceOffset.length; i++) {
@@ -101,8 +102,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
         if (checkCameraPermission()) {
             Log.d(TAG, "Camera permission granted");
-
-            //initCubeScanning();
         } else {
             requestCameraPermission();
         }
@@ -140,11 +139,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
                 .build();
 
         imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
-            System.out.println("Analyzing...");
-
-//            ByteBuffer byteBuffer = proxy.getBuffer();
-//            byte[] byteArray = new byte[byteBuffer.remaining()];
-//            byteBuffer.get(byteArray);
+            Log.d(TAG, "Analyzing...");
 
             Bitmap bitmap = imageToBitmap(image);
 
@@ -154,8 +149,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
                 Mat hsvImage = new Mat();
                 Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
+                Log.d(TAG, "Width: " + hsvImage.width() + " Height: " + hsvImage.height());
 
-                tileColors = new ArrayList<>();
+
+                tileColors.clear();
                 Point matCenterPoint = new Point(hsvImage.width() / 2, hsvImage.height() / 2);
 
                 for (Point point : cubeThreePieceOffset) {
@@ -174,6 +171,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
                 hsvImage.release();
 
                 colorsLastProcessedTime = System.currentTimeMillis();
+                setTilesToDraw();
             }
 
             Log.d(TAG, "Analysis completed!");
@@ -181,6 +179,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         });
 
         return imageAnalysis;
+    }
+
+    private void setTilesToDraw() {
+        cubeTileOverlayView.setTileColors(tileColors);
     }
 
     private Bitmap imageToBitmap(ImageProxy image) {
@@ -203,32 +205,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
         byte[] bytes = outputStream.toByteArray();
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
-
-    /*private void initCubeScanning() {
-        //camera = findViewById(R.id.javaCameraView);
-
-        camera.setVisibility(SurfaceView.VISIBLE);
-        camera.setCameraPermissionGranted();
-        camera.setCvCameraViewListener(this);
-        camera.setMaxFrameSize(640, 480);
-        camera.enableView();
-
-        baseLoaderCallback = new BaseLoaderCallback(this) {
-            @Override
-            public void onManagerConnected(int status) {
-                switch (status) {
-                    case LoaderCallbackInterface.SUCCESS:
-                        Log.d(TAG, "openCV loaded successfully");
-                        camera.enableView();
-                        break;
-                    default:
-                        super.onManagerConnected(status);
-                        Log.d(TAG, "Something went wrong during openCV initialization");
-                        break;
-                }
-            }
-        };
-    }*/
 
     public void setFace() {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
@@ -257,70 +233,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
 
             //TODO link to new activity
         }
-    }
-
-    @Override
-    public void onCameraViewStarted(int width, int height) {
-
-    }
-
-    @Override
-    public void onCameraViewStopped() {
-
-    }
-
-    @Override
-    public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
-        frame = inputFrame.rgba();
-        Mat frameT = frame.t();
-        Core.flip(frameT, frameT, 1);
-        Imgproc.resize(frameT, frameT, frame.size());
-        frame.release();
-
-        // Check cube every half seconds
-        if (System.currentTimeMillis() - colorsLastProcessedTime > 2000) {
-            Mat hsvImage = new Mat();
-            Imgproc.cvtColor(frameT, hsvImage, Imgproc.COLOR_RGB2HSV);
-
-            tileColors = new ArrayList<>();
-            Point matCenterPoint = new Point(frameT.width() / 2, frameT.height() / 2);
-
-            for (Point point : cubeThreePieceOffset) {
-                Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 50, point.y * TILESIZE + matCenterPoint.y - 50);
-                Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 50, point.y * TILESIZE + matCenterPoint.y + 50);
-
-                Rect rect = new Rect(topLeft, bottomRight);
-                Mat hsvSubMat = hsvImage.submat(rect);
-                Scalar hsvValues = Core.mean(hsvSubMat);
-
-                tileColors.add(getColorFromHSV(hsvValues));
-            }
-
-            colorsLastProcessedTime = System.currentTimeMillis();
-            hsvImage.release();
-        }
-
-        for (int i = 0; i < cubeThreePieceOffset.length; i++) {
-            Point point = cubeThreePieceOffset[i];
-
-            Point matCenterPoint = new Point(frameT.width() / 2, frameT.height() / 2);
-
-            Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 50, point.y * TILESIZE + matCenterPoint.y - 50);
-            Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 50, point.y * TILESIZE + matCenterPoint.y + 50);
-
-            Scalar scalar = new Scalar(tileColors.get(i).redValue, tileColors.get(i).greenValue, tileColors.get(i).blueValue);
-            Imgproc.rectangle(frameT, topLeft, bottomRight, scalar, 5);
-        }
-
-        //Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(10, 255, 255), filtered); //RED
-        //Core.inRange(hsvImage, new Scalar(170, 70, 50), new Scalar(180, 255, 255), filtered); //RED
-        //Core.inRange(hsvImage, new Scalar(10, 100, 20), new Scalar(25, 255, 255), filtered); //ORANGE
-        //Core.inRange(hsvImage, new Scalar(20, 100, 100), new Scalar(40, 255, 255), filtered); //YELLOW
-        //Core.inRange(hsvImage, new Scalar(36, 50, 70), new Scalar(89, 255, 255), filtered); //GREEN
-        //Core.inRange(hsvImage, new Scalar(90, 50, 70), new Scalar(128, 255, 255), filtered); //BLUE
-        //Core.inRange(hsvImage, new Scalar(0, 0, 200), new Scalar(180, 55, 255), filtered); //WHITE
-
-        return frameT;
     }
 
     private Color getColorFromHSV(Scalar hsvValues) {
@@ -378,8 +290,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity implements Cam
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-
-                    // main logic
                 } else {
                     Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
 

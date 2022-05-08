@@ -20,14 +20,25 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75"/>
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+        app:layout_constraintTop_toTopOf="@+id/guideline_top" >
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="fill_parent"
+            android:layout_height="300dp" />
+
+        <hu.thepocok.kockapp.ui.CubeTileOverlayView
+            android:id="@+id/cube_tile_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/capture_face_button"
