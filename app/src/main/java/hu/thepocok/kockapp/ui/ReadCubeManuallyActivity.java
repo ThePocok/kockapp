@@ -3,14 +3,12 @@ package hu.thepocok.kockapp.ui;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,7 +16,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
@@ -46,6 +43,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private LinearLayout cubeContainer;
 
+    private int completedFaces = 0;
     private Face whiteFace = null;
     private Face redFace = null;
     private Face greenFace = null;
@@ -107,9 +105,35 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     }
 
     private void resetCubeContainer(Color color) {
+        Face face = null;
+        switch (completedFaces) {
+            case 0:
+                face = whiteFace;
+                break;
+            case 1:
+                face = redFace;
+                break;
+            case 2:
+                face = greenFace;
+                break;
+            case 3:
+                face = orangeFace;
+                break;
+            case 4:
+                face = blueFace;
+                break;
+            case 5:
+                face = yellowFace;
+                break;
+        }
+
         tileColors.clear();
-        for (int i = 0; i < dimensions * dimensions; i++) {
-            tileColors.add(color);
+        if (face != null) {
+            tileColors.addAll(face.getAllColors());
+        } else {
+            for (int i = 0; i < dimensions * dimensions; i++) {
+                tileColors.add(color);
+            }
         }
         setTiles();
     }
@@ -176,32 +200,38 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             face = new Face(firstLayer, secondLayer, thirdLayer);
         }
 
-        if (whiteFace == null) {
+        if (completedFaces == 0) {
             whiteFace = face;
             Log.d(TAG, "Colors assigned to white face");
+            completedFaces++;
             resetCubeContainer(Color.RED);
-        } else if (redFace == null) {
+        } else if (completedFaces == 1) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
+            completedFaces++;
             resetCubeContainer(Color.GREEN);
-        } else if (greenFace == null) {
+        } else if (completedFaces == 2) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
+            completedFaces++;
             resetCubeContainer(Color.ORANGE);
-        } else if (orangeFace == null) {
+        } else if (completedFaces == 3) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
+            completedFaces++;
             resetCubeContainer(Color.BLUE);
-        } else if (blueFace == null) {
+        } else if (completedFaces == 4) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
+            completedFaces++;
             resetCubeContainer(Color.YELLOW);
-        } else if (yellowFace == null) {
+        } else if (completedFaces == 5) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
+            completedFaces++;
         }
 
-        if (yellowFace != null) {
+        if (completedFaces == 6) {
             if (dimensions == 2) {
                 cube = new CubeTwo(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
             } else {
@@ -232,6 +262,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             resetCube();
+                            resetCubeContainer(Color.WHITE);
                         }
                     })
                     .show();
@@ -246,6 +277,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 resetCube();
+                                resetCubeContainer(Color.WHITE);
                             }
                         })
                         .show();
@@ -255,6 +287,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     }
 
     private void resetCube() {
+        completedFaces = 0;
         whiteFace = null;
         redFace = null;
         greenFace = null;
