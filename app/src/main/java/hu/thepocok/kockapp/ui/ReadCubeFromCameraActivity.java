@@ -64,6 +64,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private PreviewView previewView;
     private CubeTileOverlayView cubeTileOverlayView;
 
+    private Button sizeChangeBtn;
+    private boolean isTwoTimesTwo = false;
+
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
             new Point(0, -1), new Point(0, 0), new Point(0, 1),
@@ -71,8 +74,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     };
 
     private Point[] cubeTwoPieceOffset = new Point[]{
-            new Point(-1, -1), new Point(-1, 1),
-            new Point(1, -1), new Point(1, 1)
+            new Point(-1, -1), new Point(-1, 0),
+            new Point(0, -1), new Point(0, 0)
     };
 
     private Face whiteFace = null;
@@ -90,7 +93,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Button captureBtn = findViewById(R.id.capture_face_button);
-        captureBtn.setOnClickListener(e -> setFace());
+        captureBtn.setOnClickListener(l -> setFace());
+
+        sizeChangeBtn = findViewById(R.id.cube_size_selector);
+        sizeChangeBtn.setOnClickListener(l -> changeCubeSize());
 
         previewView = findViewById(R.id.previewView);
         cubeTileOverlayView = findViewById(R.id.cube_tile_overlay);
@@ -139,8 +145,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 .build();
 
         imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
-            Log.d(TAG, "Analyzing...");
-
             Bitmap bitmap = imageToBitmap(image);
 
             if(bitmap != null && System.currentTimeMillis() - colorsLastProcessedTime > ANALYSISTRESHOLD) {
@@ -149,13 +153,15 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
                 Mat hsvImage = new Mat();
                 Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
-                Log.d(TAG, "Width: " + hsvImage.width() + " Height: " + hsvImage.height());
-
 
                 tileColors.clear();
                 Point matCenterPoint = new Point(hsvImage.width() / 2, hsvImage.height() / 2);
 
-                for (Point point : cubeThreePieceOffset) {
+                int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
+
+                for (int i = 0; i < arrayLength; i++) {
+                    Point point = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
+
                     Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 50, point.y * TILESIZE + matCenterPoint.y - 50);
                     Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 50, point.y * TILESIZE + matCenterPoint.y + 50);
 
@@ -174,7 +180,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 setTilesToDraw();
             }
 
-            Log.d(TAG, "Analysis completed!");
             image.close();
         });
 
@@ -208,27 +213,37 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     public void setFace() {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
-        Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
-        Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
-        Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
+        Face face;
+
+        if (isTwoTimesTwo) {
+            Layer firstLayer = new Layer(colors.get(0), colors.get(1));
+            Layer secondLayer = new Layer(colors.get(2), colors.get(3));
+            face = new Face(firstLayer, secondLayer);
+        } else {
+            Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
+            Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
+            Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
+            face = new Face(firstLayer, secondLayer, thirdLayer);
+        }
+
 
         if (whiteFace == null) {
-            whiteFace = new Face(firstLayer, secondLayer, thirdLayer);
+            whiteFace = face;
             Log.d(TAG, "Colors assigned to white face");
         } else if (redFace == null) {
-            redFace = new Face(firstLayer, secondLayer, thirdLayer);
+            redFace = face;
             Log.d(TAG, "Colors assigned to red face");
         } else if (greenFace == null) {
-            greenFace = new Face(firstLayer, secondLayer, thirdLayer);
+            greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
         } else if (orangeFace == null) {
-            orangeFace = new Face(firstLayer, secondLayer, thirdLayer);
+            orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
         } else if (blueFace == null) {
-            blueFace = new Face(firstLayer, secondLayer, thirdLayer);
+            blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
         } else if (yellowFace == null) {
-            yellowFace = new Face(firstLayer, secondLayer, thirdLayer);
+            yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
 
             //TODO link to new activity
@@ -258,6 +273,25 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         return (hsvValues.val[0] >= lowerBound.val[0] && hsvValues.val[0] <= upperBound.val[0]) &&
                 (hsvValues.val[1] >= lowerBound.val[1] && hsvValues.val[1] <= upperBound.val[1]) &&
                 (hsvValues.val[2] >= lowerBound.val[2] && hsvValues.val[2] <= upperBound.val[2]);
+    }
+
+    private void changeCubeSize() {
+        isTwoTimesTwo = !isTwoTimesTwo;
+
+        if (isTwoTimesTwo) {
+            sizeChangeBtn.setText("2x2");
+        } else {
+            sizeChangeBtn.setText("3x3");
+        }
+
+        cubeTileOverlayView.setTwoTimesTwo(isTwoTimesTwo);
+
+        whiteFace = null;
+        redFace = null;
+        greenFace = null;
+        orangeFace = null;
+        blueFace = null;
+        yellowFace = null;
     }
 
     private boolean checkCameraPermission() {

@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".ui.ReadCubeFromCameraActivity">
 
+    <Button
+        android:id="@+id/cube_size_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3x3"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"

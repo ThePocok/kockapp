@@ -24,6 +24,8 @@ public class CubeTileOverlayView extends View {
 
     private ArrayList<Color> tileColors = new ArrayList<>();
 
+    private boolean isTwoTimesTwo = false;
+
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
             new Point(0, -1), new Point(0, 0), new Point(0, 1),
@@ -31,8 +33,8 @@ public class CubeTileOverlayView extends View {
     };
 
     private Point[] cubeTwoPieceOffset = new Point[]{
-            new Point(-1, -1), new Point(-1, 1),
-            new Point(1, -1), new Point(1, 1)
+            new Point(-1, -1), new Point(-1, 0),
+            new Point(0, -1), new Point(0, 0)
     };
 
     public CubeTileOverlayView(Context context, AttributeSet attr) {
@@ -50,13 +52,14 @@ public class CubeTileOverlayView extends View {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(BORDERWIDTH);
+        int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
 
-        for (int i = 0; i < cubeThreePieceOffset.length; i++) {
+        for (int i = 0; i < arrayLength; i++) {
             paint.setColor(android.graphics.Color.rgb(tileColors.get(i).redValue,
                     tileColors.get(i).greenValue,
                     tileColors.get(i).blueValue));
 
-            Point tileOffset = cubeThreePieceOffset[i];
+            Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
             canvas.drawRect((float) (centerPoint.x + (tileOffset.x * TILESIZE) + (tileOffset.x * BORDERWIDTH)),
                     (float) (centerPoint.y + (tileOffset.y * TILESIZE) + (tileOffset.y * BORDERWIDTH)),
                     (float) (centerPoint.x + ((tileOffset.x + 1) * TILESIZE) + ((tileOffset.x + 1) * BORDERWIDTH)),
@@ -82,6 +85,22 @@ public class CubeTileOverlayView extends View {
         this.tileColors.clear();
         this.tileColors = (ArrayList<Color>) tileColors.clone();
 
+        invalidate();
+    }
+
+    public void setTwoTimesTwo(boolean isTwoTimesTwo) {
+        this.isTwoTimesTwo = isTwoTimesTwo;
+
+        tileColors.clear();
+        if (isTwoTimesTwo) {
+            for (int i = 0; i < cubeTwoPieceOffset.length; i++) {
+                tileColors.add(Color.EMPTY);
+            }
+        } else {
+            for (int i = 0; i < cubeThreePieceOffset.length; i++) {
+                tileColors.add(Color.EMPTY);
+            }
+        }
         invalidate();
     }
 }
