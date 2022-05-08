@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment {
         cubeManually.setText("Read cube manually");
         cubeManually.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
-            intent.putExtra("dimensions", 3);
+            intent.putExtra("cubeDimensions", 3);
             startActivity(intent);
         });
 
