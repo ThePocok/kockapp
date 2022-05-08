@@ -6,6 +6,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
@@ -23,7 +24,9 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 
 import hu.thepocok.kockapp.R;
+import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.CubeThree;
+import hu.thepocok.kockapp.model.cube.CubeTwo;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
@@ -50,7 +53,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     private Face blueFace = null;
     private Face yellowFace = null;
 
-    private CubeThree cube;
+    private Cube cube;
+    private int dimensions;
 
     private ArrayList<Color> tileColors;
 
@@ -68,8 +72,6 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
         cubeContainer = findViewById(R.id.cube_container);
 
-        setEmptyTiles();
-
         whiteBtn.setOnClickListener(l -> selectColor(Color.WHITE));
         redBtn.setOnClickListener(l -> selectColor(Color.RED));
         greenBtn.setOnClickListener(l -> selectColor(Color.GREEN));
@@ -81,23 +83,57 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
         nextButton.setOnClickListener(l -> setFace());
 
+        Intent intent = getIntent();
+        dimensions = intent.getIntExtra("dimensions", 0);
+
+        whiteFace = (Face) intent.getSerializableExtra("whiteFace");
+        redFace = (Face) intent.getSerializableExtra("redFace");
+        greenFace = (Face) intent.getSerializableExtra("greenFace");
+        orangeFace = (Face) intent.getSerializableExtra("orangeFace");
+        blueFace = (Face) intent.getSerializableExtra("blueFace");
+        yellowFace = (Face) intent.getSerializableExtra("yellowFace");
+
         tileColors = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            tileColors.add(Color.WHITE);
+
+        if (whiteFace != null) {
+            tileColors.addAll(whiteFace.getAllColors());
+        } else {
+            for (int i = 0; i < dimensions * dimensions; i++) {
+                tileColors.add(Color.WHITE);
+            }
         }
+
+        setTiles();
     }
 
-    private void setEmptyTiles() {
+    private void resetCubeContainer(Color color) {
+        tileColors.clear();
+        for (int i = 0; i < dimensions * dimensions; i++) {
+            tileColors.add(color);
+        }
+        setTiles();
+    }
+
+    private void setTiles() {
         Resources res = getResources();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < dimensions; i++) {
             LinearLayout row = (LinearLayout) cubeContainer.getChildAt(i);
             row.removeAllViews();
-            for (int j = 0; j < 3; j++) {
-                //int tileSize = cubeContainer.getMeasuredHeight();
-                //Log.d(TAG, String.valueOf(tileSize));
-
+            for (int j = 0; j < dimensions; j++) {
                 Button tile = new Button(this);
                 Drawable drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile, getTheme());
+                Color color = tileColors.get(i * dimensions + j);
+                if (color != Color.WHITE) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        drawable.setColorFilter(new BlendModeColorFilter(
+                                android.graphics.Color.rgb(color.redValue, color.greenValue, color.blueValue),
+                                BlendMode.SRC_ATOP));
+                    } else {
+                        drawable.setColorFilter(android.graphics.Color.rgb(color.redValue, color.greenValue, color.blueValue),
+                                PorterDuff.Mode.SRC_ATOP);
+                    }
+                }
+
                 tile.setBackground(drawable);
                 tile.setLayoutParams(new LinearLayout.LayoutParams(150, 150));
 
@@ -117,7 +153,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                     }
 
                     l.setBackground(d);
-                    tileColors.set(finalI * 3 + finalJ, selectedColor);
+                    tileColors.set(finalI * dimensions + finalJ, selectedColor);
                 });
 
                 row.addView(tile);
@@ -128,32 +164,50 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private void setFace() {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
-        Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
-        Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
-        Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
+        Face face;
+        if (dimensions == 2) {
+            Layer firstLayer = new Layer(colors.get(0), colors.get(1));
+            Layer secondLayer = new Layer(colors.get(2), colors.get(3));
+            face = new Face(firstLayer, secondLayer);
+        } else {
+            Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
+            Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
+            Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
+            face = new Face(firstLayer, secondLayer, thirdLayer);
+        }
 
         if (whiteFace == null) {
-            whiteFace = new Face(firstLayer, secondLayer, thirdLayer);
+            whiteFace = face;
             Log.d(TAG, "Colors assigned to white face");
+            resetCubeContainer(Color.RED);
         } else if (redFace == null) {
-            redFace = new Face(firstLayer, secondLayer, thirdLayer);
+            redFace = face;
             Log.d(TAG, "Colors assigned to red face");
+            resetCubeContainer(Color.GREEN);
         } else if (greenFace == null) {
-            greenFace = new Face(firstLayer, secondLayer, thirdLayer);
+            greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
+            resetCubeContainer(Color.ORANGE);
         } else if (orangeFace == null) {
-            orangeFace = new Face(firstLayer, secondLayer, thirdLayer);
+            orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
+            resetCubeContainer(Color.BLUE);
         } else if (blueFace == null) {
-            blueFace = new Face(firstLayer, secondLayer, thirdLayer);
+            blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
+            resetCubeContainer(Color.YELLOW);
         } else if (yellowFace == null) {
-            yellowFace = new Face(firstLayer, secondLayer, thirdLayer);
+            yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
         }
 
         if (yellowFace != null) {
-            cube = new CubeThree(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
+            if (dimensions == 2) {
+                cube = new CubeTwo(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
+            } else {
+                cube = new CubeThree(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
+            }
+
             Log.d(TAG, "Cube created");
             Log.d(TAG, cube.toString());
 
@@ -161,12 +215,6 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
             //TODO link to new activity
         }
-
-        tileColors.clear();
-        for (int i = 0; i < 9; i++) {
-            tileColors.add(Color.WHITE);
-        }
-        setEmptyTiles();
     }
 
     private void checkCubeValidity() {
@@ -215,7 +263,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         yellowFace = null;
         cube = null;
 
-        setEmptyTiles();
+        setTiles();
     }
 
     private void selectColor(Color color) {
@@ -263,6 +311,4 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 break;
         }
     }
-
-
 }

@@ -1,5 +1,6 @@
 package hu.thepocok.kockapp.model.cube.component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -8,7 +9,7 @@ import java.util.Objects;
  * Representing a side of the cube. <br>
  * It contains the layers from top to bottom.
  */
-public class Face {
+public class Face implements Serializable {
     private Color faceColor;
     private final int dimensions;
     private ArrayList<Layer> layers;

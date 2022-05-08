@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
@@ -17,6 +18,11 @@ public class CubeTwo extends Cube{
 
     public CubeTwo() {
         super(2);
+        pieceMap = new CubeTwoPieceMap();
+    }
+
+    public CubeTwo(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
+        super(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace, 3);
         pieceMap = new CubeTwoPieceMap();
     }
 

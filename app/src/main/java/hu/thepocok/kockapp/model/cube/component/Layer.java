@@ -1,5 +1,6 @@
 package hu.thepocok.kockapp.model.cube.component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +10,7 @@ import java.util.List;
  * Representing a column or row of the cube. <br>
  * It contains the colors from left to right
  */
-public class Layer {
+public class Layer implements Serializable {
     private final int dimension;
     private ArrayList<Color> colors;
 

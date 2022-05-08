@@ -1,8 +1,9 @@
 package hu.thepocok.kockapp.model.cube.component;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Position {
+public class Position implements Serializable {
     private Color color;
     private final Color faceColor;
     private final int row;

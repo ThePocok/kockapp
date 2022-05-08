@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -247,6 +248,15 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             Log.d(TAG, "Colors assigned to yellow face");
 
             //TODO link to new activity
+            Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
+            intent.putExtra("cubeDimensions", whiteFace.getDimensions());
+            intent.putExtra("whiteFace", whiteFace);
+            intent.putExtra("redFace", redFace);
+            intent.putExtra("greenFace", greenFace);
+            intent.putExtra("orangeFace", orangeFace);
+            intent.putExtra("blueFace", blueFace);
+            intent.putExtra("yellowFace", yellowFace);
+            startActivity(intent);
         }
     }
 

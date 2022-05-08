@@ -1,6 +1,8 @@
 package hu.thepocok.kockapp.model.cube.component;
 
-public enum Color implements Comparable<Color>{
+import java.io.Serializable;
+
+public enum Color implements Comparable<Color>, Serializable {
     WHITE("W", 255, 255, 255),
     RED("R", 183, 18, 52),
     GREEN("G", 0, 155, 72),

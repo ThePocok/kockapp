@@ -1,12 +1,13 @@
 package hu.thepocok.kockapp.model.cube.component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Piece {
+public class Piece implements Serializable {
     private final ArrayList<Position> positions;
 
     public Piece(Position... positions) {

@@ -35,21 +35,13 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
-        if (!OpenCVLoader.initDebug())
-            Log.e("OpenCV", "Unable to load OpenCV!");
-        else
-            Log.d("OpenCV", "OpenCV loaded Successfully!");
     }
 
-    static
-    {
-        if (OpenCVLoader.initDebug())
-        {
+    static {
+        if (OpenCVLoader.initDebug()) {
             Log.d(TAG, "OpenCV is initialized");
         }
-        else
-        {
+        else {
             Log.d(TAG, "OpenCV is not initialized");
         }
     }
