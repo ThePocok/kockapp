@@ -165,6 +165,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
                     Mat hsvSubMat = hsvImage.submat(rect);
                     Scalar hsvValues = Core.mean(hsvSubMat);
+                    Log.d("ReadColor", hsvValues.toString());
 
                     tileColors.add(getColorFromHSV(hsvValues));
                     Log.d("ReadColor", getColorFromHSV(hsvValues).stringValue);
@@ -261,13 +262,13 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             return Color.RED;
         } else if (inBetween(hsvValues, new Scalar(10, 100, 20), new Scalar(24, 255, 255))) {
             return Color.ORANGE;
-        } else if (inBetween(hsvValues, new Scalar(25, 100, 100), new Scalar(35, 255, 255))) {
+        } else if (inBetween(hsvValues, new Scalar(25, 100, 100), new Scalar(40, 255, 255))) {
             return Color.YELLOW;
-        } else if (inBetween(hsvValues, new Scalar(36, 50, 70), new Scalar(89, 255, 255))) {
+        } else if (inBetween(hsvValues, new Scalar(41, 50, 70), new Scalar(75, 255, 255))) {
             return Color.GREEN;
-        } else if (inBetween(hsvValues, new Scalar(90, 50, 70), new Scalar(128, 255, 255))) {
+        } else if (inBetween(hsvValues, new Scalar(90, 50, 70), new Scalar(130, 255, 255))) {
             return Color.BLUE;
-        } else if (inBetween(hsvValues, new Scalar(0, 0, 200), new Scalar(180, 55, 255))) {
+        } else if (inBetween(hsvValues, new Scalar(0, 0, 180), new Scalar(180, 75, 255))) {
             return Color.WHITE;
         }
 
