@@ -143,6 +143,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setImageQueueDepth(24)
+                .setOutputImageRotationEnabled(true)
                 .build();
 
         imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
