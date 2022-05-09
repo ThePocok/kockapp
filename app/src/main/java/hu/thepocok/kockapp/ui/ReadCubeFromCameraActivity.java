@@ -54,7 +54,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private static final String TAG = "ReadCubeFromCameraActivity";
     private static final int PERMISSION_REQUEST_CODE = 100;
     private static final int ANALYSISTRESHOLD = 1000;
-    public static final int TILESIZE = 100;
 
     private ImageAnalysis imageAnalysis;
 
@@ -103,10 +102,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         cubeTileOverlayView = findViewById(R.id.cube_tile_overlay);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
-        for (int i = 0; i < cubeThreePieceOffset.length; i++) {
-            tileColors.add(Color.EMPTY);
-        }
-
         if (checkCameraPermission()) {
             Log.d(TAG, "Camera permission granted");
         } else {
@@ -143,7 +138,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                 .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .setImageQueueDepth(24)
-                .setOutputImageRotationEnabled(true)
                 .build();
 
         imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
@@ -162,12 +156,13 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
 
                 for (int i = 0; i < arrayLength; i++) {
-                    Point point = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
+                    Point[] points = cubeTileOverlayView.getAnalyzableSquareCoordinates(hsvImage.width(), hsvImage.height(), matCenterPoint, i, image.getImageInfo().getRotationDegrees());
 
-                    Point topLeft = new Point(point.x * TILESIZE + matCenterPoint.x - 50, point.y * TILESIZE + matCenterPoint.y - 50);
-                    Point bottomRight = new Point(point.x * TILESIZE + matCenterPoint.x + 50, point.y * TILESIZE + matCenterPoint.y + 50);
+                    Point topLeft = points[0];
+                    Point bottomRight = points[1];
 
                     Rect rect = new Rect(topLeft, bottomRight);
+
                     Mat hsvSubMat = hsvImage.submat(rect);
                     Scalar hsvValues = Core.mean(hsvSubMat);
 
@@ -248,7 +243,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
 
-            //TODO link to new activity
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", whiteFace.getDimensions());
             intent.putExtra("whiteFace", whiteFace);

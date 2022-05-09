@@ -16,7 +16,7 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 public class CubeTileOverlayView extends View {
     private final String TAG = "CubeTileOverlayView";
     private final int BORDERWIDTH = 10;
-    private final int TILESIZE = 100;
+    private final int TILESIZE = 150;
 
     private int width = 0;
     private int height = 0;
@@ -60,10 +60,16 @@ public class CubeTileOverlayView extends View {
                     tileColors.get(i).blueValue));
 
             Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
-            canvas.drawRect((float) (centerPoint.x + (tileOffset.x * TILESIZE) + (tileOffset.x * BORDERWIDTH)),
-                    (float) (centerPoint.y + (tileOffset.y * TILESIZE) + (tileOffset.y * BORDERWIDTH)),
-                    (float) (centerPoint.x + ((tileOffset.x + 1) * TILESIZE) + ((tileOffset.x + 1) * BORDERWIDTH)),
-                    (float) (centerPoint.y + ((tileOffset.y + 1) * TILESIZE) + ((tileOffset.y + 1) * BORDERWIDTH)),
+//            canvas.drawRect((float) ((tileOffset.x * TILESIZE) + (centerPoint.x - TILESIZE / 2) + (tileOffset.x * BORDERWIDTH)),
+//                    (float) ((tileOffset.y * TILESIZE) + (centerPoint.y - TILESIZE / 2) + (tileOffset.y * BORDERWIDTH)),
+//                    (float) (((tileOffset.x + 1) * TILESIZE) + (centerPoint.x + TILESIZE / 2) + ((tileOffset.x + 1) * BORDERWIDTH)),
+//                    (float) (((tileOffset.y + 1) * TILESIZE) + (centerPoint.y + TILESIZE / 2) + ((tileOffset.y + 1) * BORDERWIDTH)),
+//                    paint);
+
+            canvas.drawRect((float) (tileOffset.x * TILESIZE + centerPoint.x - TILESIZE / 2),
+                    (float) (tileOffset.y * TILESIZE + centerPoint.y - TILESIZE / 2),
+                    (float) (tileOffset.x * TILESIZE + centerPoint.x + TILESIZE / 2),
+                    (float) (tileOffset.y * TILESIZE + centerPoint.y + TILESIZE / 2),
                     paint);
         }
 
@@ -79,6 +85,35 @@ public class CubeTileOverlayView extends View {
         Log.d(TAG, "Width: " + width + " Height: " + height);
 
         centerPoint = new Point(xNew / 2, yNew / 2);
+    }
+
+    public Point[] getAnalyzableSquareCoordinates(int imageWidth, int imageHeight, Point imageCenterPoint, int index, int rotationDegree) {
+        int cubeDimensions = (isTwoTimesTwo) ? 2 : 3;
+        int row = index / cubeDimensions;
+        int col = index % cubeDimensions;
+        int rotatedIndex = -1;
+
+        switch (rotationDegree) {
+            case 90:
+                rotatedIndex = (cubeDimensions * col) + (cubeDimensions - row - 1);
+                break;
+            case 180:
+                rotatedIndex = (isTwoTimesTwo) ? 3-index : 8-index;
+                break;
+            case 270:
+                rotatedIndex = (cubeDimensions * (cubeDimensions - col - 1)) + row;
+                break;
+        }
+
+        Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[rotatedIndex] : cubeThreePieceOffset[rotatedIndex];
+
+        double normalizedTileWidth = (TILESIZE / (double) width) * imageWidth;
+        double normalizedTileHeight = (TILESIZE / (double) height) * imageHeight;
+
+        Point topLeft = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x - (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y - (normalizedTileHeight / 2));
+        Point bottomRight = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x + (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y + (normalizedTileHeight / 2));
+
+        return new Point[]{topLeft, bottomRight};
     }
 
     public void setTileColors(ArrayList<Color> tileColors) {
