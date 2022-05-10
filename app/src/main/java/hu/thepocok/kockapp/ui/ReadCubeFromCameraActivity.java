@@ -280,6 +280,13 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             intent.putExtra("orangeFace", orangeFace);
             intent.putExtra("blueFace", blueFace);
             intent.putExtra("yellowFace", yellowFace);
+
+            whiteFace = null;
+            redFace = null;
+            greenFace = null;
+            orangeFace = null;
+            blueFace = null;
+            yellowFace = null;
             startActivity(intent);
         }
 
