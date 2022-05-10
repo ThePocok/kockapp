@@ -20,6 +20,8 @@ public class CubeTileOverlayView extends View {
 
     private int width = 0;
     private int height = 0;
+    private int rotationDegree = 0;
+    private boolean isRotationDegreeSet = false;
     private Point centerPoint;
 
     private ArrayList<Color> tileColors = new ArrayList<>();
@@ -55,16 +57,30 @@ public class CubeTileOverlayView extends View {
         int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
 
         for (int i = 0; i < arrayLength; i++) {
-            paint.setColor(android.graphics.Color.rgb(tileColors.get(i).redValue,
-                    tileColors.get(i).greenValue,
-                    tileColors.get(i).blueValue));
+            int cubeDimensions = (isTwoTimesTwo) ? 2 : 3;
+            int row = i / cubeDimensions;
+            int col = i % cubeDimensions;
+            int rotatedIndex;
+
+            switch (rotationDegree) {
+                case 90:
+                    rotatedIndex = (cubeDimensions * col) + (cubeDimensions - row - 1);
+                    break;
+                case 180:
+                    rotatedIndex = (isTwoTimesTwo) ? 3-i : 8-i;
+                    break;
+                case 270:
+                    rotatedIndex = (cubeDimensions * (cubeDimensions - col - 1)) + row;
+                    break;
+                default:
+                    rotatedIndex = i;
+            }
+
+            paint.setColor(android.graphics.Color.rgb(tileColors.get(rotatedIndex).redValue,
+                    tileColors.get(rotatedIndex).greenValue,
+                    tileColors.get(rotatedIndex).blueValue));
 
             Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
-//            canvas.drawRect((float) ((tileOffset.x * TILESIZE) + (centerPoint.x - TILESIZE / 2) + (tileOffset.x * BORDERWIDTH)),
-//                    (float) ((tileOffset.y * TILESIZE) + (centerPoint.y - TILESIZE / 2) + (tileOffset.y * BORDERWIDTH)),
-//                    (float) (((tileOffset.x + 1) * TILESIZE) + (centerPoint.x + TILESIZE / 2) + ((tileOffset.x + 1) * BORDERWIDTH)),
-//                    (float) (((tileOffset.y + 1) * TILESIZE) + (centerPoint.y + TILESIZE / 2) + ((tileOffset.y + 1) * BORDERWIDTH)),
-//                    paint);
 
             canvas.drawRect((float) (tileOffset.x * TILESIZE + centerPoint.x - TILESIZE / 2),
                     (float) (tileOffset.y * TILESIZE + centerPoint.y - TILESIZE / 2),
@@ -87,7 +103,7 @@ public class CubeTileOverlayView extends View {
         centerPoint = new Point(xNew / 2, yNew / 2);
     }
 
-    public Point[] getAnalyzableSquareCoordinates(int imageWidth, int imageHeight, Point imageCenterPoint, int index, int rotationDegree) {
+    public Point[] getAnalyzableSquareCoordinates(int imageWidth, int imageHeight, Point imageCenterPoint, int index) {
         int cubeDimensions = (isTwoTimesTwo) ? 2 : 3;
         int row = index / cubeDimensions;
         int col = index % cubeDimensions;
@@ -113,7 +129,7 @@ public class CubeTileOverlayView extends View {
         Point topLeft = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x - (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y - (normalizedTileHeight / 2));
         Point bottomRight = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x + (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y + (normalizedTileHeight / 2));
 
-        return new Point[]{topLeft, bottomRight};
+        return new Point[]{topLeft, bottomRight, new Point(index, rotatedIndex)};
     }
 
     public void setTileColors(ArrayList<Color> tileColors) {
@@ -137,5 +153,13 @@ public class CubeTileOverlayView extends View {
             }
         }
         invalidate();
+    }
+
+    public void setRotationDegree(int rotationDegree) {
+        this.rotationDegree = rotationDegree;
+    }
+
+    public boolean isRotationDegreeSet() {
+        return isRotationDegreeSet;
     }
 }

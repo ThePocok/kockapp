@@ -23,16 +23,12 @@ import android.graphics.YuvImage;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -102,6 +98,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         cubeTileOverlayView = findViewById(R.id.cube_tile_overlay);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
+        for (int i = 0; i < 9; i++) {
+            tileColors.add(Color.EMPTY);
+        }
+
         if (checkCameraPermission()) {
             Log.d(TAG, "Camera permission granted");
         } else {
@@ -143,6 +143,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         imageAnalysis.setAnalyzer(AsyncTask.THREAD_POOL_EXECUTOR, image -> {
             Bitmap bitmap = imageToBitmap(image);
 
+            if (!cubeTileOverlayView.isRotationDegreeSet()) {
+                cubeTileOverlayView.setRotationDegree(image.getImageInfo().getRotationDegrees());
+            }
+
             if(bitmap != null && System.currentTimeMillis() - colorsLastProcessedTime > ANALYSISTRESHOLD) {
                 Mat mat = new Mat();
                 Utils.bitmapToMat(bitmap, mat);
@@ -150,13 +154,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 Mat hsvImage = new Mat();
                 Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
 
-                tileColors.clear();
                 Point matCenterPoint = new Point(hsvImage.width() / 2, hsvImage.height() / 2);
 
                 int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
 
                 for (int i = 0; i < arrayLength; i++) {
-                    Point[] points = cubeTileOverlayView.getAnalyzableSquareCoordinates(hsvImage.width(), hsvImage.height(), matCenterPoint, i, image.getImageInfo().getRotationDegrees());
+                    Point[] points = cubeTileOverlayView.getAnalyzableSquareCoordinates(hsvImage.width(), hsvImage.height(), matCenterPoint, i);
 
                     Point topLeft = points[0];
                     Point bottomRight = points[1];
@@ -167,7 +170,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                     Scalar hsvValues = Core.mean(hsvSubMat);
                     Log.d("ReadColor", hsvValues.toString());
 
-                    tileColors.add(getColorFromHSV(hsvValues));
+                    tileColors.set((int) points[2].y, getColorFromHSV(hsvValues));
                     Log.d("ReadColor", getColorFromHSV(hsvValues).stringValue);
                 }
 
@@ -227,21 +230,33 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         if (whiteFace == null) {
             whiteFace = face;
+            Toast.makeText(this, "Colors assigned to white face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to white face");
         } else if (redFace == null) {
             redFace = face;
+            Toast.makeText(this, "Colors assigned to red face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to red face");
         } else if (greenFace == null) {
             greenFace = face;
+            Toast.makeText(this, "Colors assigned to green face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to green face");
         } else if (orangeFace == null) {
             orangeFace = face;
+            Toast.makeText(this, "Colors assigned to orange face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to orange face");
         } else if (blueFace == null) {
             blueFace = face;
+            Toast.makeText(this, "Colors assigned to blue face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to blue face");
         } else if (yellowFace == null) {
             yellowFace = face;
+            Toast.makeText(this, "Colors assigned to yellow face",
+                    Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to yellow face");
 
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
@@ -258,7 +273,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     private Color getColorFromHSV(Scalar hsvValues) {
         if (inBetween(hsvValues, new Scalar(0, 70, 50), new Scalar(9, 255, 255)) ||
-                inBetween(hsvValues, new Scalar(170, 70, 50), new Scalar(180, 255, 255))) {
+                inBetween(hsvValues, new Scalar(160, 70, 50), new Scalar(180, 255, 255))) {
             return Color.RED;
         } else if (inBetween(hsvValues, new Scalar(10, 100, 20), new Scalar(24, 255, 255))) {
             return Color.ORANGE;
@@ -284,10 +299,17 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private void changeCubeSize() {
         isTwoTimesTwo = !isTwoTimesTwo;
 
+        tileColors.clear();
         if (isTwoTimesTwo) {
             sizeChangeBtn.setText("2x2");
+            for (int i = 0; i < 4; i++) {
+                tileColors.add(Color.EMPTY);
+            }
         } else {
             sizeChangeBtn.setText("3x3");
+            for (int i = 0; i < 9; i++) {
+                tileColors.add(Color.EMPTY);
+            }
         }
 
         cubeTileOverlayView.setTwoTimesTwo(isTwoTimesTwo);
