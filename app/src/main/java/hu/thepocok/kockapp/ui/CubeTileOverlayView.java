@@ -16,7 +16,8 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 public class CubeTileOverlayView extends View {
     private final String TAG = "CubeTileOverlayView";
     private final int BORDERWIDTH = 10;
-    private final int TILESIZE = 150;
+    private final int TILESIZE2 = 250;
+    private final int TILESIZE3 = 150;
 
     private int width = 0;
     private int height = 0;
@@ -80,13 +81,23 @@ public class CubeTileOverlayView extends View {
                     tileColors.get(rotatedIndex).greenValue,
                     tileColors.get(rotatedIndex).blueValue));
 
-            Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[i] : cubeThreePieceOffset[i];
+            if (isTwoTimesTwo) {
+                Point tileOffset = cubeTwoPieceOffset[i];
 
-            canvas.drawRect((float) (tileOffset.x * TILESIZE + centerPoint.x - TILESIZE / 2),
-                    (float) (tileOffset.y * TILESIZE + centerPoint.y - TILESIZE / 2),
-                    (float) (tileOffset.x * TILESIZE + centerPoint.x + TILESIZE / 2),
-                    (float) (tileOffset.y * TILESIZE + centerPoint.y + TILESIZE / 2),
-                    paint);
+                canvas.drawRect((float) (tileOffset.x * TILESIZE2 + centerPoint.x),
+                        (float) (tileOffset.y * TILESIZE2 + centerPoint.y),
+                        (float) ((tileOffset.x + 1) * TILESIZE2 + centerPoint.x),
+                        (float) ((tileOffset.y + 1) * TILESIZE2 + centerPoint.y),
+                        paint);
+            } else {
+                Point tileOffset = cubeThreePieceOffset[i];
+
+                canvas.drawRect((float) (tileOffset.x * TILESIZE3 + centerPoint.x - TILESIZE3 / 2),
+                        (float) (tileOffset.y * TILESIZE3 + centerPoint.y - TILESIZE3 / 2),
+                        (float) (tileOffset.x * TILESIZE3 + centerPoint.x + TILESIZE3 / 2),
+                        (float) (tileOffset.y * TILESIZE3 + centerPoint.y + TILESIZE3 / 2),
+                        paint);
+            }
         }
 
     }
@@ -100,7 +111,7 @@ public class CubeTileOverlayView extends View {
 
         Log.d(TAG, "Width: " + width + " Height: " + height);
 
-        centerPoint = new Point(xNew / 2, yNew / 2);
+        centerPoint = new Point(xNew / 2.0f, yNew / 2.0f);
     }
 
     public Point[] getAnalyzableSquareCoordinates(int imageWidth, int imageHeight, Point imageCenterPoint, int index) {
@@ -123,11 +134,24 @@ public class CubeTileOverlayView extends View {
 
         Point tileOffset = (isTwoTimesTwo) ? cubeTwoPieceOffset[rotatedIndex] : cubeThreePieceOffset[rotatedIndex];
 
-        double normalizedTileWidth = (TILESIZE / (double) width) * imageWidth;
-        double normalizedTileHeight = (TILESIZE / (double) height) * imageHeight;
+        double normalizedTileWidth;
+        double normalizedTileHeight;
+        Point topLeft;
+        Point bottomRight;
 
-        Point topLeft = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x - (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y - (normalizedTileHeight / 2));
-        Point bottomRight = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x + (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y + (normalizedTileHeight / 2));
+        if (isTwoTimesTwo) {
+            normalizedTileWidth = (TILESIZE2 / (double) width) * imageWidth;
+            normalizedTileHeight = (TILESIZE2 / (double) height) * imageHeight;
+
+            topLeft = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x, (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y);
+            bottomRight = new Point(((tileOffset.x + 1) * normalizedTileWidth) + imageCenterPoint.x, ((tileOffset.y + 1) * normalizedTileHeight) + imageCenterPoint.y);
+        } else {
+            normalizedTileWidth = (TILESIZE3 / (double) width) * imageWidth;
+            normalizedTileHeight = (TILESIZE3 / (double) height) * imageHeight;
+
+            topLeft = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x - (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y - (normalizedTileHeight / 2));
+            bottomRight = new Point((tileOffset.x * normalizedTileWidth) + imageCenterPoint.x + (normalizedTileWidth / 2), (tileOffset.y * normalizedTileHeight) + imageCenterPoint.y + (normalizedTileHeight / 2));
+        }
 
         return new Point[]{topLeft, bottomRight, new Point(index, rotatedIndex)};
     }

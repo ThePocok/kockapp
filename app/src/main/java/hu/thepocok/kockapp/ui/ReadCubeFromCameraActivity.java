@@ -68,17 +68,6 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     private GifImageView gifOverlay;
 
-    private Point[] cubeThreePieceOffset = new Point[]{
-            new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
-            new Point(0, -1), new Point(0, 0), new Point(0, 1),
-            new Point(1, -1), new Point(1, 0), new Point(1, 1)
-    };
-
-    private Point[] cubeTwoPieceOffset = new Point[]{
-            new Point(-1, -1), new Point(-1, 0),
-            new Point(0, -1), new Point(0, 0)
-    };
-
     private Face whiteFace = null;
     private Face redFace = null;
     private Face greenFace = null;
@@ -161,9 +150,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 Mat hsvImage = new Mat();
                 Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
 
-                Point matCenterPoint = new Point(hsvImage.width() / 2, hsvImage.height() / 2);
+                Point matCenterPoint = new Point(hsvImage.width() / 2.0f, hsvImage.height() / 2.0f);
 
-                int arrayLength = (isTwoTimesTwo) ? cubeTwoPieceOffset.length : cubeThreePieceOffset.length;
+                int arrayLength = (isTwoTimesTwo) ? 4 : 9;
 
                 for (int i = 0; i < arrayLength; i++) {
                     Point[] points = cubeTileOverlayView.getAnalyzableSquareCoordinates(hsvImage.width(), hsvImage.height(), matCenterPoint, i);
@@ -176,6 +165,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                     Mat hsvSubMat = hsvImage.submat(rect);
                     Scalar hsvValues = Core.mean(hsvSubMat);
                     Log.d("ReadColor", hsvValues.toString());
+
+                    //Bitmap bmp = Bitmap.createBitmap(bitmap, (int) points[0].x, (int) points[0].y, (int) (points[1].x - points[0].x), (int) (points[1].y - points[0].y));
 
                     tileColors.set((int) points[2].y, getColorFromHSV(hsvValues));
                     Log.d("ReadColor", getColorFromHSV(hsvValues).stringValue);
