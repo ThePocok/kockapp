@@ -38,7 +38,6 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -46,7 +45,6 @@ import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
-import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeFromCameraActivity extends AppCompatActivity {
@@ -57,6 +55,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private ImageAnalysis imageAnalysis;
 
     private ArrayList<Color> tileColors = new ArrayList<>();
+    private final Object tileColorsLock = new Object();
     private long colorsLastProcessedTime = 0L;
 
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -94,8 +93,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         gifOverlay = findViewById(R.id.gif_overlay);
 
-        for (int i = 0; i < 9; i++) {
-            tileColors.add(Color.EMPTY);
+        synchronized (tileColorsLock) {
+            for (int i = 0; i < 9; i++) {
+                tileColors.add(Color.EMPTY);
+            }
         }
 
         if (checkCameraPermission()) {
@@ -168,7 +169,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
                     //Bitmap bmp = Bitmap.createBitmap(bitmap, (int) points[0].x, (int) points[0].y, (int) (points[1].x - points[0].x), (int) (points[1].y - points[0].y));
 
-                    tileColors.set((int) points[2].y, getColorFromHSV(hsvValues));
+                    synchronized (tileColorsLock) {
+                        tileColors.set((int) points[2].y, getColorFromHSV(hsvValues));
+                    }
                     Log.d("ReadColor", getColorFromHSV(hsvValues).stringValue);
                 }
 
@@ -186,7 +189,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     }
 
     private void setTilesToDraw() {
-        cubeTileOverlayView.setTileColors(tileColors);
+        synchronized (tileColorsLock) {
+            cubeTileOverlayView.setTileColors(tileColors);
+        }
     }
 
     private Bitmap imageToBitmap(ImageProxy image) {
@@ -211,7 +216,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     }
 
     public void setFace() {
-        ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
+        ArrayList<Color> colors;
+        synchronized (tileColorsLock) {
+            colors = (ArrayList<Color>) tileColors.clone();
+        }
         Face face;
 
         if (isTwoTimesTwo) {
@@ -336,16 +344,18 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private void changeCubeSize() {
         isTwoTimesTwo = !isTwoTimesTwo;
 
-        tileColors.clear();
-        if (isTwoTimesTwo) {
-            sizeChangeBtn.setText("2x2");
-            for (int i = 0; i < 4; i++) {
-                tileColors.add(Color.EMPTY);
-            }
-        } else {
-            sizeChangeBtn.setText("3x3");
-            for (int i = 0; i < 9; i++) {
-                tileColors.add(Color.EMPTY);
+        synchronized (tileColorsLock) {
+            tileColors.clear();
+            if (isTwoTimesTwo) {
+                sizeChangeBtn.setText("2x2");
+                for (int i = 0; i < 4; i++) {
+                    tileColors.add(Color.EMPTY);
+                }
+            } else {
+                sizeChangeBtn.setText("3x3");
+                for (int i = 0; i < 9; i++) {
+                    tileColors.add(Color.EMPTY);
+                }
             }
         }
 
