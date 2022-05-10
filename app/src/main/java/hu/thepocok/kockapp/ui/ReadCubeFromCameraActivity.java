@@ -222,14 +222,15 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         }
         Face face;
 
+        // Due to some miscalculations, the cube in the array is mirrored to the y axis
         if (isTwoTimesTwo) {
-            Layer firstLayer = new Layer(colors.get(0), colors.get(1));
-            Layer secondLayer = new Layer(colors.get(2), colors.get(3));
+            Layer firstLayer = new Layer(colors.get(1), colors.get(0));
+            Layer secondLayer = new Layer(colors.get(3), colors.get(2));
             face = new Face(firstLayer, secondLayer);
         } else {
-            Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
-            Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
-            Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
+            Layer firstLayer = new Layer(colors.get(2), colors.get(1), colors.get(0));
+            Layer secondLayer = new Layer(colors.get(5), colors.get(4), colors.get(3));
+            Layer thirdLayer = new Layer(colors.get(8), colors.get(7), colors.get(6));
             face = new Face(firstLayer, secondLayer, thirdLayer);
         }
 
