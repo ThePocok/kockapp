@@ -38,6 +38,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -45,6 +46,8 @@ import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private static final String TAG = "ReadCubeFromCameraActivity";
@@ -62,6 +65,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     private Button sizeChangeBtn;
     private boolean isTwoTimesTwo = false;
+
+    private GifImageView gifOverlay;
 
     private Point[] cubeThreePieceOffset = new Point[]{
             new Point(-1, -1), new Point(-1, 0), new Point(-1, 1),
@@ -97,6 +102,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         previewView = findViewById(R.id.previewView);
         cubeTileOverlayView = findViewById(R.id.cube_tile_overlay);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
+
+        gifOverlay = findViewById(R.id.gif_overlay);
 
         for (int i = 0; i < 9; i++) {
             tileColors.add(Color.EMPTY);
@@ -268,6 +275,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             intent.putExtra("blueFace", blueFace);
             intent.putExtra("yellowFace", yellowFace);
             startActivity(intent);
+        }
+
+        try {
+            GifDrawable gifFromResource = new GifDrawable( getResources(), R.drawable.arrow );
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 
