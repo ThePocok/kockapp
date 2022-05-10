@@ -240,26 +240,32 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             Toast.makeText(this, "Colors assigned to white face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to white face");
+
+            displayArrowGif(0);
         } else if (redFace == null) {
             redFace = face;
             Toast.makeText(this, "Colors assigned to red face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to red face");
+            displayArrowGif(90);
         } else if (greenFace == null) {
             greenFace = face;
             Toast.makeText(this, "Colors assigned to green face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to green face");
+            displayArrowGif(90);
         } else if (orangeFace == null) {
             orangeFace = face;
             Toast.makeText(this, "Colors assigned to orange face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to orange face");
+            displayArrowGif(90);
         } else if (blueFace == null) {
             blueFace = face;
             Toast.makeText(this, "Colors assigned to blue face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to blue face");
+            displayTwoArrowGifs(90, 0);
         } else if (yellowFace == null) {
             yellowFace = face;
             Toast.makeText(this, "Colors assigned to yellow face",
@@ -277,11 +283,38 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        try {
-            GifDrawable gifFromResource = new GifDrawable( getResources(), R.drawable.arrow );
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage());
-        }
+
+    }
+
+    public void displayArrowGif(int rotationDegree) {
+        Thread gifOverlayThread = new Thread(() -> {
+            runOnUiThread(() -> {
+                gifOverlay.setRotation(rotationDegree);
+                gifOverlay.setImageResource(R.drawable.arrow);
+            });
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            runOnUiThread(() -> gifOverlay.setImageResource(0));
+        });
+        gifOverlayThread.start();
+    }
+
+    public void displayTwoArrowGifs(int rotationDegree1, int rotationDegree2) {
+        Thread gifThreadHandler = new Thread(() -> {
+            displayArrowGif(rotationDegree1);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            displayArrowGif(rotationDegree2);
+        });
+        gifThreadHandler.start();
     }
 
     private Color getColorFromHSV(Scalar hsvValues) {
