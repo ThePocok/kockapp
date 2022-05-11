@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.ReadCubeFromCameraActivity">
 
-    <Button
-        android:id="@+id/cube_size_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3x3"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top"
         android:layout_width="wrap_content"
@@ -29,18 +20,52 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.75"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <Button
+        android:id="@+id/cube_size_selector"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="3x3"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <hu.thepocok.kockapp.ui.CubeFacePreviewView
+        android:id="@+id/cubeFacePreviewView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_top"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="fill_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline_top" >
+        app:layout_constraintTop_toTopOf="@+id/guideline_top">
 
         <androidx.camera.view.PreviewView
             android:id="@+id/previewView"
-            android:layout_width="fill_parent"
-            android:layout_height="300dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <hu.thepocok.kockapp.ui.CubeTileOverlayView
             android:id="@+id/cube_tile_overlay"
@@ -50,8 +75,7 @@
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/gif_overlay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 
