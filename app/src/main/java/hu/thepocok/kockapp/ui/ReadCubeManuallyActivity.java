@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -254,18 +255,16 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("Invalid cube")
                     .setMessage("Do you want to review the faces or reread the whole cube?")
-                    .setPositiveButton("Review", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                    .setPositiveButton("Review", (dialogInterface, i) -> {
 
-                        }
                     })
-                    .setNegativeButton("Reread", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            resetCube();
-                            resetCubeContainer(Color.WHITE);
-                        }
+                    .setNegativeButton("Reread manually", (dialogInterface, i) -> {
+                        resetCube();
+                        resetCubeContainer(Color.WHITE);
+                    })
+                    .setNeutralButton("Reread by camera", (dialogInterface, i) -> {
+                        Intent intent = new Intent(ReadCubeManuallyActivity.this, ReadCubeFromCameraActivity.class);
+                        startActivity(intent);
                     })
                     .show();
         } else {
@@ -275,12 +274,16 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Unsolvable cube")
                         .setMessage("Unfortunately, we cannot solve this cube!")
-                        .setPositiveButton("Review", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                resetCube();
-                                resetCubeContainer(Color.WHITE);
-                            }
+                        .setPositiveButton("Review", (dialogInterface, i) -> {
+
+                        })
+                        .setNegativeButton("Reread manually", (dialogInterface, i) -> {
+                            resetCube();
+                            resetCubeContainer(Color.WHITE);
+                        })
+                        .setNeutralButton("Reread by camera", (dialogInterface, i) -> {
+                            Intent intent = new Intent(ReadCubeManuallyActivity.this, ReadCubeFromCameraActivity.class);
+                            startActivity(intent);
                         })
                         .show();
             }
