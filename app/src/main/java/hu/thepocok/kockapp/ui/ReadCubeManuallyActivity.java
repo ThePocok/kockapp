@@ -101,7 +101,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             }
         }
 
-        setTiles();
+        cubeContainer.post(this::setTiles);
     }
 
     private void resetCubeContainer(Color color) {
@@ -142,6 +142,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         Resources res = getResources();
         for (int i = 0; i < dimensions; i++) {
             LinearLayout row = (LinearLayout) cubeContainer.getChildAt(i);
+            row.setMinimumHeight(cubeContainer.getHeight() / 3);
+            Log.d(TAG, String.valueOf(row.getHeight()));
             row.removeAllViews();
             for (int j = 0; j < dimensions; j++) {
                 Button tile = new Button(this);
@@ -159,7 +161,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 }
 
                 tile.setBackground(drawable);
-                tile.setLayoutParams(new LinearLayout.LayoutParams(150, 150));
+                tile.setLayoutParams(new LinearLayout.LayoutParams(row.getHeight(), row.getHeight()));
 
                 int finalI = i;
                 int finalJ = j;
