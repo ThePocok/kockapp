@@ -2,13 +2,16 @@ package hu.thepocok.kockapp.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+
+import hu.thepocok.kockapp.model.cube.component.Color;
 
 public class CubeFacePreviewView extends View {
     private final String TAG = "CubeFacePreviewView";
@@ -20,7 +23,6 @@ public class CubeFacePreviewView extends View {
     private int fullHeight;
     private double sectionWidth;
     private double sectionHeight;
-    private double tileWidth;
 
     private double textPositionX;
     private double textPositionY;
@@ -33,6 +35,8 @@ public class CubeFacePreviewView extends View {
             "BLUE",
             "YELLOW"
     };
+
+    private ArrayList<FacePreviewPosition> sectionPositions = new ArrayList<>();
 
     private int cubeDimensions = 3;
 
@@ -62,10 +66,11 @@ public class CubeFacePreviewView extends View {
 
         // Draw text
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(android.graphics.Color.BLACK);
         paint.setTextSize(PREVIEWTEXTSIZE);
         canvas.drawText(previewText, (float) textPositionX, (float) textPositionY, paint);
 
+        // Draw faces
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(BORDERWIDTH);
@@ -85,8 +90,9 @@ public class CubeFacePreviewView extends View {
         double textPositionX = (sectionWidth / 2.0f) - (faceName.length() / 2.0f * FACETEXTSIZE / 2);
         double textPositionY = sectionHeight * 0.05;
 
+        // Draw face title
         Paint paint = new Paint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(android.graphics.Color.BLACK);
         paint.setTextSize(FACETEXTSIZE);
         canvas.drawText(faceName, (float) (coordX + textPositionX), (float) (coordY + textPositionY), paint);
 
@@ -106,9 +112,83 @@ public class CubeFacePreviewView extends View {
                         paint);
             }
         }
+        if (sectionPositions.size() != 6) {
+            sectionPositions.add(new FacePreviewPosition(faceName, coordX, coordY,
+                    coordX + sectionWidth, coordY + sectionHeight));
+        }
     }
 
     public void setCubeDimensions(int cubeDimensions) {
         this.cubeDimensions = cubeDimensions;
+    }
+
+    public Color getClickedFace(double coordX, double coordY) {
+        String clickedFace = null;
+
+        for (FacePreviewPosition section : sectionPositions) {
+            if (section.getTopLeftX() <= coordX && section.getTopLeftY() <= coordY
+            && section.getBottomRightX() >= coordX && section.getBottomRightY() >= coordY) {
+                clickedFace = section.getFaceColor();
+                break;
+            }
+        }
+
+        if (clickedFace == null) {
+            return Color.EMPTY;
+        }
+
+        switch (clickedFace) {
+            case "WHITE":
+                return Color.WHITE;
+            case "RED":
+                return Color.RED;
+            case "GREEN":
+                return Color.GREEN;
+            case "ORANGE":
+                return Color.ORANGE;
+            case "BLUE":
+                return Color.BLUE;
+            case "YELLOW":
+                return Color.YELLOW;
+            default:
+                return Color.EMPTY;
+        }
+    }
+
+    public static class FacePreviewPosition {
+        private String faceColor;
+
+        private double topLeftX;
+        private double topLeftY;
+        private double bottomRightX;
+        private double bottomRightY;
+
+        public FacePreviewPosition(String faceColor, double topLeftX, double topLeftY, double bottomRightX, double bottomRightY) {
+            this.faceColor = faceColor;
+            this.topLeftX = topLeftX;
+            this.topLeftY = topLeftY;
+            this.bottomRightX = bottomRightX;
+            this.bottomRightY = bottomRightY;
+        }
+
+        public String getFaceColor() {
+            return faceColor;
+        }
+
+        public double getTopLeftX() {
+            return topLeftX;
+        }
+
+        public double getTopLeftY() {
+            return topLeftY;
+        }
+
+        public double getBottomRightX() {
+            return bottomRightX;
+        }
+
+        public double getBottomRightY() {
+            return bottomRightY;
+        }
     }
 }

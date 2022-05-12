@@ -16,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -44,7 +46,9 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private LinearLayout cubeContainer;
 
-    private int completedFaces = 0;
+    private CubeFacePreviewView facePreviewView;
+    private Color currentFaceToSet;
+
     private Face whiteFace = null;
     private Face redFace = null;
     private Face greenFace = null;
@@ -71,6 +75,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
         cubeContainer = findViewById(R.id.cube_container);
 
+        facePreviewView = findViewById(R.id.cube_face_preview_view);
+
         whiteBtn.setOnClickListener(l -> selectColor(Color.WHITE));
         redBtn.setOnClickListener(l -> selectColor(Color.RED));
         greenBtn.setOnClickListener(l -> selectColor(Color.GREEN));
@@ -81,6 +87,15 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         Button nextButton = findViewById(R.id.next_face_button);
 
         nextButton.setOnClickListener(l -> setFace());
+
+        facePreviewView.setOnTouchListener((view, click) -> {
+            Color clickedFace = facePreviewView.getClickedFace(click.getX(), click.getY());
+            Log.d(TAG, "Clicked color: " + clickedFace);
+            currentFaceToSet = clickedFace;
+            resetCubeContainer(clickedFace);
+            return false;
+        });
+        currentFaceToSet = Color.WHITE;
 
         Intent intent = getIntent();
         dimensions = intent.getIntExtra("cubeDimensions", 0);
@@ -107,23 +122,23 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private void resetCubeContainer(Color color) {
         Face face = null;
-        switch (completedFaces) {
-            case 0:
+        switch (currentFaceToSet) {
+            case WHITE:
                 face = whiteFace;
                 break;
-            case 1:
+            case RED:
                 face = redFace;
                 break;
-            case 2:
+            case GREEN:
                 face = greenFace;
                 break;
-            case 3:
+            case ORANGE:
                 face = orangeFace;
                 break;
-            case 4:
+            case BLUE:
                 face = blueFace;
                 break;
-            case 5:
+            case YELLOW:
                 face = yellowFace;
                 break;
         }
@@ -203,38 +218,43 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             face = new Face(firstLayer, secondLayer, thirdLayer);
         }
 
-        if (completedFaces == 0) {
+        if (currentFaceToSet.equals(Color.WHITE)) {
             whiteFace = face;
             Log.d(TAG, "Colors assigned to white face");
-            completedFaces++;
+            currentFaceToSet = Color.RED;
             resetCubeContainer(Color.RED);
-        } else if (completedFaces == 1) {
+        } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
-            completedFaces++;
+            currentFaceToSet = Color.GREEN;
             resetCubeContainer(Color.GREEN);
-        } else if (completedFaces == 2) {
+        } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
-            completedFaces++;
+            currentFaceToSet = Color.ORANGE;
             resetCubeContainer(Color.ORANGE);
-        } else if (completedFaces == 3) {
+        } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
-            completedFaces++;
+            currentFaceToSet = Color.BLUE;
             resetCubeContainer(Color.BLUE);
-        } else if (completedFaces == 4) {
+        } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
-            completedFaces++;
+            currentFaceToSet = Color.YELLOW;
             resetCubeContainer(Color.YELLOW);
-        } else if (completedFaces == 5) {
+        } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
-            completedFaces++;
+            if (allFacesSet()) {
+                currentFaceToSet = Color.EMPTY;
+            } else {
+                currentFaceToSet = Color.WHITE;
+                resetCubeContainer(Color.WHITE);
+            }
         }
 
-        if (completedFaces == 6) {
+        if (currentFaceToSet.equals(Color.EMPTY)) {
             if (dimensions == 2) {
                 cube = new CubeTwo(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
             } else {
@@ -248,6 +268,15 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
             //TODO link to new activity
         }
+    }
+
+    private boolean allFacesSet() {
+        return whiteFace != null
+                && redFace != null
+                && greenFace != null
+                && orangeFace != null
+                && blueFace != null
+                && yellowFace != null;
     }
 
     private void checkCubeValidity() {
@@ -292,7 +321,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     }
 
     private void resetCube() {
-        completedFaces = 0;
+        currentFaceToSet = Color.WHITE;
         whiteFace = null;
         redFace = null;
         greenFace = null;
