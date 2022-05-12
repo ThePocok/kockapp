@@ -222,31 +222,43 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         if (currentFaceToSet.equals(Color.WHITE)) {
             whiteFace = face;
             Log.d(TAG, "Colors assigned to white face");
+            facePreviewView.setFace(Color.WHITE, whiteFace);
+
             currentFaceToSet = Color.RED;
             resetCubeContainer(Color.RED);
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
+            facePreviewView.setFace(Color.RED, redFace);
+
             currentFaceToSet = Color.GREEN;
             resetCubeContainer(Color.GREEN);
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
+            facePreviewView.setFace(Color.GREEN, greenFace);
+
             currentFaceToSet = Color.ORANGE;
             resetCubeContainer(Color.ORANGE);
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
+            facePreviewView.setFace(Color.ORANGE, orangeFace);
+
             currentFaceToSet = Color.BLUE;
             resetCubeContainer(Color.BLUE);
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
+            facePreviewView.setFace(Color.BLUE, blueFace);
+
             currentFaceToSet = Color.YELLOW;
             resetCubeContainer(Color.YELLOW);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
+            facePreviewView.setFace(Color.YELLOW, yellowFace);
+
             if (allFacesSet()) {
                 currentFaceToSet = Color.EMPTY;
             } else {

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.model.cube.component.Face;
 
 public class CubeFacePreviewView extends View {
     private final String TAG = "CubeFacePreviewView";
@@ -35,6 +36,13 @@ public class CubeFacePreviewView extends View {
             "BLUE",
             "YELLOW"
     };
+
+    private Face whiteFace = null;
+    private Face redFace = null;
+    private Face greenFace = null;
+    private Face orangeFace = null;
+    private Face blueFace = null;
+    private Face yellowFace = null;
 
     private ArrayList<FacePreviewPosition> sectionPositions = new ArrayList<>();
 
@@ -99,12 +107,48 @@ public class CubeFacePreviewView extends View {
         double tileSize = (sectionWidth * 0.8) / cubeDimensions;
         double leftMargin = sectionWidth * 0.1;
 
+        Face faceToDraw = null;
+        switch (faceName) {
+            case "WHITE":
+                faceToDraw = whiteFace;
+                break;
+            case "RED":
+                faceToDraw = redFace;
+                break;
+            case "GREEN":
+                faceToDraw = greenFace;
+                break;
+            case "ORANGE":
+                faceToDraw = orangeFace;
+                break;
+            case "BLUE":
+                faceToDraw = blueFace;
+                break;
+            case "YELLOW":
+                faceToDraw = yellowFace;
+                break;
+        }
+
         paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(BORDERWIDTH);
 
         for (int y = 0; y < cubeDimensions; y++) {
             for (int x = 0; x < cubeDimensions; x++) {
+                if (faceToDraw != null) {
+                    paint.setColor(android.graphics.Color.rgb(faceToDraw.getNthRow(y).getNthPiece(x).redValue,
+                            faceToDraw.getNthRow(y).getNthPiece(x).greenValue,
+                            faceToDraw.getNthRow(y).getNthPiece(x).blueValue));
+                    paint.setStyle(Paint.Style.FILL);
+                    canvas.drawRect((float) (leftMargin + coordX + (tileSize * x)),
+                            (float) ((textPositionY * 2) + coordY + (tileSize * y)),
+                            (float) (leftMargin + coordX + (tileSize * (x + 1))),
+                            (float) ((textPositionY * 2) + coordY + (tileSize * (y + 1))),
+                            paint);
+                }
+
+                paint.setColor(android.graphics.Color.BLACK);
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(BORDERWIDTH);
+
                 canvas.drawRect((float) (leftMargin + coordX + (tileSize * x)),
                         (float) ((textPositionY * 2) + coordY + (tileSize * y)),
                         (float) (leftMargin + coordX + (tileSize * (x + 1))),
@@ -154,6 +198,31 @@ public class CubeFacePreviewView extends View {
             default:
                 return Color.EMPTY;
         }
+    }
+
+    public void setFace(Color color, Face face) {
+        switch (color){
+            case WHITE:
+                whiteFace = face;
+                break;
+            case RED:
+                redFace = face;
+                break;
+            case GREEN:
+                greenFace = face;
+                break;
+            case ORANGE:
+                orangeFace = face;
+                break;
+            case BLUE:
+                blueFace = face;
+                break;
+            case YELLOW:
+                yellowFace = face;
+                break;
+        }
+
+        invalidate();
     }
 
     public static class FacePreviewPosition {

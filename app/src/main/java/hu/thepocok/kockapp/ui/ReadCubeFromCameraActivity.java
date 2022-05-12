@@ -35,6 +35,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
@@ -252,46 +253,52 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             Toast.makeText(this, "Colors assigned to white face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to white face");
-            currentFaceToSet = Color.RED;
+            facePreviewView.setFace(Color.WHITE, whiteFace);
 
+            currentFaceToSet = Color.RED;
             displayArrowGif(0);
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Toast.makeText(this, "Colors assigned to red face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to red face");
-            currentFaceToSet = Color.GREEN;
+            facePreviewView.setFace(Color.RED, redFace);
 
+            currentFaceToSet = Color.GREEN;
             displayArrowGif(90);
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Toast.makeText(this, "Colors assigned to green face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to green face");
-            currentFaceToSet = Color.ORANGE;
+            facePreviewView.setFace(Color.GREEN, greenFace);
 
+            currentFaceToSet = Color.ORANGE;
             displayArrowGif(90);
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Toast.makeText(this, "Colors assigned to orange face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to orange face");
-            currentFaceToSet = Color.BLUE;
+            facePreviewView.setFace(Color.ORANGE, orangeFace);
 
+            currentFaceToSet = Color.BLUE;
             displayArrowGif(90);
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Toast.makeText(this, "Colors assigned to blue face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to blue face");
-            currentFaceToSet = Color.YELLOW;
+            facePreviewView.setFace(Color.BLUE, blueFace);
 
+            currentFaceToSet = Color.YELLOW;
             displayTwoArrowGifs(90, 0);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Toast.makeText(this, "Colors assigned to yellow face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to yellow face");
+            facePreviewView.setFace(Color.YELLOW, yellowFace);
 
             if (allFacesSet()) {
                 currentFaceToSet = Color.EMPTY;
