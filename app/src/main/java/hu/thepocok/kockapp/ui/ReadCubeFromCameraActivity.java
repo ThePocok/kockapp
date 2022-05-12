@@ -317,6 +317,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             intent.putExtra("blueFace", blueFace);
             intent.putExtra("yellowFace", yellowFace);
 
+            currentFaceToSet = Color.WHITE;
+
             whiteFace = null;
             redFace = null;
             greenFace = null;
@@ -410,7 +412,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             }
         }
 
+        facePreviewView.clearFaces();
         facePreviewView.setCubeDimensions((isTwoTimesTwo) ? 2 : 3);
+        currentFaceToSet = Color.WHITE;
 
         cubeTileOverlayView.setTwoTimesTwo(isTwoTimesTwo);
 

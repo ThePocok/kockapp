@@ -225,6 +225,29 @@ public class CubeFacePreviewView extends View {
         invalidate();
     }
 
+    public void setAllFaces(Face whiteFace, Face redFace, Face greenFace,
+                            Face orangeFace, Face blueFace, Face yellowFace) {
+        this.whiteFace = whiteFace;
+        this.redFace = redFace;
+        this.greenFace = greenFace;
+        this.orangeFace = orangeFace;
+        this.blueFace = blueFace;
+        this.yellowFace = yellowFace;
+
+        invalidate();
+    }
+
+    public void clearFaces() {
+        whiteFace = null;
+        redFace = null;
+        greenFace = null;
+        orangeFace = null;
+        blueFace = null;
+        yellowFace = null;
+
+        invalidate();
+    }
+
     public static class FacePreviewPosition {
         private String faceColor;
 

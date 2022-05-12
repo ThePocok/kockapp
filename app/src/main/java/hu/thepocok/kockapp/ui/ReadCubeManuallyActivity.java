@@ -107,6 +107,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         orangeFace = (Face) intent.getSerializableExtra("orangeFace");
         blueFace = (Face) intent.getSerializableExtra("blueFace");
         yellowFace = (Face) intent.getSerializableExtra("yellowFace");
+        facePreviewView.setAllFaces(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
 
         tileColors = new ArrayList<>();
 
@@ -335,6 +336,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private void resetCube() {
         currentFaceToSet = Color.WHITE;
+
         whiteFace = null;
         redFace = null;
         greenFace = null;
@@ -344,6 +346,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         cube = null;
 
         setTiles();
+        facePreviewView.clearFaces();
     }
 
     private void selectColor(Color color) {
