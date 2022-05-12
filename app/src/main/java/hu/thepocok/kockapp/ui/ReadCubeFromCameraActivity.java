@@ -67,6 +67,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     private GifImageView gifOverlay;
 
+    private CubeFacePreviewView facePreviewView;
+
+    private Color currentFaceToSet;
     private Face whiteFace = null;
     private Face redFace = null;
     private Face greenFace = null;
@@ -92,6 +95,15 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
 
         gifOverlay = findViewById(R.id.gif_overlay);
+
+        facePreviewView = findViewById(R.id.cube_face_preview_view);
+        facePreviewView.setOnTouchListener((view, click) -> {
+            Color clickedFace = facePreviewView.getClickedFace(click.getX(), click.getY());
+            Log.d(TAG, "Clicked color: " + clickedFace);
+            currentFaceToSet = clickedFace;
+            return false;
+        });
+        currentFaceToSet = Color.WHITE;
 
         synchronized (tileColorsLock) {
             for (int i = 0; i < 9; i++) {
@@ -235,43 +247,60 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         }
 
 
-        if (whiteFace == null) {
+        if (currentFaceToSet.equals(Color.WHITE)) {
             whiteFace = face;
             Toast.makeText(this, "Colors assigned to white face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to white face");
+            currentFaceToSet = Color.RED;
 
             displayArrowGif(0);
-        } else if (redFace == null) {
+        } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Toast.makeText(this, "Colors assigned to red face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to red face");
+            currentFaceToSet = Color.GREEN;
+
             displayArrowGif(90);
-        } else if (greenFace == null) {
+        } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Toast.makeText(this, "Colors assigned to green face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to green face");
+            currentFaceToSet = Color.ORANGE;
+
             displayArrowGif(90);
-        } else if (orangeFace == null) {
+        } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Toast.makeText(this, "Colors assigned to orange face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to orange face");
+            currentFaceToSet = Color.BLUE;
+
             displayArrowGif(90);
-        } else if (blueFace == null) {
+        } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Toast.makeText(this, "Colors assigned to blue face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to blue face");
+            currentFaceToSet = Color.YELLOW;
+
             displayTwoArrowGifs(90, 0);
-        } else if (yellowFace == null) {
+        } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Toast.makeText(this, "Colors assigned to yellow face",
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to yellow face");
 
+            if (allFacesSet()) {
+                currentFaceToSet = Color.EMPTY;
+            } else {
+                currentFaceToSet = Color.WHITE;
+            }
+        }
+
+        if (currentFaceToSet.equals(Color.EMPTY)) {
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", whiteFace.getDimensions());
             intent.putExtra("whiteFace", whiteFace);
@@ -289,8 +318,15 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             yellowFace = null;
             startActivity(intent);
         }
+    }
 
-
+    private boolean allFacesSet() {
+        return whiteFace != null
+                && redFace != null
+                && greenFace != null
+                && orangeFace != null
+                && blueFace != null
+                && yellowFace != null;
     }
 
     public void displayArrowGif(int rotationDegree) {
