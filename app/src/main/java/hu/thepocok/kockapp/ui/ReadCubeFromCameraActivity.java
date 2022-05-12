@@ -403,6 +403,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             }
         }
 
+        facePreviewView.setCubeDimensions((isTwoTimesTwo) ? 2 : 3);
+
         cubeTileOverlayView.setTwoTimesTwo(isTwoTimesTwo);
 
         whiteFace = null;

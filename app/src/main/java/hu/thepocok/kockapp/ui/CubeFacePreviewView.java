@@ -96,7 +96,7 @@ public class CubeFacePreviewView extends View {
         paint.setTextSize(FACETEXTSIZE);
         canvas.drawText(faceName, (float) (coordX + textPositionX), (float) (coordY + textPositionY), paint);
 
-        double tileSize = (sectionWidth * 0.8) / 3.0f;
+        double tileSize = (sectionWidth * 0.8) / cubeDimensions;
         double leftMargin = sectionWidth * 0.1;
 
         paint = new Paint();
@@ -120,6 +120,7 @@ public class CubeFacePreviewView extends View {
 
     public void setCubeDimensions(int cubeDimensions) {
         this.cubeDimensions = cubeDimensions;
+        invalidate();
     }
 
     public Color getClickedFace(double coordX, double coordY) {

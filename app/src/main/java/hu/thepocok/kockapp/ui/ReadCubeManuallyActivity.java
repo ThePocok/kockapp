@@ -99,6 +99,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         dimensions = intent.getIntExtra("cubeDimensions", 0);
+        facePreviewView.setCubeDimensions(dimensions);
 
         whiteFace = (Face) intent.getSerializableExtra("whiteFace");
         redFace = (Face) intent.getSerializableExtra("redFace");
