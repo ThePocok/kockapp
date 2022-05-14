@@ -4,8 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18177083333333333" />
-        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.55" />
         <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
+        <entry key="app/src/main/res/layout/activity_cube_solution.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/activity_read_cube_manually.xml" value="0.25" />
@@ -21,5 +21,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.3098958333333333" />
+      </ProjectState>
+    </option>
   </component>
 </project>
