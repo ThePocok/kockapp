@@ -280,13 +280,12 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             Log.d(TAG, "Cube created");
             Log.d(TAG, cube.toString());
 
-            checkCubeValidity();
-
-            //TODO link to new activity
-            Intent intent = new Intent(this, CubeSolutionActivity.class);
-            intent.putExtra("cube", cube);
-            intent.putExtra("solvedCube", solvedCube);
-            startActivity(intent);
+            if (checkCubeValidity()) {
+                Intent intent = new Intent(this, CubeSolutionActivity.class);
+                intent.putExtra("cube", cube);
+                intent.putExtra("solvedCube", solvedCube);
+                startActivity(intent);
+            }
         }
     }
 
@@ -299,7 +298,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 && yellowFace != null;
     }
 
-    private void checkCubeValidity() {
+    private boolean checkCubeValidity() {
         if (!cube.isValidCube()) {
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("Invalid cube")
@@ -316,6 +315,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                         startActivity(intent);
                     })
                     .show();
+
+            return false;
         } else {
             try {
                 solvedCube = cube.duplicate();
@@ -336,9 +337,12 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                             startActivity(intent);
                         })
                         .show();
+                return false;
             }
             Log.d(TAG, solvedCube.getSolutionString());
         }
+
+        return true;
     }
 
     private void resetCube() {

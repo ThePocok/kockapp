@@ -785,6 +785,10 @@ public abstract class Cube implements Serializable{
         solution.add(new Reorientation(orientation));
     }
 
+    public int getDimensions() {
+        return dimensions;
+    }
+
     public abstract boolean isValidCube();
 
     public abstract void solve() throws UnsolvableCubeException;
