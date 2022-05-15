@@ -180,7 +180,12 @@ public class Face implements Serializable {
     }
 
     public Face duplicate() {
-        ArrayList<Layer> copyOfLayers = (ArrayList<Layer>) layers.clone();
+        ArrayList<Layer> copyOfLayers = new ArrayList<>();
+
+        for (Layer layer : layers) {
+            Layer copyOfLayer = new Layer(layer.getDataSet().toArray(new Color[layer.getDataSet().size()]));
+            copyOfLayers.add(copyOfLayer);
+        }
 
         return new Face(faceColor, copyOfLayers.toArray(new Layer[copyOfLayers.size()]));
     }

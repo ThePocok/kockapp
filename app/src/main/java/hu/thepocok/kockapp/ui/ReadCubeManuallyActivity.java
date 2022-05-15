@@ -337,7 +337,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                         })
                         .show();
             }
-            Log.d(TAG, cube.getSolutionString());
+            Log.d(TAG, solvedCube.getSolutionString());
         }
     }
 
