@@ -1,5 +1,6 @@
 package hu.thepocok.kockapp.model.cube;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.piecemap.CubeThreePieceMap;
 
-public class CubeThree extends Cube{
+public class CubeThree extends Cube implements Serializable {
 
     public CubeThree() {
         super(3);

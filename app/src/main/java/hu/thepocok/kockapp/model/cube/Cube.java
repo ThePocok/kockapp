@@ -27,7 +27,7 @@ import hu.thepocok.kockapp.model.piecemap.PieceMap;
  * the red is facing towards us, on it's right side is the green face,
  * on it's left side is the blue one, and on the back, there is the orange face.
  */
-public abstract class Cube {
+public abstract class Cube implements Serializable{
     protected final Face whiteFace;
     protected final Face redFace;
     protected final Face greenFace;
@@ -41,6 +41,7 @@ public abstract class Cube {
     protected PieceMap pieceMap;
 
     protected ArrayList<Move> solution;
+    protected ArrayList<Rotation> solutionWithCubeNotation;
 
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace, int dimensions) {
         this.whiteFace = whiteFace;
@@ -53,6 +54,7 @@ public abstract class Cube {
         this.orientation = new Orientation();
         this.dimensions = dimensions;
         this.solution = new ArrayList<>();
+        this.solutionWithCubeNotation = new ArrayList<>();
     }
 
     public Cube(int dimensions) {
@@ -87,6 +89,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         redFace.setNthRow(0, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("U"));
     }
 
     /**
@@ -109,6 +113,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         redFace.setNthRow(0, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("U'"));
     }
 
     /**
@@ -131,6 +137,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("D"));
     }
 
     /**
@@ -153,6 +161,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("D'"));
     }
 
     /**
@@ -175,6 +185,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(0, layerToRotate.reverse());
+
+        solutionWithCubeNotation.add(new Rotation("L"));
     }
 
     /**
@@ -197,6 +209,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(0, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("L'"));
     }
 
     /**
@@ -219,6 +233,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("R"));
     }
 
     /**
@@ -241,6 +257,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate.reverse());
+
+        solutionWithCubeNotation.add(new Rotation("R'"));
     }
 
     /**
@@ -264,6 +282,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate.reverse());
+
+        solutionWithCubeNotation.add(new Rotation("F"));
     }
 
     /**
@@ -287,6 +307,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("F'"));
     }
 
     /**
@@ -310,6 +332,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(0, layerToRotate);
+
+        solutionWithCubeNotation.add(new Rotation("B"));
     }
 
     /**
@@ -333,6 +357,8 @@ public abstract class Cube {
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(0, layerToRotate.reverse());
+
+        solutionWithCubeNotation.add(new Rotation("B'"));
     }
 
     public void mapKeysToRotation(String... rotationKeys) {
@@ -582,6 +608,10 @@ public abstract class Cube {
         return solution;
     }
 
+    public ArrayList<Rotation> getSolutionWithCubeNotation() {
+        return solutionWithCubeNotation;
+    }
+
     public String getSolutionString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Solution:\n");
@@ -726,6 +756,24 @@ public abstract class Cube {
         faces.add(blueFace);
         faces.add(yellowFace);
         return faces.iterator();
+    }
+
+    public Cube duplicate() {
+        if (this instanceof CubeTwo) {
+            return new CubeTwo(whiteFace.duplicate(),
+                    redFace.duplicate(),
+                    greenFace.duplicate(),
+                    orangeFace.duplicate(),
+                    blueFace.duplicate(),
+                    yellowFace.duplicate());
+        } else {
+            return new CubeThree(whiteFace.duplicate(),
+                    redFace.duplicate(),
+                    greenFace.duplicate(),
+                    orangeFace.duplicate(),
+                    blueFace.duplicate(),
+                    yellowFace.duplicate());
+        }
     }
 
     public void setOrientation(Color faceUp, Color faceFront) throws InvalidOrientationException {

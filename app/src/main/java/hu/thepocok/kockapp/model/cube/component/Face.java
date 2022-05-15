@@ -1,6 +1,7 @@
 package hu.thepocok.kockapp.model.cube.component;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -176,6 +177,12 @@ public class Face implements Serializable {
         }
 
         return l;
+    }
+
+    public Face duplicate() {
+        ArrayList<Layer> copyOfLayers = (ArrayList<Layer>) layers.clone();
+
+        return new Face(faceColor, copyOfLayers.toArray(new Layer[copyOfLayers.size()]));
     }
 
     @Override

@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import hu.thepocok.kockapp.CubeSolutionActivity;
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.databinding.FragmentHomeBinding;
 import hu.thepocok.kockapp.ui.ReadCubeFromCameraActivity;
@@ -53,6 +54,16 @@ public class HomeFragment extends Fragment {
         });
 
         layout.addView(cubeManually);
+
+
+        Button solution = new Button(getContext());
+        solution.setText("Solution");
+        solution.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), CubeSolutionActivity.class);
+            startActivity(intent);
+        });
+
+        layout.addView(solution);
 
         return root;
     }

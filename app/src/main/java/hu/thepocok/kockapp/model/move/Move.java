@@ -1,4 +1,6 @@
 package hu.thepocok.kockapp.model.move;
 
-public abstract class Move {
+import java.io.Serializable;
+
+public abstract class Move implements Serializable {
 }

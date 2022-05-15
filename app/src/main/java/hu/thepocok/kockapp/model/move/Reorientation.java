@@ -1,9 +1,11 @@
 package hu.thepocok.kockapp.model.move;
 
+import java.io.Serializable;
+
 import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 
-public class Reorientation extends Move {
+public class Reorientation extends Move implements Serializable {
     private final Orientation orientation;
 
     public Reorientation(Orientation orientation) {

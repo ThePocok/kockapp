@@ -1,10 +1,12 @@
 package hu.thepocok.kockapp.model.piecemap;
 
+import java.io.Serializable;
+
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
 
-public class CubeTwoPieceMap extends PieceMap {
+public class CubeTwoPieceMap extends PieceMap implements Serializable {
 
     public CubeTwoPieceMap() {
         super();

@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import hu.thepocok.kockapp.CubeSolutionActivity;
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.CubeThree;
@@ -57,6 +58,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     private Face yellowFace = null;
 
     private Cube cube;
+    private Cube solvedCube;
     private int dimensions;
 
     private ArrayList<Color> tileColors;
@@ -281,6 +283,10 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             checkCubeValidity();
 
             //TODO link to new activity
+            Intent intent = new Intent(this, CubeSolutionActivity.class);
+            intent.putExtra("cube", cube);
+            intent.putExtra("solvedCube", solvedCube);
+            startActivity(intent);
         }
     }
 
@@ -312,7 +318,8 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                     .show();
         } else {
             try {
-                cube.solve();
+                solvedCube = cube.duplicate();
+                solvedCube.solve();
             } catch (UnsolvableCubeException e) {
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("Unsolvable cube")

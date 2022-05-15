@@ -1,6 +1,8 @@
 package hu.thepocok.kockapp.model.move;
 
-public class Rotation extends Move {
+import java.io.Serializable;
+
+public class Rotation extends Move implements Serializable {
     private String key;
 
     public Rotation(String key) {
