@@ -54,19 +54,36 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            clickPlayButton();
+            runOnUiThread(this::nextStep);
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            runOnUiThread(this::previousStep);
         });
 
         t.start();
 
     }
 
+    public void nextStep() {
+        webView.evaluateJavascript("clickNextStepButton()", null);
+    }
+
+    public void previousStep() {
+        webView.evaluateJavascript("clickPreviousStepButton()", null);
+    }
+
     private void loadHtml() {
          String htmlData = "<html>\n" +
                 "    <script src=\"AnimCube3.js\"></script>\n" +
+                "    <script src=\"controls.js\"></script>\n" +
                 "\n" +
                 "    <body>\n" +
-                "        <div class=\"cube\" style=\"width: 100%; height: 100%;\">\n" +
+                "        <div id=\"cube\" style=\"width: 100%; height: 100%;\">\n" +
                 "            <script> AnimCube3(\"" + getParametersForAnimCube() + "\") </script>\n" +
                 "        </div>\n" +
                 "    </body>\n" +
