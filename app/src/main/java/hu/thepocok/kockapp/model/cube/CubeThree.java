@@ -12,6 +12,7 @@ import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.model.move.Separator;
 import hu.thepocok.kockapp.model.piecemap.CubeThreePieceMap;
 
 public class CubeThree extends Cube implements Serializable {
@@ -35,22 +36,28 @@ public class CubeThree extends Cube implements Serializable {
         }
         /* First task: create a white cross on the yellow face */
         createWhiteCross();
+        solution.add(new Separator());
 
         /* Second task: turn the white pieces from the cross to the right place */
         createWhiteCrossOnWhiteFace();
+        solution.add(new Separator());
 
         /* Third task: solve white edges */
         solveWhiteCorners();
+        solution.add(new Separator());
 
         /* Fourth task: solve the middle layer */
         solveMiddleLayer();
+        solution.add(new Separator());
 
         /* Fifth task: create a yellow cross on the yellow face */
         createYellowCross();
+        solution.add(new Separator());
         
         /* Sixth task: complete yellow corners */
         try {
             completeYellowFace();
+            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -58,12 +65,14 @@ public class CubeThree extends Cube implements Serializable {
         /* Seventh task: reposition yellow corners to their correct place */
         try {
             repositionYellowCorners();
+            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
 
         /* Eighth task: solve middle pieces on yellow face */
         solveMiddlePiecesOnYellowFace();
+        solution.add(new Separator());
 
         /* During the solution, is it possible, that more steps were made, then necessary. */
         simplifySolution();

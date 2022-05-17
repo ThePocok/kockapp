@@ -11,6 +11,7 @@ import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.model.move.Separator;
 import hu.thepocok.kockapp.model.piecemap.CubeTwoPieceMap;
 
 public class CubeTwo extends Cube implements Serializable {
@@ -37,16 +38,20 @@ public class CubeTwo extends Cube implements Serializable {
         /* First task: find the reference piece, and orient the cube in a way,
            that the reference piece's white color faces up */
         setInitialOrientation();
+        solution.add(new Separator());
 
         /* Second task: solve the white-blue-orange piece */
         solveSecondPiece();
+        solution.add(new Separator());
 
         /* Third task: solve the white-green-orange piece*/
         solveThirdPiece();
+        solution.add(new Separator());
 
         /* Fourth task: solve the white-green-red piece*/
         try {
             solveFourthPiece();
+            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -54,12 +59,14 @@ public class CubeTwo extends Cube implements Serializable {
         /* Fifth task: get all the yellow tiles to the correct face */
         try {
             moveYellowTilesUp();
+            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
 
         /* Last task: swap the two pieces not matching on the bottom layer*/
         swapNotMatchingPieces();
+        solution.add(new Separator());
 
         /* During the solution, is it possible, that more steps were made, then necessary. */
         simplifySolution();

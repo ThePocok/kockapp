@@ -11,11 +11,14 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
+import java.util.ArrayList;
+
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
+import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.move.Move;
 import hu.thepocok.kockapp.model.move.Reorientation;
 import hu.thepocok.kockapp.model.move.Rotation;
@@ -49,7 +52,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         webView.setOnTouchListener((view, motionEvent) -> false);
 
-        loadHtml();
+        loadHtml(0);
 
         Thread t = new Thread(() -> {
             try {
@@ -81,14 +84,14 @@ public class CubeSolutionActivity extends AppCompatActivity {
         webView.evaluateJavascript("clickPreviousStepButton()", null);
     }
 
-    private void loadHtml() {
+    private void loadHtml(int section) {
          String htmlData = "<html>\n" +
                 "    <script src=\"AnimCube" + cube.getDimensions() + ".js\"></script>\n" +
                 "    <script src=\"controls.js\"></script>\n" +
                 "\n" +
                 "    <body>\n" +
                 "        <div id=\"cube\" style=\"width: 100%; height: 100%;\">\n" +
-                "            <script> AnimCube" + cube.getDimensions() + "(\"" + getParametersForAnimCube() + "\") </script>\n" +
+                "            <script> AnimCube" + cube.getDimensions() + "(\"" + getParametersForAnimCube(section) + "\") </script>\n" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>";
@@ -97,31 +100,33 @@ public class CubeSolutionActivity extends AppCompatActivity {
         webView.loadDataWithBaseURL("file:///android_asset/js/", htmlData, "text/html; charset=utf-8", "UTF-8", null);
     }
 
-    private String getParametersForAnimCube() {
+    private String getParametersForAnimCube(int section) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("edit=0&");
         sb.append("bgcolor=ffffff&");
-        sb.append("position=llluuuuuu&");
+        sb.append("position=llluuuuuuu&");
         // 0w 1r 2g 3o 4b 5y
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
-        sb.append("facelets=" + mapCubeToFaceletString());
+        sb.append("facelets=" + mapCubeToFaceletString(section) + "&");
         // F - green face clockwise
         // U - white face clockwise
         // R - red face clockwise
         // L - orange face clockwise
         // B - blue face clockwise
         // D - yellow face clockwise
-        sb.append("move=" + mapCubeSolutionToAnimCubeMoves() + "&");
+        sb.append("move=" + mapCubeSolutionToAnimCubeMoves(section) + "&");
 
         return sb.toString();
     }
 
-    private String mapCubeSolutionToAnimCubeMoves() {
+    private String mapCubeSolutionToAnimCubeMoves(int section) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < solvedCube.getSolution().size() - 1; i++) {
+        ArrayList<Move> solutionSection = solvedCube.getSolutionSection(section);
+
+        for (int i = 0; i < solutionSection.size() - 1; i++) {
             try {
-                sb.append(mapCubeNotationToAnimCubeNotation(solvedCube.getSolution().get(i)));
+                sb.append(mapCubeNotationToAnimCubeNotation(solutionSection.get(i)));
             } catch (InvalidOrientationException e) {
                 e.printStackTrace(); // This will never occur
             }
@@ -129,12 +134,11 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         try {
-            sb.append(mapCubeNotationToAnimCubeNotation(solvedCube.getSolution()
-                    .get(solvedCube.getSolution().size() - 1)));
+            sb.append(mapCubeNotationToAnimCubeNotation(solutionSection.get(solutionSection.size() - 1)));
         } catch (InvalidOrientationException e) {
             e.printStackTrace(); // This will never occur
         } catch (ArrayIndexOutOfBoundsException e) {
-            // This will only occur if the solution string is empty, hence the cube is solved
+            // This will only occur if the solution string is empty
             // This case nothing should be done
         }
 
@@ -208,12 +212,18 @@ public class CubeSolutionActivity extends AppCompatActivity {
         return null;
     }
 
-    private String mapCubeToFaceletString() {
+    private String mapCubeToFaceletString(int section) {
+        Cube initialState = cube.duplicate();
+        try {
+            initialState.solveBySolutionArray(solvedCube.getSolutionBeforeSection(section));
+        } catch (UnsolvableCubeException e) {
+            // This will never occur
+        }
         StringBuilder sb = new StringBuilder();
 
         // White face
-        for (int i = 0; i < cube.getDimensions(); i++) {
-            Layer layer = cube.getFace(Color.WHITE).getNthColumn(i);
+        for (int i = 0; i < initialState.getDimensions(); i++) {
+            Layer layer = initialState.getFace(Color.WHITE).getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
@@ -221,8 +231,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         // Yellow face
-        for (int i = cube.getDimensions() - 1; i >= 0; i--) {
-            Layer layer = cube.getFace(Color.YELLOW).getNthRow(i);
+        for (int i = initialState.getDimensions() - 1; i >= 0; i--) {
+            Layer layer = initialState.getFace(Color.YELLOW).getNthRow(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
@@ -230,8 +240,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         // Green face
-        for (int i = 0; i < cube.getDimensions(); i++) {
-            Layer layer = cube.getFace(Color.GREEN).getNthColumn(i);
+        for (int i = 0; i < initialState.getDimensions(); i++) {
+            Layer layer = initialState.getFace(Color.GREEN).getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
@@ -239,8 +249,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         // Blue face
-        for (int i = 0; i < cube.getDimensions(); i++) {
-            Layer layer = cube.getFace(Color.BLUE).getNthColumn(i);
+        for (int i = 0; i < initialState.getDimensions(); i++) {
+            Layer layer = initialState.getFace(Color.BLUE).getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
@@ -248,8 +258,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         // Orange face
-        for (int i = 0; i < cube.getDimensions(); i++) {
-            Layer layer = cube.getFace(Color.ORANGE).getNthRow(i).reverse();
+        for (int i = 0; i < initialState.getDimensions(); i++) {
+            Layer layer = initialState.getFace(Color.ORANGE).getNthRow(i).reverse();
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
@@ -257,15 +267,14 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         // Red face
-        for (int i = 0; i < cube.getDimensions(); i++) {
-            Layer layer = cube.getFace(Color.RED).getNthColumn(i);
+        for (int i = 0; i < initialState.getDimensions(); i++) {
+            Layer layer = initialState.getFace(Color.RED).getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        sb.append('&');
         return sb.toString();
     }
 

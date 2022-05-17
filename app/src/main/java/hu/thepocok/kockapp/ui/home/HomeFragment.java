@@ -45,25 +45,25 @@ public class HomeFragment extends Fragment {
 
         layout.addView(cubeByCameraBtn);
 
-        Button cubeManually = new Button(getContext());
-        cubeManually.setText("Read cube manually");
-        cubeManually.setOnClickListener(view -> {
+        Button cube3Manually = new Button(getContext());
+        cube3Manually.setText("Read 3x3 cube manually");
+        cube3Manually.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", 3);
             startActivity(intent);
         });
 
-        layout.addView(cubeManually);
+        layout.addView(cube3Manually);
 
-
-        Button solution = new Button(getContext());
-        solution.setText("Solution");
-        solution.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), CubeSolutionActivity.class);
+        Button cube2Manually = new Button(getContext());
+        cube2Manually.setText("Read 2x2 cube manually");
+        cube2Manually.setOnClickListener(view -> {
+            Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
+            intent.putExtra("cubeDimensions", 2);
             startActivity(intent);
         });
 
-        layout.addView(solution);
+        layout.addView(cube2Manually);
 
         return root;
     }

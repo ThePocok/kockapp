@@ -19,6 +19,7 @@ import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.move.Move;
 import hu.thepocok.kockapp.model.move.Reorientation;
 import hu.thepocok.kockapp.model.move.Rotation;
+import hu.thepocok.kockapp.model.move.Separator;
 import hu.thepocok.kockapp.model.piecemap.PieceMap;
 
 /**
@@ -433,6 +434,10 @@ public abstract class Cube implements Serializable{
 
     public void simplifySolution() {
         for (int i = 0; i < solution.size() - 3; i++) {
+            if (solution.get(i) instanceof Separator) {
+                continue;
+            }
+
             // If two reorientations were made, the first one is unnecessary
             if (solution.get(i) instanceof Reorientation && solution.get(i+1) instanceof Reorientation) {
                 solution.remove(i);
@@ -467,16 +472,14 @@ public abstract class Cube implements Serializable{
 
             // If one rotation and its counter rotation were made, they both can be eliminated
             // First, we must check, that the next step in the solution is also a rotation
-            if (solution.get(i+1) instanceof Reorientation) {
-                continue;
-            }
+            if (solution.get(i+1) instanceof Rotation) {
+                key = ((Rotation) solution.get(i)).getKey();
+                String nextKey = ((Rotation) solution.get(i + 1)).getKey();
 
-            key = ((Rotation) solution.get(i)).getKey();
-            String nextKey = ((Rotation) solution.get(i+1)).getKey();
-
-            if (areCounterRotations(key, nextKey)) {
-                solution.remove(i+1);
-                solution.remove(i);
+                if (areCounterRotations(key, nextKey)) {
+                    solution.remove(i + 1);
+                    solution.remove(i);
+                }
             }
         }
     }
@@ -589,9 +592,11 @@ public abstract class Cube implements Serializable{
             if (m instanceof Reorientation) {
                 Reorientation reorientation = (Reorientation) m;
                 sb.append(reorientation).append("\n");
-            } else {
+            } else if (m instanceof Rotation) {
                 Rotation rotation = (Rotation) m;
                 sb.append(rotation).append("\n");
+            } else if (m instanceof Separator) {
+                sb.append("##### Separator #####\n");
             }
         }
 
@@ -758,6 +763,60 @@ public abstract class Cube implements Serializable{
 
     public int getDimensions() {
         return dimensions;
+    }
+
+    /**
+     *
+     * @param section The index of the section, beginning from 0
+     * @return The nth section of the solution
+     */
+    public ArrayList<Move> getSolutionSection(int section) {
+        ArrayList<Move> solutionSection = new ArrayList<>();
+        int skippedSections = 0;
+        int i = 0;
+
+        while (i < solution.size() && skippedSections < section) {
+            if (solution.get(i) instanceof Separator) {
+                skippedSections++;
+            }
+
+            i++;
+        }
+
+        while (i < solution.size() && skippedSections == section) {
+            if (solution.get(i) instanceof Separator) {
+                skippedSections++;
+                continue;
+            }
+
+            solutionSection.add(solution.get(i));
+            i++;
+        }
+
+        return solutionSection;
+    }
+
+    /**
+     *
+     * @param section The index of the section, beginning from 0
+     * @return The solution before the given section
+     */
+    public ArrayList<Move> getSolutionBeforeSection(int section) {
+        ArrayList<Move> solutionSection = new ArrayList<>();
+        int addedSections = 0;
+        int i = 0;
+
+        while (i < solution.size() && addedSections < section) {
+            if (solution.get(i) instanceof Separator) {
+                addedSections++;
+                continue;
+            }
+
+            solutionSection.add(solution.get(i));
+            i++;
+        }
+
+        return solutionSection;
     }
 
     public abstract boolean isValidCube();
