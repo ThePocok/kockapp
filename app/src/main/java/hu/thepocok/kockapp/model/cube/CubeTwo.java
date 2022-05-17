@@ -23,7 +23,7 @@ public class CubeTwo extends Cube implements Serializable {
     }
 
     public CubeTwo(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace) {
-        super(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace, 3);
+        super(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace, 2);
         pieceMap = new CubeTwoPieceMap();
     }
 

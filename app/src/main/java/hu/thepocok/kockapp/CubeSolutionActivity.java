@@ -83,12 +83,12 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
     private void loadHtml() {
          String htmlData = "<html>\n" +
-                "    <script src=\"AnimCube3.js\"></script>\n" +
+                "    <script src=\"AnimCube" + cube.getDimensions() + ".js\"></script>\n" +
                 "    <script src=\"controls.js\"></script>\n" +
                 "\n" +
                 "    <body>\n" +
                 "        <div id=\"cube\" style=\"width: 100%; height: 100%;\">\n" +
-                "            <script> AnimCube3(\"" + getParametersForAnimCube() + "\") </script>\n" +
+                "            <script> AnimCube" + cube.getDimensions() + "(\"" + getParametersForAnimCube() + "\") </script>\n" +
                 "        </div>\n" +
                 "    </body>\n" +
                 "</html>";
@@ -133,6 +133,9 @@ public class CubeSolutionActivity extends AppCompatActivity {
                     .get(solvedCube.getSolution().size() - 1)));
         } catch (InvalidOrientationException e) {
             e.printStackTrace(); // This will never occur
+        } catch (ArrayIndexOutOfBoundsException e) {
+            // This will only occur if the solution string is empty, hence the cube is solved
+            // This case nothing should be done
         }
 
         return sb.toString();
