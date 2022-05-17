@@ -636,8 +636,8 @@ public class CubeThree extends Cube implements Serializable {
         ArrayList<Piece> piecesInCross = new ArrayList<>();
         piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 0, 1)));
         piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 1, 0)));
-        piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 1, 2)));
         piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 2, 1)));
+        piecesInCross.add(pieceMap.getPieceByPosition(new Position(Color.YELLOW, 1, 2)));
 
         return (ArrayList<Piece>) piecesInCross.stream().map(this::mapPieceToColorInPlace).filter(piece -> piece.hasColor(Color.WHITE)).collect(Collectors.toList());
     }

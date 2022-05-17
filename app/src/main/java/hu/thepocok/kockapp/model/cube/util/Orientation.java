@@ -18,6 +18,17 @@ public class Orientation implements Serializable {
         this.faceLeft = Color.GREEN;
     }
 
+    public Orientation(Color faceUp, Color faceFront) {
+        super();
+        try {
+            setOrientation(faceUp, faceFront);
+        } catch (InvalidOrientationException e) {
+            this.faceUp = null;
+            this.faceFront = null;
+            this.faceLeft = null;
+        }
+    }
+
     public Color getFaceUp() {
         return faceUp;
     }
@@ -173,6 +184,16 @@ public class Orientation implements Serializable {
                 return Color.WHITE;
         }
         return null;
+    }
+
+    public Orientation duplicate() {
+        Orientation duplicate = new Orientation();
+        try {
+            duplicate.setOrientation(this.getFaceUp(), this.getFaceFront());
+        } catch (InvalidOrientationException e) {
+            e.printStackTrace(); // This will never occur
+        }
+        return duplicate;
     }
 
     @Override

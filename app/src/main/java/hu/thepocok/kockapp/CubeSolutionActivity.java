@@ -14,7 +14,11 @@ import android.webkit.WebView;
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.model.cube.util.Orientation;
+import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.move.Move;
+import hu.thepocok.kockapp.model.move.Reorientation;
+import hu.thepocok.kockapp.model.move.Rotation;
 
 public class CubeSolutionActivity extends AppCompatActivity {
     public final String TAG = "CubeSolutionActivity";
@@ -65,7 +69,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
             runOnUiThread(this::previousStep);
         });
 
-        t.start();
+        //t.start();
 
     }
 
@@ -98,7 +102,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         sb.append("edit=0&");
         sb.append("bgcolor=ffffff&");
-        sb.append("position=llluuu&");
+        sb.append("position=llluuuuuu&");
         // 0w 1r 2g 3o 4b 5y
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
         sb.append("facelets=" + mapCubeToFaceletString());
@@ -108,12 +112,95 @@ public class CubeSolutionActivity extends AppCompatActivity {
         // L - orange face clockwise
         // B - blue face clockwise
         // D - yellow face clockwise
-        sb.append("move=F F' U U' R R' L L' B B' D D'&");
+        sb.append("move=" + mapCubeSolutionToAnimCubeMoves() + "&");
 
         return sb.toString();
     }
 
-    private String mapCubeNotationToAnimCube(Move move) {
+    private String mapCubeSolutionToAnimCubeMoves() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < solvedCube.getSolution().size() - 1; i++) {
+            try {
+                sb.append(mapCubeNotationToAnimCubeNotation(solvedCube.getSolution().get(i)));
+            } catch (InvalidOrientationException e) {
+                e.printStackTrace(); // This will never occur
+            }
+            sb.append(" ");
+        }
+
+        try {
+            sb.append(mapCubeNotationToAnimCubeNotation(solvedCube.getSolution()
+                    .get(solvedCube.getSolution().size() - 1)));
+        } catch (InvalidOrientationException e) {
+            e.printStackTrace(); // This will never occur
+        }
+
+        return sb.toString();
+    }
+
+    private String mapCubeNotationToAnimCubeNotation(Move move) throws InvalidOrientationException {
+        if (move instanceof Rotation) {
+            String key = ((Rotation) move).getKey();
+
+            switch (key) {
+                case "F":
+                    return "R";
+                case "F'":
+                    return "R'";
+                case "R":
+                    return "B";
+                case "R'":
+                    return "B'";
+                case "L":
+                    return "F";
+                case "L'":
+                    return "F'";
+                case "B":
+                    return "L";
+                case "B'":
+                    return "L'";
+                default:
+                    return key;
+            }
+        }
+
+        if (move instanceof Reorientation) {
+            Orientation previousOrientation = ((Reorientation) move).getPreviousOrientation().duplicate();
+            Orientation orientation = ((Reorientation) move).getOrientation();
+
+            StringBuilder sb = new StringBuilder();
+
+            if (previousOrientation.getFaceUp().equals(orientation.getOppositeColor(orientation.getFaceUp()))) {
+                sb.append("Y Y ");
+                previousOrientation.setOrientation(previousOrientation.getFaceDown(), previousOrientation.getFaceBack());
+            } else if (! previousOrientation.getFaceUp().equals(orientation.getFaceUp())) {
+                if (previousOrientation.getFaceUp().equals(orientation.getFaceFront())) {
+                    sb.append("Y' ");
+                    previousOrientation.setOrientation(previousOrientation.getFaceFront(), previousOrientation.getFaceDown());
+                } else if (previousOrientation.getFaceUp().equals(orientation.getFaceLeft())) {
+                    sb.append("X' ");
+                    previousOrientation.setOrientation(previousOrientation.getFaceLeft(), previousOrientation.getFaceDown());
+                } else if (previousOrientation.getFaceUp().equals(orientation.getFaceBack())) {
+                    sb.append("Y ");
+                    previousOrientation.setOrientation(previousOrientation.getFaceBack(), previousOrientation.getFaceDown());
+                } else {
+                    sb.append("X ");
+                    previousOrientation.setOrientation(previousOrientation.getFaceRight(), previousOrientation.getFaceDown());
+                }
+            }
+
+            if (! previousOrientation.getFaceFront().equals(orientation.getFaceFront())) {
+                if (previousOrientation.getFaceFront().equals(orientation.getFaceRight())) {
+                    sb.append("Z'");
+                } else if (previousOrientation.getFaceFront().equals(orientation.getFaceLeft())) {
+                    sb.append("Z");
+                } else {
+                    sb.append("Z Z");
+                }
+            }
+
+            return sb.toString();
+        }
 
         return null;
     }

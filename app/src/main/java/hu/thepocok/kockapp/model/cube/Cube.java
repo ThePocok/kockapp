@@ -41,7 +41,6 @@ public abstract class Cube implements Serializable{
     protected PieceMap pieceMap;
 
     protected ArrayList<Move> solution;
-    protected ArrayList<Rotation> solutionWithCubeNotation;
 
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace, int dimensions) {
         this.whiteFace = whiteFace;
@@ -54,7 +53,6 @@ public abstract class Cube implements Serializable{
         this.orientation = new Orientation();
         this.dimensions = dimensions;
         this.solution = new ArrayList<>();
-        this.solutionWithCubeNotation = new ArrayList<>();
     }
 
     public Cube(int dimensions) {
@@ -89,8 +87,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         redFace.setNthRow(0, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("U"));
     }
 
     /**
@@ -113,8 +109,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         redFace.setNthRow(0, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("U'"));
     }
 
     /**
@@ -137,8 +131,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("D"));
     }
 
     /**
@@ -161,8 +153,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         redFace.setNthRow(redFace.getDimensions() - 1, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("D'"));
     }
 
     /**
@@ -185,8 +175,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(0, layerToRotate.reverse());
-
-        solutionWithCubeNotation.add(new Rotation("L"));
     }
 
     /**
@@ -209,8 +197,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(0, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("L'"));
     }
 
     /**
@@ -233,8 +219,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("R"));
     }
 
     /**
@@ -257,8 +241,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthColumn(whiteFace.getDimensions() - 1, layerToRotate.reverse());
-
-        solutionWithCubeNotation.add(new Rotation("R'"));
     }
 
     /**
@@ -282,8 +264,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate.reverse());
-
-        solutionWithCubeNotation.add(new Rotation("F"));
     }
 
     /**
@@ -307,8 +287,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(whiteFace.getDimensions() - 1, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("F'"));
     }
 
     /**
@@ -332,8 +310,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(0, layerToRotate);
-
-        solutionWithCubeNotation.add(new Rotation("B"));
     }
 
     /**
@@ -357,8 +333,6 @@ public abstract class Cube implements Serializable{
         layerToRotate = originalLayer;
 
         whiteFace.setNthRow(0, layerToRotate.reverse());
-
-        solutionWithCubeNotation.add(new Rotation("B'"));
     }
 
     public void mapKeysToRotation(String... rotationKeys) {
@@ -463,7 +437,7 @@ public abstract class Cube implements Serializable{
             if (solution.get(i) instanceof Reorientation && solution.get(i+1) instanceof Reorientation) {
                 solution.remove(i);
                 i--;
-                continue; //maybe
+                continue;
             }
 
             if (solution.get(i) instanceof Reorientation) {
@@ -606,10 +580,6 @@ public abstract class Cube implements Serializable{
 
     public ArrayList<Move> getSolution() {
         return solution;
-    }
-
-    public ArrayList<Rotation> getSolutionWithCubeNotation() {
-        return solutionWithCubeNotation;
     }
 
     public String getSolutionString() {
@@ -777,12 +747,13 @@ public abstract class Cube implements Serializable{
     }
 
     public void setOrientation(Color faceUp, Color faceFront) throws InvalidOrientationException {
+        Orientation previousOrientation = new Orientation(orientation.getFaceUp(), orientation.getFaceFront());
         if (orientation.getFaceUp().equals(faceUp) && orientation.getFaceFront().equals(faceFront)) {
             return;
         }
 
         orientation.setOrientation(faceUp, faceFront);
-        solution.add(new Reorientation(orientation));
+        solution.add(new Reorientation(previousOrientation, orientation));
     }
 
     public int getDimensions() {
