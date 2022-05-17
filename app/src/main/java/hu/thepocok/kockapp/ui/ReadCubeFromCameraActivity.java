@@ -239,12 +239,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         if (isTwoTimesTwo) {
             Layer firstLayer = new Layer(colors.get(1), colors.get(0));
             Layer secondLayer = new Layer(colors.get(3), colors.get(2));
-            face = new Face(firstLayer, secondLayer);
+            face = new Face(currentFaceToSet, firstLayer, secondLayer);
         } else {
             Layer firstLayer = new Layer(colors.get(2), colors.get(1), colors.get(0));
             Layer secondLayer = new Layer(colors.get(5), colors.get(4), colors.get(3));
             Layer thirdLayer = new Layer(colors.get(8), colors.get(7), colors.get(6));
-            face = new Face(firstLayer, secondLayer, thirdLayer);
+            face = new Face(currentFaceToSet, firstLayer, secondLayer, thirdLayer);
         }
 
 

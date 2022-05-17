@@ -755,22 +755,22 @@ public class CubeThree extends Cube implements Serializable {
         Face face = null;
         switch (rotationDegree) {
             case 0:
-                face = new Face(getFace(faceColor).getNthRow(0),
+                face = new Face(faceColor, getFace(faceColor).getNthRow(0),
                         getFace(faceColor).getNthRow(1),
                         getFace(faceColor).getNthRow(2));
                 break;
             case 90:
-                face = new Face(getFace(faceColor).getNthColumn(0).reverse(),
+                face = new Face(faceColor, getFace(faceColor).getNthColumn(0).reverse(),
                         getFace(faceColor).getNthColumn(1).reverse(),
                         getFace(faceColor).getNthColumn(2).reverse());
                 break;
             case 180:
-                face = new Face(getFace(faceColor).getNthRow(2).reverse(),
+                face = new Face(faceColor, getFace(faceColor).getNthRow(2).reverse(),
                         getFace(faceColor).getNthRow(1).reverse(),
                         getFace(faceColor).getNthRow(0).reverse());
                 break;
             case 270:
-                face = new Face(getFace(faceColor).getNthColumn(2),
+                face = new Face(faceColor, getFace(faceColor).getNthColumn(2),
                         getFace(faceColor).getNthColumn(1),
                         getFace(faceColor).getNthColumn(0));
                 break;

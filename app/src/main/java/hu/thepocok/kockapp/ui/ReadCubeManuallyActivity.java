@@ -214,12 +214,12 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         if (dimensions == 2) {
             Layer firstLayer = new Layer(colors.get(0), colors.get(1));
             Layer secondLayer = new Layer(colors.get(2), colors.get(3));
-            face = new Face(firstLayer, secondLayer);
+            face = new Face(currentFaceToSet, firstLayer, secondLayer);
         } else {
             Layer firstLayer = new Layer(colors.get(0), colors.get(1), colors.get(2));
             Layer secondLayer = new Layer(colors.get(3), colors.get(4), colors.get(5));
             Layer thirdLayer = new Layer(colors.get(6), colors.get(7), colors.get(8));
-            face = new Face(firstLayer, secondLayer, thirdLayer);
+            face = new Face(currentFaceToSet, firstLayer, secondLayer, thirdLayer);
         }
 
         if (currentFaceToSet.equals(Color.WHITE)) {
