@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -103,6 +104,14 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 stageName.setText(cubeThreeStageNames[currentSection]);
             }
         });
+
+        Button playBtn = findViewById(R.id.play_button);
+
+        Button prevStepBtn = findViewById(R.id.previous_step_button);
+        prevStepBtn.setOnClickListener(l -> previousStep());
+
+        Button nextStepBtn = findViewById(R.id.next_step_button);
+        nextStepBtn.setOnClickListener(l -> nextStep());
 
         webView = findViewById(R.id.cube_model);
         webView.getSettings().setJavaScriptEnabled(true);
