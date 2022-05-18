@@ -10,8 +10,12 @@ import android.view.MotionEvent;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.component.Color;
@@ -26,9 +30,33 @@ import hu.thepocok.kockapp.model.move.Rotation;
 public class CubeSolutionActivity extends AppCompatActivity {
     public final String TAG = "CubeSolutionActivity";
     private WebView webView;
+    private TextView stageName;
+
 
     private Cube cube;
     private Cube solvedCube;
+
+    private int currentSection = 0;
+
+    private String[] cubeThreeStageNames = new String[] {
+            "Create white cross on yellow face",
+            "Turn the white cross to the white face",
+            "Solve the white edges",
+            "Solve the middle layer",
+            "Create yellow cross on yellow face",
+            "Complete yellow face",
+            "Reposition yellow corners to their right place",
+            "Reposition pieces of the yellow cross to their right place"
+    };
+
+    private String[] cubeTwoStageNames = new String[] {
+            "Find the white-red-blue piece and make its white tile face upwards",
+            "Place the white-orange-blue piece next to the white-red-blue piece",
+            "Place the white-orange-green piece next to the white-orange-blue piece",
+            "Place the white-red-green piece next to the white-orange-green piece",
+            "Make all yellow tiles face upwards",
+            "Swap the incorrectly placed pieces on the yellow face",
+    };
 
     @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
     @Override
@@ -38,6 +66,43 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         cube = (Cube) getIntent().getSerializableExtra("cube");
         solvedCube = (Cube) getIntent().getSerializableExtra("solvedCube");
+
+        stageName = findViewById(R.id.stage_name);
+        if (cube.getDimensions() == 2) {
+            stageName.setText(cubeTwoStageNames[currentSection]);
+        } else if (cube.getDimensions() == 3) {
+            stageName.setText(cubeThreeStageNames[currentSection]);
+        }
+
+        Button prevStageBtn = findViewById(R.id.prev_stage);
+        prevStageBtn.setOnClickListener(l -> {
+            if (currentSection == 0) {
+                return;
+            }
+
+            currentSection--;
+            loadHtml(currentSection);
+            if (cube.getDimensions() == 2) {
+                stageName.setText(cubeTwoStageNames[currentSection]);
+            } else if (cube.getDimensions() == 3) {
+                stageName.setText(cubeThreeStageNames[currentSection]);
+            }
+        });
+        Button nextStageBtn = findViewById(R.id.next_stage);
+        nextStageBtn.setOnClickListener(l -> {
+            if ((cube.getDimensions() == 2 && currentSection == cubeTwoStageNames.length - 1) ||
+                    (cube.getDimensions() == 3 && currentSection == cubeThreeStageNames.length - 1)) {
+                return;
+            }
+
+            currentSection++;
+            loadHtml(currentSection);
+            if (cube.getDimensions() == 2) {
+                stageName.setText(cubeTwoStageNames[currentSection]);
+            } else if (cube.getDimensions() == 3) {
+                stageName.setText(cubeThreeStageNames[currentSection]);
+            }
+        });
 
         webView = findViewById(R.id.cube_model);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -213,6 +278,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     private String mapCubeToFaceletString(int section) {
+        //TODO add reorientation to the beginning of every section
         Cube initialState = cube.duplicate();
         try {
             initialState.solveBySolutionArray(solvedCube.getSolutionBeforeSection(section));
@@ -221,60 +287,72 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
         StringBuilder sb = new StringBuilder();
 
-        // White face
+        // Top face
         for (int i = 0; i < initialState.getDimensions(); i++) {
-            Layer layer = initialState.getFace(Color.WHITE).getNthColumn(i);
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceUp())
+                    .getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        // Yellow face
+        // Bottom face
         for (int i = initialState.getDimensions() - 1; i >= 0; i--) {
-            Layer layer = initialState.getFace(Color.YELLOW).getNthRow(i);
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceDown())
+                    .getNthRow(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        // Green face
+        // Left face
         for (int i = 0; i < initialState.getDimensions(); i++) {
-            Layer layer = initialState.getFace(Color.GREEN).getNthColumn(i);
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceLeft())
+                    .getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        // Blue face
+        // Right face
         for (int i = 0; i < initialState.getDimensions(); i++) {
-            Layer layer = initialState.getFace(Color.BLUE).getNthColumn(i);
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceRight())
+                    .getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        // Orange face
+        // Back face
         for (int i = 0; i < initialState.getDimensions(); i++) {
-            Layer layer = initialState.getFace(Color.ORANGE).getNthRow(i).reverse();
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceBack())
+                    .getNthRow(i)
+                    .reverse();
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
 
-        // Red face
+        // Front face
         for (int i = 0; i < initialState.getDimensions(); i++) {
-            Layer layer = initialState.getFace(Color.RED).getNthColumn(i);
+            Layer layer = initialState
+                    .getFaceWithCurrentOrientation(initialState.getOrientation().getFaceFront())
+                    .getNthColumn(i);
 
             for (Color color : layer.getDataSet()) {
                 sb.append(mapColorToFaceletString(color));
             }
         }
-
         return sb.toString();
     }
 

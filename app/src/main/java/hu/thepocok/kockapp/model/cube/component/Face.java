@@ -1,7 +1,6 @@
 package hu.thepocok.kockapp.model.cube.component;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;

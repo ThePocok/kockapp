@@ -786,6 +786,7 @@ public abstract class Cube implements Serializable{
         while (i < solution.size() && skippedSections == section) {
             if (solution.get(i) instanceof Separator) {
                 skippedSections++;
+                i++;
                 continue;
             }
 
@@ -809,6 +810,7 @@ public abstract class Cube implements Serializable{
         while (i < solution.size() && addedSections < section) {
             if (solution.get(i) instanceof Separator) {
                 addedSections++;
+                i++;
                 continue;
             }
 
@@ -817,6 +819,453 @@ public abstract class Cube implements Serializable{
         }
 
         return solutionSection;
+    }
+
+    //TODO simplify cases
+    public Face getFaceWithCurrentOrientation(Color faceColor) {
+        int rotationDegree = 0;
+        switch (orientation.getFaceUp()) {
+            case WHITE:
+                switch (orientation.getFaceFront()) {
+                    case RED:
+                        rotationDegree = 0;
+                        break;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 90;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 0;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                    case ORANGE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case YELLOW:
+                                rotationDegree = 180;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 0;
+                                break;
+                        }
+                        break;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 270;
+                                break;
+                            case RED:
+                            case BLUE:
+                            case ORANGE:
+                            case GREEN:
+                                rotationDegree = 0;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                }
+                break;
+            case RED:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                                rotationDegree = 180;
+                                break;
+                            case GREEN:
+                                rotationDegree = 270;
+                                break;
+                            case ORANGE:
+                            case YELLOW:
+                                rotationDegree = 0;
+                                break;
+                            case BLUE:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 180;
+                                break;
+                            case RED:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 90;
+                                break;
+                            case GREEN:
+                                rotationDegree = 270;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 0;
+                                break;
+                        }
+                        break;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case WHITE:
+                            case ORANGE:
+                                rotationDegree = 180;
+                                break;
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 0;
+                                break;
+                            case GREEN:
+                                rotationDegree = 270;
+                                break;
+                            case BLUE:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 180;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                            case BLUE:
+                                rotationDegree = 90;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 0;
+                                break;
+                        }
+                        break;
+                }
+                break;
+            case GREEN:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 90;
+                                break;
+                            case GREEN:
+                                rotationDegree = 180;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                            case BLUE:
+                                rotationDegree = 0;
+                                break;
+                        }
+                        break;
+                    case RED:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                            case GREEN:
+                            case BLUE:
+                            case YELLOW:
+                                rotationDegree = 90;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 90;
+                                break;
+                            case GREEN:
+                                rotationDegree = 0;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                            case BLUE:
+                                rotationDegree = 180;
+                                break;
+                        }
+                        break;
+                    case ORANGE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case YELLOW:
+                            case RED:
+                                rotationDegree = 90;
+                                break;
+                            case GREEN:
+                            case BLUE:
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                }
+                break;
+            case ORANGE:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                                rotationDegree = 0;
+                                break;
+                            case GREEN:
+                                rotationDegree = 90;
+                                break;
+                            case ORANGE:
+                            case YELLOW:
+                                rotationDegree = 180;
+                                break;
+                            case BLUE:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 0;
+                                break;
+                            case RED:
+                            case ORANGE:
+                            case GREEN:
+                                rotationDegree = 90;
+                                break;
+                            case BLUE:
+                                rotationDegree = 270;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 180;
+                                break;
+                        }
+                        break;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case WHITE:
+                            case ORANGE:
+                                rotationDegree = 0;
+                                break;
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 180;
+                                break;
+                            case GREEN:
+                                rotationDegree = 90;
+                                break;
+                            case BLUE:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 0;
+                                break;
+                            case RED:
+                            case BLUE:
+                            case ORANGE:
+                                rotationDegree = 270;
+                                break;
+                            case GREEN:
+                                rotationDegree = 90;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 180;
+                                break;
+                        }
+                        break;
+                }
+                break;
+            case BLUE:
+                switch (orientation.getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case YELLOW:
+                            case RED:
+                                rotationDegree = 270;
+                                break;
+                            case GREEN:
+                                rotationDegree = 0;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 90;
+                                break;
+                            case BLUE:
+                                rotationDegree = 180;
+                                break;
+                        }
+                        break;
+                    case ORANGE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 270;
+                                break;
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case WHITE:
+                            case RED:
+                            case YELLOW:
+                                rotationDegree = 270;
+                                break;
+                            case GREEN:
+                                rotationDegree = 180;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 90;
+                                break;
+                            case BLUE:
+                                rotationDegree = 0;
+                                break;
+                        }
+                        break;
+                    case RED:
+                        switch (faceColor) {
+                            case WHITE:
+                            case GREEN:
+                            case RED:
+                            case BLUE:
+                            case YELLOW:
+                                rotationDegree = 270;
+                                break;
+                            case ORANGE:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                }
+                break;
+            case YELLOW:
+                switch (orientation.getFaceFront()) {
+                    case RED:
+                        rotationDegree = 180;
+                        break;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 270;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 180;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 90;
+                                break;
+                        }
+                        break;
+                    case ORANGE:
+                        switch (faceColor) {
+                            case WHITE:
+                            case YELLOW:
+                                rotationDegree = 0;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 180;
+                                break;
+                        }
+                        break;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                rotationDegree = 90;
+                                break;
+                            case RED:
+                            case GREEN:
+                            case ORANGE:
+                            case BLUE:
+                                rotationDegree = 180;
+                                break;
+                            case YELLOW:
+                                rotationDegree = 270;
+                                break;
+                        }
+                        break;
+                }
+                break;
+        }
+
+        Face face = null;
+        switch (rotationDegree) {
+            case 0:
+                if (dimensions == 2) {
+                    face = new Face(faceColor, getFace(faceColor).getNthRow(0),
+                            getFace(faceColor).getNthRow(1));
+                } else if (dimensions == 3){
+                    face = new Face(faceColor, getFace(faceColor).getNthRow(0),
+                            getFace(faceColor).getNthRow(1),
+                            getFace(faceColor).getNthRow(2));
+                }
+                break;
+            case 90:
+                if (dimensions == 2) {
+                    face = new Face(faceColor, getFace(faceColor).getNthColumn(0).reverse(),
+                            getFace(faceColor).getNthColumn(1).reverse());
+                } else if(dimensions == 3) {
+                    face = new Face(faceColor, getFace(faceColor).getNthColumn(0).reverse(),
+                            getFace(faceColor).getNthColumn(1).reverse(),
+                            getFace(faceColor).getNthColumn(2).reverse());
+                }
+                break;
+            case 180:
+                if (dimensions == 2) {
+                    face = new Face(faceColor, getFace(faceColor).getNthRow(1).reverse(),
+                            getFace(faceColor).getNthRow(0).reverse());
+                } else if (dimensions == 3) {
+                    face = new Face(faceColor, getFace(faceColor).getNthRow(2).reverse(),
+                            getFace(faceColor).getNthRow(1).reverse(),
+                            getFace(faceColor).getNthRow(0).reverse());
+                }
+                break;
+            case 270:
+                if (dimensions == 2) {
+                    face = new Face(faceColor, getFace(faceColor).getNthColumn(1),
+                            getFace(faceColor).getNthColumn(0));
+                } else if (dimensions == 3) {
+                    face = new Face(faceColor, getFace(faceColor).getNthColumn(2),
+                            getFace(faceColor).getNthColumn(1),
+                            getFace(faceColor).getNthColumn(0));
+                }
+                break;
+        }
+
+        return face;
     }
 
     public abstract boolean isValidCube();
