@@ -33,6 +33,7 @@ public class CubeTwo extends Cube implements Serializable {
         solution.clear();
 
         if (isSolved()) {
+            addSection(0);
             return;
         }
         /* First task: find the reference piece, and orient the cube in a way,
@@ -135,6 +136,7 @@ public class CubeTwo extends Cube implements Serializable {
             }
 
             if (isSolved()) {
+                addSection(5);
                 return;
             }
 
@@ -213,6 +215,7 @@ public class CubeTwo extends Cube implements Serializable {
         Piece fourthPiece = getPieceByColor(Color.WHITE, Color.RED, Color.GREEN);
 
         if (thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN)) {
+            addSection(3);
             return; //The two pieces are adjacent to each other
         }
 
@@ -263,6 +266,7 @@ public class CubeTwo extends Cube implements Serializable {
         Piece thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
 
         if (secondPiece.isAdjacent(thirdPiece, Color.WHITE, Color.ORANGE)) {
+            addSection(2);
             return; //The two pieces are adjacent to each other
         }
 
@@ -278,6 +282,7 @@ public class CubeTwo extends Cube implements Serializable {
         if (topLayerPositions.contains(thirdPiece.getPosition(Color.WHITE))) {
             if (thirdPiece.isAdjacent(referencePiece, 2) && thirdPiece.getPosition(Color.WHITE).getFace().equals(orientation.getFaceBack())) {
                 mapKeyToRotation("R'");
+                addSection(2);
                 return;
             }
 
@@ -330,13 +335,16 @@ public class CubeTwo extends Cube implements Serializable {
         if (whiteTileFace.equals(orientation.getFaceUp())) {
             //Check if positioned correctly
             if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                addSection(1);
                 return; //The two pieces are adjacent to each other
             }
             if (referencePiece.isAdjacent(secondPiece, Color.WHITE)) {
                 mapKeysToRotation("F'", "D'", "F", "D", "D", "B'", "D", "B");
+                addSection(1);
                 return;
             }
             mapKeysToRotation("L'", "D'", "L", "D'", "B'", "D", "B");
+            addSection(1);
             return;
         }
 
@@ -383,6 +391,7 @@ public class CubeTwo extends Cube implements Serializable {
             //At this point, the piece should be on the bottom layer
 
             if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                addSection(1);
                 return; //The two pieces are adjacent to each other
             }
 
@@ -399,6 +408,7 @@ public class CubeTwo extends Cube implements Serializable {
             }
 
             if (referencePiece.isAdjacent(secondPiece, Color.WHITE, Color.BLUE)) {
+                addSection(1);
                 return; //The two pieces are adjacent to each other
             }
 

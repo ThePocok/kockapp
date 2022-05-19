@@ -72,6 +72,7 @@ public class CubeThree extends Cube implements Serializable {
 
     private void solveMiddlePiecesOnYellowFace() throws UnsolvableCubeException {
         if (isSolved()) {
+            addSection(7);
             return;
         }
 
@@ -111,6 +112,7 @@ public class CubeThree extends Cube implements Serializable {
             }
 
             if (yellowCornersInCorrectPosition == 4) {
+                addSection(6);
                 return;
             }
 
