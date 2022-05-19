@@ -6,7 +6,7 @@ import hu.thepocok.kockapp.model.cube.util.Orientation;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 
 public class Reorientation extends Move implements Serializable {
-    private final Orientation previousOrientation;
+    private Orientation previousOrientation;
     private final Orientation orientation;
 
     public Reorientation(Orientation previousOrientation, Orientation orientation) {
@@ -20,6 +20,10 @@ public class Reorientation extends Move implements Serializable {
 
     public Orientation getPreviousOrientation() {
         return previousOrientation;
+    }
+
+    public void setPreviousOrientation(Orientation previousOrientation) {
+        this.previousOrientation = previousOrientation;
     }
 
     @Override

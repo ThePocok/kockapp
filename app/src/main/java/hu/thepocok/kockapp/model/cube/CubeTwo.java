@@ -38,20 +38,16 @@ public class CubeTwo extends Cube implements Serializable {
         /* First task: find the reference piece, and orient the cube in a way,
            that the reference piece's white color faces up */
         setInitialOrientation();
-        solution.add(new Separator());
 
         /* Second task: solve the white-blue-orange piece */
         solveSecondPiece();
-        solution.add(new Separator());
 
         /* Third task: solve the white-green-orange piece*/
         solveThirdPiece();
-        solution.add(new Separator());
 
         /* Fourth task: solve the white-green-red piece*/
         try {
             solveFourthPiece();
-            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -59,22 +55,20 @@ public class CubeTwo extends Cube implements Serializable {
         /* Fifth task: get all the yellow tiles to the correct face */
         try {
             moveYellowTilesUp();
-            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
 
         /* Last task: swap the two pieces not matching on the bottom layer*/
         swapNotMatchingPieces();
-        solution.add(new Separator());
 
         /* During the solution, is it possible, that more steps were made, then necessary. */
         simplifySolution();
     }
 
     private void swapNotMatchingPieces() throws UnsolvableCubeException {
-        int count = 0;
-        while (count < 10 && !isSolved()) {
+        int algorithmCount = 0;
+        while (algorithmCount < 10 && !isSolved()) {
             ArrayList<Position> topLayerPositions = getTopLayerPositions();
 
             int i = 0;
@@ -145,10 +139,12 @@ public class CubeTwo extends Cube implements Serializable {
             }
 
             mapKeysToRotation("R'", "F", "R'", "B", "B", "R", "F'", "R'", "B", "B", "R", "R", "U'");
-            count++;
+
+            addSection(5);
+            algorithmCount++;
         }
 
-        if (count == 10) {
+        if (algorithmCount == 10) {
             throw new UnsolvableCubeException();
         }
     }
@@ -207,6 +203,8 @@ public class CubeTwo extends Cube implements Serializable {
 
             mapKeysToRotation("R", "U", "R'", "U", "R", "U", "U", "R'");
             yellowTilesOnTop = getFace(orientation.getFaceUp()).getColorCount(Color.YELLOW);
+
+            addSection(4);
         }
     }
 
@@ -255,6 +253,8 @@ public class CubeTwo extends Cube implements Serializable {
         } else {
             throw new UnsolvableCubeException();
         }
+
+        addSection(3);
     }
 
     private void solveThirdPiece() throws UnsolvableCubeException {
@@ -316,6 +316,7 @@ public class CubeTwo extends Cube implements Serializable {
             mapKeysToRotation("D", "R", "R");
         }
 
+        addSection(2);
     }
 
     private void solveSecondPiece() throws UnsolvableCubeException {
@@ -417,6 +418,8 @@ public class CubeTwo extends Cube implements Serializable {
             }
             mapKeysToRotation("B'", "D", "D", "B", "D'", "B'", "D", "B");
         }
+
+        addSection(1);
     }
 
     private void setInitialOrientation() throws UnsolvableCubeException {
@@ -436,6 +439,8 @@ public class CubeTwo extends Cube implements Serializable {
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
+
+        addSection(0);
     }
 
     /**

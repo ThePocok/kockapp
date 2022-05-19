@@ -84,24 +84,23 @@ public class CubeSolutionActivity extends AppCompatActivity {
             currentSection--;
             loadHtml(currentSection);
             if (cube.getDimensions() == 2) {
-                stageName.setText(cubeTwoStageNames[currentSection]);
+                stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
             } else if (cube.getDimensions() == 3) {
-                stageName.setText(cubeThreeStageNames[currentSection]);
+                stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
             }
         });
         Button nextStageBtn = findViewById(R.id.next_stage);
         nextStageBtn.setOnClickListener(l -> {
-            if ((cube.getDimensions() == 2 && currentSection == cubeTwoStageNames.length - 1) ||
-                    (cube.getDimensions() == 3 && currentSection == cubeThreeStageNames.length - 1)) {
+            if (currentSection == solvedCube.getSectionCount() - 1) {
                 return;
             }
 
             currentSection++;
             loadHtml(currentSection);
             if (cube.getDimensions() == 2) {
-                stageName.setText(cubeTwoStageNames[currentSection]);
+                stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
             } else if (cube.getDimensions() == 3) {
-                stageName.setText(cubeThreeStageNames[currentSection]);
+                stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
             }
         });
 

@@ -36,28 +36,22 @@ public class CubeThree extends Cube implements Serializable {
         }
         /* First task: create a white cross on the yellow face */
         createWhiteCross();
-        solution.add(new Separator());
 
         /* Second task: turn the white pieces from the cross to the right place */
         createWhiteCrossOnWhiteFace();
-        solution.add(new Separator());
 
         /* Third task: solve white edges */
         solveWhiteCorners();
-        solution.add(new Separator());
 
         /* Fourth task: solve the middle layer */
         solveMiddleLayer();
-        solution.add(new Separator());
 
         /* Fifth task: create a yellow cross on the yellow face */
         createYellowCross();
-        solution.add(new Separator());
-        
+
         /* Sixth task: complete yellow corners */
         try {
             completeYellowFace();
-            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -65,14 +59,12 @@ public class CubeThree extends Cube implements Serializable {
         /* Seventh task: reposition yellow corners to their correct place */
         try {
             repositionYellowCorners();
-            solution.add(new Separator());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
 
         /* Eighth task: solve middle pieces on yellow face */
         solveMiddlePiecesOnYellowFace();
-        solution.add(new Separator());
 
         /* During the solution, is it possible, that more steps were made, then necessary. */
         simplifySolution();
@@ -97,6 +89,7 @@ public class CubeThree extends Cube implements Serializable {
                 mapKeysToRotation("F", "F", "U'", "L", "R'", "F", "F", "L'", "R", "U'", "F", "F");
             }
 
+            addSection(7);
             algorithmCount++;
         }
 
@@ -134,6 +127,8 @@ public class CubeThree extends Cube implements Serializable {
 
             cornerPieces = getYellowCornerPieces();
             yellowCornersInCorrectPosition = (int) cornerPieces.stream().filter(this::isPieceInCorrectPosition).count();
+
+            addSection(6);
         }
     }
 
@@ -188,6 +183,8 @@ public class CubeThree extends Cube implements Serializable {
             yellowCornersOnTop = (int) cornerPieces.stream()
                     .filter(p -> p.getPosition(Color.YELLOW).getFace().equals(Color.YELLOW))
                     .count();
+
+            addSection(5);
         }
     }
 
@@ -226,6 +223,8 @@ public class CubeThree extends Cube implements Serializable {
             }
 
             mapKeysToRotation("F", "U", "R", "U'", "R'", "F'");
+
+            addSection(4);
         }
     }
 
@@ -346,6 +345,8 @@ public class CubeThree extends Cube implements Serializable {
 
             misplacedMiddlePieces = getMisplacedMiddlePieces();
         }
+
+        addSection(3);
     }
 
     private ArrayList<Piece> getMisplacedMiddlePieces() {
@@ -442,6 +443,8 @@ public class CubeThree extends Cube implements Serializable {
 
             whiteCorners = getWhiteCorners();
         }
+
+        addSection(2);
     }
 
     private boolean isCornerInCorrectPositionOnTheBottom(Piece piece) {
@@ -509,6 +512,8 @@ public class CubeThree extends Cube implements Serializable {
         if (rotationCount == 4) {
             throw new UnsolvableCubeException();
         }
+
+        addSection(1);
     }
 
     private void createWhiteCross() throws UnsolvableCubeException {
@@ -639,6 +644,8 @@ public class CubeThree extends Cube implements Serializable {
                 throw new UnsolvableCubeException();
             }
         }
+
+        addSection(0);
     }
 
     private ArrayList<Piece> getWhitePiecesInCross() {

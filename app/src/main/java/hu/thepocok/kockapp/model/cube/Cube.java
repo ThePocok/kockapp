@@ -42,6 +42,7 @@ public abstract class Cube implements Serializable{
     protected PieceMap pieceMap;
 
     protected ArrayList<Move> solution;
+    protected ArrayList<Separator> sections;
 
     public Cube(Face whiteFace, Face redFace, Face greenFace, Face orangeFace, Face blueFace, Face yellowFace, int dimensions) {
         this.whiteFace = whiteFace;
@@ -54,6 +55,7 @@ public abstract class Cube implements Serializable{
         this.orientation = new Orientation();
         this.dimensions = dimensions;
         this.solution = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     public Cube(int dimensions) {
@@ -66,6 +68,7 @@ public abstract class Cube implements Serializable{
 
         this.orientation = new Orientation();
         this.solution = new ArrayList<>();
+        this.sections = new ArrayList<>();
     }
 
     /**
@@ -440,6 +443,7 @@ public abstract class Cube implements Serializable{
 
             // If two reorientations were made, the first one is unnecessary
             if (solution.get(i) instanceof Reorientation && solution.get(i+1) instanceof Reorientation) {
+                ((Reorientation) solution.get(i+1)).setPreviousOrientation(((Reorientation) solution.get(i)).getPreviousOrientation());
                 solution.remove(i);
                 i--;
                 continue;
@@ -819,6 +823,20 @@ public abstract class Cube implements Serializable{
         }
 
         return solutionSection;
+    }
+
+    public void addSection(int sectionID) {
+        Separator separator = new Separator(sectionID);
+        solution.add(separator);
+        sections.add(separator);
+    }
+
+    public int getSectionCount() {
+        return sections.size();
+    }
+
+    public int getIDFromSection(int currentSection) {
+        return sections.get(currentSection).getSectionID();
     }
 
     //TODO simplify cases
