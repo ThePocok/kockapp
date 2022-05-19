@@ -138,27 +138,6 @@ public class CubeSolutionActivity extends AppCompatActivity {
         loadHtml(0);
 
         fillUpViewWithMoves(currentSection);
-
-        Thread t = new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            runOnUiThread(this::nextStep);
-
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            runOnUiThread(this::previousStep);
-        });
-
-        //t.start();
-
     }
 
     private void animateSteps() {
@@ -195,7 +174,6 @@ public class CubeSolutionActivity extends AppCompatActivity {
         sb.append("edit=0&");
         sb.append("bgcolor=ffffff&");
         sb.append("position=llluuuuuu&");
-        // 0w 1r 2g 3o 4b 5y
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
         sb.append("facelets=" + mapCubeToFaceletString(section) + "&");
         // F - green face clockwise
@@ -385,7 +363,18 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 }
             }
 
-            //TODO simplify
+            for (int i = 0; i < rotations.size() - 2; i++) {
+                if (rotations.get(i).equals(rotations.get(i+1)) && rotations.get(i+1).equals(rotations.get(i+2))) {
+                    if (rotations.get(i).endsWith("'")) {
+                        rotations.set(i, rotations.get(i).substring(0, 1));
+                    } else {
+                        rotations.set(i, rotations.get(i) + "'");
+                    }
+
+                    rotations.remove(i+2);
+                    rotations.remove(i+1);
+                }
+            }
 
             return rotations.stream().collect(Collectors.joining(" "));
         }
