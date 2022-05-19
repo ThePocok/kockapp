@@ -1,22 +1,29 @@
 package hu.thepocok.kockapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.component.Color;
@@ -83,6 +90,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
             currentSection--;
             loadHtml(currentSection);
+            fillUpViewWithMoves(currentSection);
             if (cube.getDimensions() == 2) {
                 stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
             } else if (cube.getDimensions() == 3) {
@@ -97,6 +105,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
             currentSection++;
             loadHtml(currentSection);
+            fillUpViewWithMoves(currentSection);
             if (cube.getDimensions() == 2) {
                 stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
             } else if (cube.getDimensions() == 3) {
@@ -127,6 +136,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
         webView.setOnTouchListener((view, motionEvent) -> false);
 
         loadHtml(0);
+
+        fillUpViewWithMoves(currentSection);
 
         Thread t = new Thread(() -> {
             try {
@@ -183,7 +194,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         sb.append("edit=0&");
         sb.append("bgcolor=ffffff&");
-        sb.append("position=llluuuuuuu&");
+        sb.append("position=llluuuuuu&");
         // 0w 1r 2g 3o 4b 5y
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
         sb.append("facelets=" + mapCubeToFaceletString(section) + "&");
@@ -223,6 +234,100 @@ public class CubeSolutionActivity extends AppCompatActivity {
         return sb.toString();
     }
 
+    private void fillUpViewWithMoves(int section) {
+        LinearLayout moves = findViewById(R.id.moves);
+        moves.removeAllViews();
+
+        int rowHeight = 69; //Math.min((moves.getMeasuredHeight() - 5*15) / 4, (moves.getMeasuredWidth() - 5*15) / 5);
+        String[] solutionSection = mapCubeSolutionToAnimCubeMoves(section).split(" ");
+
+        int rowCount = solutionSection.length / 5;
+        if (solutionSection.length % 5 != 0) {
+            rowCount++;
+        }
+
+        for (int i = 0; i < rowCount; i++) {
+            LinearLayout linearLayout = new LinearLayout(this);
+            linearLayout.setGravity(Gravity.LEFT);
+            linearLayout.setMinimumHeight(rowHeight);
+
+            for (int j = i * 5; j < Math.min((i + 1 ) * 5, solutionSection.length); j++) {
+                ImageView imageView = new ImageView(this);
+                imageView.setMaxHeight(rowHeight);
+                imageView.setMaxWidth(rowHeight);
+
+                // F - green face clockwise
+                // U - white face clockwise
+                // R - red face clockwise
+                // L - orange face clockwise
+                // B - blue face clockwise
+                // D - yellow face clockwise
+                switch (solutionSection[j]) {
+                    case "U":
+                        imageView.setImageResource(R.drawable.turn_u);
+                        break;
+                    case "U'":
+                        imageView.setImageResource(R.drawable.turn_u_);
+                        break;
+                    case "F":
+                        imageView.setImageResource(R.drawable.turn_l);
+                        break;
+                    case "F'":
+                        imageView.setImageResource(R.drawable.turn_l_);
+                        break;
+                    case "R":
+                        imageView.setImageResource(R.drawable.turn_f);
+                        break;
+                    case "R'":
+                        imageView.setImageResource(R.drawable.turn_f_);
+                        break;
+                    case "B":
+                        imageView.setImageResource(R.drawable.turn_r);
+                        break;
+                    case "B'":
+                        imageView.setImageResource(R.drawable.turn_r_);
+                        break;
+                    case "L":
+                        imageView.setImageResource(R.drawable.turn_b);
+                        break;
+                    case "L'":
+                        imageView.setImageResource(R.drawable.turn_b_);
+                        break;
+                    case "D":
+                        imageView.setImageResource(R.drawable.turn_d);
+                        break;
+                    case "D'":
+                        imageView.setImageResource(R.drawable.turn_d_);
+                        break;
+                    case "X":
+                        imageView.setImageResource(R.drawable.turn_x);
+                        break;
+                    case "X'":
+                        imageView.setImageResource(R.drawable.turn_x_);
+                        break;
+                    case "Y":
+                        imageView.setImageResource(R.drawable.turn_y_);
+                        break;
+                    case "Y'":
+                        imageView.setImageResource(R.drawable.turn_y);
+                        break;
+                    case "Z":
+                        imageView.setImageResource(R.drawable.turn_z_);
+                        break;
+                    case "Z'":
+                        imageView.setImageResource(R.drawable.turn_z);
+                        break;
+                }
+
+                linearLayout.addView(imageView);
+                Space space = new Space(this);
+                space.setMinimumWidth(15);
+                linearLayout.addView(space);
+            }
+            moves.addView(linearLayout);
+        }
+    }
+
     private String mapCubeNotationToAnimCubeNotation(Move move) throws InvalidOrientationException {
         if (move instanceof Rotation) {
             String key = ((Rotation) move).getKey();
@@ -250,41 +355,39 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         if (move instanceof Reorientation) {
-            Orientation previousOrientation = ((Reorientation) move).getPreviousOrientation().duplicate();
-            Orientation orientation = ((Reorientation) move).getOrientation();
+            Orientation currentOrientation = ((Reorientation) move).getPreviousOrientation().duplicate();
+            Orientation targetOrientation = ((Reorientation) move).getOrientation();
 
-            StringBuilder sb = new StringBuilder();
+            ArrayList<String> rotations = new ArrayList<>();
 
-            if (previousOrientation.getFaceUp().equals(orientation.getOppositeColor(orientation.getFaceUp()))) {
-                sb.append("Y Y ");
-                previousOrientation.setOrientation(previousOrientation.getFaceDown(), previousOrientation.getFaceBack());
-            } else if (! previousOrientation.getFaceUp().equals(orientation.getFaceUp())) {
-                if (previousOrientation.getFaceUp().equals(orientation.getFaceFront())) {
-                    sb.append("Y' ");
-                    previousOrientation.setOrientation(previousOrientation.getFaceFront(), previousOrientation.getFaceDown());
-                } else if (previousOrientation.getFaceUp().equals(orientation.getFaceLeft())) {
-                    sb.append("X' ");
-                    previousOrientation.setOrientation(previousOrientation.getFaceLeft(), previousOrientation.getFaceDown());
-                } else if (previousOrientation.getFaceUp().equals(orientation.getFaceBack())) {
-                    sb.append("Y ");
-                    previousOrientation.setOrientation(previousOrientation.getFaceBack(), previousOrientation.getFaceDown());
-                } else {
-                    sb.append("X ");
-                    previousOrientation.setOrientation(previousOrientation.getFaceRight(), previousOrientation.getFaceDown());
+            while (! currentOrientation.getFaceFront().equals(targetOrientation.getFaceUp()) &&
+                    ! currentOrientation.getFaceFront().equals(targetOrientation.getFaceFront())) {
+                rotations.add("Z'");
+                currentOrientation.setOrientation(currentOrientation.getFaceUp(), currentOrientation.getFaceLeft());
+            }
+
+            if (currentOrientation.getFaceFront().equals(targetOrientation.getFaceFront())) {
+                if (targetOrientation.getFaceUp().equals(currentOrientation.getFaceLeft())) {
+                    rotations.add("X");
+                } else if (targetOrientation.getFaceUp().equals(currentOrientation.getFaceRight())) {
+                    rotations.add("X'");
+                } else if (targetOrientation.getFaceUp().equals(currentOrientation.getFaceDown())) {
+                    rotations.add("X");
+                    rotations.add("X");
+                }
+            } else {
+                rotations.add("Y'");
+                currentOrientation.setOrientation(currentOrientation.getFaceFront(), currentOrientation.getFaceDown());
+
+                while (!currentOrientation.getFaceFront().equals(targetOrientation.getFaceFront())) {
+                    rotations.add("Z'");
+                    currentOrientation.setOrientation(currentOrientation.getFaceUp(), currentOrientation.getFaceLeft());
                 }
             }
 
-            if (! previousOrientation.getFaceFront().equals(orientation.getFaceFront())) {
-                if (previousOrientation.getFaceFront().equals(orientation.getFaceRight())) {
-                    sb.append("Z'");
-                } else if (previousOrientation.getFaceFront().equals(orientation.getFaceLeft())) {
-                    sb.append("Z");
-                } else {
-                    sb.append("Z Z");
-                }
-            }
+            //TODO simplify
 
-            return sb.toString();
+            return rotations.stream().collect(Collectors.joining(" "));
         }
 
         return null;
