@@ -25,3 +25,17 @@ function clickPreviousStepButton() {
 
     canvas.dispatchEvent(event);
 }
+
+function clickPlayButton() {
+    var canvas = document.getElementById("cube");
+
+    var event = new MouseEvent('mousedown', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true,
+        'clientX': document.body.clientWidth / 7 * 4,
+        'clientY': canvas.clientHeight
+    });
+
+    canvas.dispatchEvent(event);
+}

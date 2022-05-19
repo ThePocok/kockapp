@@ -106,6 +106,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         });
 
         Button playBtn = findViewById(R.id.play_button);
+        playBtn.setOnClickListener(l -> animateSteps());
 
         Button prevStepBtn = findViewById(R.id.previous_step_button);
         prevStepBtn.setOnClickListener(l -> previousStep());
@@ -148,6 +149,10 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         //t.start();
 
+    }
+
+    private void animateSteps() {
+        webView.evaluateJavascript("clickPlayButton()", null);
     }
 
     public void nextStep() {
