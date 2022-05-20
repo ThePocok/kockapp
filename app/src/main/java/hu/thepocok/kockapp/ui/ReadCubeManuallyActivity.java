@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BlendMode;
@@ -14,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -28,6 +30,7 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeManuallyActivity extends AppCompatActivity {
     private static final String TAG = "ReadCubeManually";
@@ -42,6 +45,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     private Button yellowBtn;
 
     private LinearLayout cubeContainer;
+    private GifImageView gifOverlay;
 
     private Button prevBtn;
     private Button nextBtn;
@@ -63,6 +67,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private ArrayList<Color> tileColors;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +81,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         yellowBtn = findViewById(R.id.yellow_button);
 
         cubeContainer = findViewById(R.id.cube_container);
+        gifOverlay = findViewById(R.id.gif_overlay);
 
         facePreviewView = findViewById(R.id.cube_face_preview_view);
 
@@ -266,6 +272,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.RED);
             }
+            displayArrowGif(180);
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
@@ -276,6 +283,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.GREEN);
             }
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
@@ -286,6 +294,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.ORANGE);
             }
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
@@ -296,6 +305,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.BLUE);
             }
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
@@ -306,6 +316,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.YELLOW);
             }
+            displayTwoArrowGifs(180, 270);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
@@ -515,6 +526,42 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 yellowBtn.setHighlightColor(android.graphics.Color.MAGENTA);
                 break;
         }
+    }
+
+    public void displayArrowGif(int rotationDegree) {
+        Thread gifOverlayThread = new Thread(() -> {
+            runOnUiThread(() -> {
+                gifOverlay.bringToFront();
+                gifOverlay.setRotation(rotationDegree);
+                gifOverlay.setImageResource(R.drawable.arrow);
+                gifOverlay.setColorFilter(android.graphics.Color.BLACK);
+            });
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            runOnUiThread(() -> {
+                cubeContainer.bringToFront();
+                gifOverlay.setImageResource(0);
+            });
+        });
+        gifOverlayThread.start();
+    }
+
+    public void displayTwoArrowGifs(int rotationDegree1, int rotationDegree2) {
+        Thread gifThreadHandler = new Thread(() -> {
+            displayArrowGif(rotationDegree1);
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            displayArrowGif(rotationDegree2);
+        });
+        gifThreadHandler.start();
     }
 
     @Override
