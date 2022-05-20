@@ -40,11 +40,13 @@ public class CubeSolutionActivity extends AppCompatActivity {
     private WebView webView;
     private TextView stageName;
 
-
     private Cube cube;
     private Cube solvedCube;
 
     private int currentSection = 0;
+
+    private int currentMoveInSection = 0;
+    private int maxMovesInSection = 0;
 
     private String[] cubeThreeStageNames = new String[] {
             "Create white cross on yellow face",
@@ -141,14 +143,25 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     private void animateSteps() {
+        webView.evaluateJavascript("goToStep(0 , " + maxMovesInSection + ")", null);
         webView.evaluateJavascript("clickPlayButton()", null);
     }
 
     public void nextStep() {
+        if (currentMoveInSection == maxMovesInSection) {
+            return;
+        }
+
+        currentMoveInSection++;
         webView.evaluateJavascript("clickNextStepButton()", null);
     }
 
     public void previousStep() {
+        if (currentMoveInSection == 0) {
+            return;
+        }
+
+        currentMoveInSection--;
         webView.evaluateJavascript("clickPreviousStepButton()", null);
     }
 
@@ -219,6 +232,9 @@ public class CubeSolutionActivity extends AppCompatActivity {
         int rowHeight = 69; //Math.min((moves.getMeasuredHeight() - 5*15) / 4, (moves.getMeasuredWidth() - 5*15) / 5);
         String[] solutionSection = mapCubeSolutionToAnimCubeMoves(section).split(" ");
 
+        currentMoveInSection = 0;
+        maxMovesInSection = solutionSection.length;
+
         int rowCount = solutionSection.length / 5;
         if (solutionSection.length % 5 != 0) {
             rowCount++;
@@ -233,6 +249,13 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 ImageView imageView = new ImageView(this);
                 imageView.setMaxHeight(rowHeight);
                 imageView.setMaxWidth(rowHeight);
+
+                /*int finalJ = j;
+                imageView.setOnClickListener(l -> {
+                    currentMoveInSection = finalJ;
+                    Log.d("MoveIconFinalJ", String.valueOf(finalJ));
+                    webView.evaluateJavascript("goToStep(" + finalJ + ", " + solutionSection.length + ")", null);
+                });*/
 
                 // F - green face clockwise
                 // U - white face clockwise
