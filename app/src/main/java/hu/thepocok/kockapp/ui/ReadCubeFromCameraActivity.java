@@ -256,7 +256,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             facePreviewView.setFace(Color.WHITE, whiteFace);
 
             currentFaceToSet = Color.RED;
-            displayArrowGif(0);
+            displayArrowGif(180);
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Toast.makeText(this, "Colors assigned to red face",
@@ -265,7 +265,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             facePreviewView.setFace(Color.RED, redFace);
 
             currentFaceToSet = Color.GREEN;
-            displayArrowGif(90);
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Toast.makeText(this, "Colors assigned to green face",
@@ -274,7 +274,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             facePreviewView.setFace(Color.GREEN, greenFace);
 
             currentFaceToSet = Color.ORANGE;
-            displayArrowGif(90);
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Toast.makeText(this, "Colors assigned to orange face",
@@ -283,7 +283,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             facePreviewView.setFace(Color.ORANGE, orangeFace);
 
             currentFaceToSet = Color.BLUE;
-            displayArrowGif(90);
+            displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Toast.makeText(this, "Colors assigned to blue face",
@@ -292,7 +292,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             facePreviewView.setFace(Color.BLUE, blueFace);
 
             currentFaceToSet = Color.YELLOW;
-            displayTwoArrowGifs(90, 0);
+            displayTwoArrowGifs(270, 180);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Toast.makeText(this, "Colors assigned to yellow face",
@@ -346,7 +346,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             });
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -360,7 +360,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         Thread gifThreadHandler = new Thread(() -> {
             displayArrowGif(rotationDegree1);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
