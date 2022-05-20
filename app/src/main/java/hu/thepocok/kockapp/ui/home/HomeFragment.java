@@ -31,40 +31,28 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         LinearLayout layout = root.findViewById(R.id.linear_layout_home);
 
-        Button cubeByCameraBtn = new Button(getContext());
-        cubeByCameraBtn.setText("Read cube from camera");
+        Button cubeByCameraBtn = binding.cubeByCamera;
         cubeByCameraBtn.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), ReadCubeFromCameraActivity.class);
             startActivity(intent);
         });
 
-        layout.addView(cubeByCameraBtn);
-
-        Button cube3Manually = new Button(getContext());
-        cube3Manually.setText("Read 3x3 cube manually");
+        Button cube3Manually = binding.cube3Manually;
         cube3Manually.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", 3);
             startActivity(intent);
         });
 
-        layout.addView(cube3Manually);
-
-        Button cube2Manually = new Button(getContext());
-        cube2Manually.setText("Read 2x2 cube manually");
+        Button cube2Manually = binding.cube2Manually;
         cube2Manually.setOnClickListener(view -> {
             Intent intent = new Intent(getContext(), ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", 2);
             startActivity(intent);
         });
-
-        layout.addView(cube2Manually);
-
+        
         return root;
     }
 
