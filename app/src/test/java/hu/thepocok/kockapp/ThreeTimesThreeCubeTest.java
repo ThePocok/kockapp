@@ -815,7 +815,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -857,7 +857,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -904,7 +904,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -961,7 +961,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -1021,7 +1021,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -1080,7 +1080,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -1144,7 +1144,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -1217,7 +1217,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
@@ -1254,7 +1254,7 @@ public class ThreeTimesThreeCubeTest {
                 if (m instanceof Reorientation) {
                     Reorientation reorientation = (Reorientation) m;
                     sb.append(reorientation + "\n");
-                } else {
+                } else if (m instanceof Rotation) {
                     Rotation rotation = (Rotation) m;
                     sb.append(rotation + "\n");
                 }
