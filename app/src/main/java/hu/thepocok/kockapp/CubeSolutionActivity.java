@@ -47,6 +47,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
     private int currentMoveInSection = 0;
     private int maxMovesInSection = 0;
+    private boolean shouldBeReset = false;
 
     private String[] cubeThreeStageNames = new String[] {
             "Create white cross on yellow face",
@@ -143,11 +144,22 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     private void animateSteps() {
-        webView.evaluateJavascript("goToStep(0 , " + maxMovesInSection + ")", null);
+        resetCube();
         webView.evaluateJavascript("clickPlayButton()", null);
+        shouldBeReset = true;
+    }
+
+    private void resetCube() {
+        webView.evaluateJavascript("clickResetButton()", null);
+        shouldBeReset = false;
+        currentMoveInSection = 0;
     }
 
     public void nextStep() {
+        if (shouldBeReset) {
+            resetCube();
+        }
+
         if (currentMoveInSection == maxMovesInSection) {
             return;
         }
@@ -157,6 +169,10 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     public void previousStep() {
+        if (shouldBeReset) {
+            resetCube();
+        }
+
         if (currentMoveInSection == 0) {
             return;
         }
