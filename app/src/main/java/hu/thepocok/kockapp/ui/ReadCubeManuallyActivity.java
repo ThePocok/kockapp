@@ -4,8 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BlendMode;
@@ -16,8 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -47,8 +43,12 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
     private LinearLayout cubeContainer;
 
+    private Button prevBtn;
+    private Button nextBtn;
     private CubeFacePreviewView facePreviewView;
+    private Color previousFace;
     private Color currentFaceToSet;
+    private Color nextFace;
 
     private Face whiteFace = null;
     private Face redFace = null;
@@ -86,18 +86,26 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         blueBtn.setOnClickListener(l -> selectColor(Color.BLUE));
         yellowBtn.setOnClickListener(l -> selectColor(Color.YELLOW));
 
-        Button nextButton = findViewById(R.id.next_face_button);
+        previousFace = Color.YELLOW;
+        currentFaceToSet = Color.WHITE;
+        nextFace = Color.RED;
 
-        nextButton.setOnClickListener(l -> setFace());
+        prevBtn = findViewById(R.id.prev_face_button);
+        prevBtn.setOnClickListener(l -> setFace(true, true));
+
+        nextBtn = findViewById(R.id.next_face_button);
+        nextBtn.setOnClickListener(l -> setFace(false, true));
+        setPrevAndNextButtonColors();
 
         facePreviewView.setOnTouchListener((view, click) -> {
             Color clickedFace = facePreviewView.getClickedFace(click.getX(), click.getY());
             Log.d(TAG, "Clicked color: " + clickedFace);
-            currentFaceToSet = clickedFace;
+            setFace(false, false);
+            setFaceColorVariables(clickedFace);
+            setPrevAndNextButtonColors();
             resetCubeContainer(clickedFace);
             return false;
         });
-        currentFaceToSet = Color.WHITE;
 
         Intent intent = getIntent();
         dimensions = intent.getIntExtra("cubeDimensions", 0);
@@ -122,6 +130,11 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         }
 
         cubeContainer.post(this::setTiles);
+    }
+
+    private void setPrevAndNextButtonColors() {
+        prevBtn.setBackgroundColor(android.graphics.Color.rgb(previousFace.redValue, previousFace.greenValue, previousFace.blueValue));
+        nextBtn.setBackgroundColor(android.graphics.Color.rgb(nextFace.redValue, nextFace.greenValue, nextFace.blueValue));
     }
 
     private void resetCubeContainer(Color color) {
@@ -208,7 +221,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         }
     }
 
-    private void setFace() {
+    private void setFace(boolean reverse, boolean shouldOpenSolution) {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
         Face face;
         if (dimensions == 2) {
@@ -227,50 +240,70 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             Log.d(TAG, "Colors assigned to white face");
             facePreviewView.setFace(Color.WHITE, whiteFace);
 
-            currentFaceToSet = Color.RED;
-            resetCubeContainer(Color.RED);
+            if (reverse) {
+                setFaceColorVariables(Color.YELLOW);
+            } else {
+                setFaceColorVariables(Color.RED);
+            }
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
             facePreviewView.setFace(Color.RED, redFace);
 
-            currentFaceToSet = Color.GREEN;
-            resetCubeContainer(Color.GREEN);
+            if (reverse) {
+                setFaceColorVariables(Color.WHITE);
+            } else {
+                setFaceColorVariables(Color.GREEN);
+            }
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
             facePreviewView.setFace(Color.GREEN, greenFace);
 
-            currentFaceToSet = Color.ORANGE;
-            resetCubeContainer(Color.ORANGE);
+            if (reverse) {
+                setFaceColorVariables(Color.RED);
+            } else {
+                setFaceColorVariables(Color.ORANGE);
+            }
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
             facePreviewView.setFace(Color.ORANGE, orangeFace);
 
-            currentFaceToSet = Color.BLUE;
-            resetCubeContainer(Color.BLUE);
+            if (reverse) {
+                setFaceColorVariables(Color.GREEN);
+            } else {
+                setFaceColorVariables(Color.BLUE);
+            }
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
             facePreviewView.setFace(Color.BLUE, blueFace);
 
-            currentFaceToSet = Color.YELLOW;
-            resetCubeContainer(Color.YELLOW);
+            if (reverse) {
+                setFaceColorVariables(Color.ORANGE);
+            } else {
+                setFaceColorVariables(Color.YELLOW);
+            }
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
             facePreviewView.setFace(Color.YELLOW, yellowFace);
 
-            if (allFacesSet()) {
+            if (allFacesSet() && !reverse) {
                 currentFaceToSet = Color.EMPTY;
             } else {
-                currentFaceToSet = Color.WHITE;
-                resetCubeContainer(Color.WHITE);
+                if (reverse) {
+                    setFaceColorVariables(Color.BLUE);
+                } else {
+                    setFaceColorVariables(Color.WHITE);
+                }
             }
         }
 
-        if (currentFaceToSet.equals(Color.EMPTY)) {
+        setPrevAndNextButtonColors();
+
+        if (currentFaceToSet.equals(Color.EMPTY) && shouldOpenSolution) {
             if (dimensions == 2) {
                 cube = new CubeTwo(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
             } else {
@@ -287,6 +320,15 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+    }
+
+    private void setFaceColorVariables(Color currentFace) {
+        ArrayList<Color> faces = getPreviousAndNextFaces(currentFace);
+        this.previousFace = faces.get(0);
+        this.currentFaceToSet = faces.get(1);
+        this.nextFace = faces.get(2);
+
+        resetCubeContainer(faces.get(1));
     }
 
     private boolean allFacesSet() {
@@ -355,9 +397,57 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         blueFace = null;
         yellowFace = null;
         cube = null;
+        tileColors = new ArrayList<>();
+        for (int i = 0; i < dimensions * dimensions; i++) {
+            tileColors.add(Color.WHITE);
+        }
+
+        previousFace = Color.YELLOW;
+        currentFaceToSet = Color.WHITE;
+        nextFace = Color.RED;
+        setPrevAndNextButtonColors();
 
         setTiles();
         facePreviewView.clearFaces();
+    }
+
+    private ArrayList<Color> getPreviousAndNextFaces(Color color) {
+        ArrayList<Color> colors = new ArrayList<>();
+
+        switch (color) {
+            case WHITE:
+                colors.add(Color.YELLOW);
+                colors.add(Color.WHITE);
+                colors.add(Color.RED);
+                break;
+            case RED:
+                colors.add(Color.WHITE);
+                colors.add(Color.RED);
+                colors.add(Color.GREEN);
+                break;
+            case GREEN:
+                colors.add(Color.RED);
+                colors.add(Color.GREEN);
+                colors.add(Color.ORANGE);
+                break;
+            case ORANGE:
+                colors.add(Color.GREEN);
+                colors.add(Color.ORANGE);
+                colors.add(Color.BLUE);
+                break;
+            case BLUE:
+                colors.add(Color.ORANGE);
+                colors.add(Color.BLUE);
+                colors.add(Color.YELLOW);
+                break;
+            case YELLOW:
+                colors.add(Color.BLUE);
+                colors.add(Color.YELLOW);
+                colors.add(Color.WHITE);
+                break;
+        }
+
+        return colors;
     }
 
     private void selectColor(Color color) {
@@ -404,5 +494,12 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 yellowBtn.setHighlightColor(android.graphics.Color.MAGENTA);
                 break;
         }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        resetCube();
     }
 }

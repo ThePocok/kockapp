@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_percent="0.54" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_solution_top"
@@ -42,15 +42,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:layout_weight="1.15"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/prev_stage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="-"
+                android:backgroundTint="#009b48"
+                android:drawableTop="@drawable/ic_angles_left"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp"
                 tools:ignore="NestedWeights" />
 
             <TextView
@@ -65,42 +68,74 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text=">" />
+                android:backgroundTint="#0045ad"
+                android:drawableTop="@drawable/ic_angles_right"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/moves"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
+            android:layout_weight="7.7"
             android:orientation="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:layout_weight="1.15"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
 
             <Button
                 android:id="@+id/previous_step_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Prev" />
+                android:backgroundTint="#ffffff"
+                android:drawableTop="@drawable/ic_angle_left"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
 
             <Button
                 android:id="@+id/play_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Play" />
+                android:backgroundTint="#b71234"
+                android:drawableTop="@drawable/ic_play"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3" />
 
             <Button
                 android:id="@+id/next_step_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Next" />
+                android:backgroundTint="#ffd500"
+                android:drawableTop="@drawable/ic_angle_right"
+                app:strokeColor="#000000"
+                app:strokeWidth="2dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
         </LinearLayout>
     </LinearLayout>
 
