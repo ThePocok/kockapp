@@ -4,6 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18177083333333333" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_blue.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_green.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_orange.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_red.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_yellow.xml" value="0.3675" />
         <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_angle_left.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_angle_right.xml" value="0.133" />

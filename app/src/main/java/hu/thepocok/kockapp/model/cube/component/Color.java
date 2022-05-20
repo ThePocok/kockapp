@@ -6,8 +6,8 @@ public enum Color implements Comparable<Color>, Serializable {
     WHITE("W", 255, 255, 255),
     RED("R", 183, 18, 52),
     GREEN("G", 0, 155, 72),
-    BLUE("B", 0, 70, 173),
     ORANGE("O", 255, 88, 0),
+    BLUE("B", 0, 70, 173),
     YELLOW("Y", 255, 213, 0),
     EMPTY("_", 0, 0, 0);
 

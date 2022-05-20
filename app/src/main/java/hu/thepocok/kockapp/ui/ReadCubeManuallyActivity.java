@@ -176,21 +176,32 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         for (int i = 0; i < dimensions; i++) {
             LinearLayout row = (LinearLayout) cubeContainer.getChildAt(i);
             row.setMinimumHeight(cubeContainer.getHeight() / 3);
-            Log.d(TAG, String.valueOf(row.getHeight()));
             row.removeAllViews();
+
             for (int j = 0; j < dimensions; j++) {
                 Button tile = new Button(this);
-                Drawable drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile, getTheme());
                 Color color = tileColors.get(i * dimensions + j);
-                if (color != Color.WHITE) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        drawable.setColorFilter(new BlendModeColorFilter(
-                                android.graphics.Color.rgb(color.redValue, color.greenValue, color.blueValue),
-                                BlendMode.SRC_ATOP));
-                    } else {
-                        drawable.setColorFilter(android.graphics.Color.rgb(color.redValue, color.greenValue, color.blueValue),
-                                PorterDuff.Mode.SRC_ATOP);
-                    }
+
+                Drawable drawable;
+                switch (color) {
+                    case RED:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_red, getTheme());
+                        break;
+                    case GREEN:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_green, getTheme());
+                        break;
+                    case ORANGE:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_orange, getTheme());
+                        break;
+                    case BLUE:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_blue, getTheme());
+                        break;
+                    case YELLOW:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_yellow, getTheme());
+                        break;
+                    default:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                        break;
                 }
 
                 tile.setBackground(drawable);
@@ -199,16 +210,26 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 int finalI = i;
                 int finalJ = j;
                 tile.setOnClickListener(l -> {
-                    Drawable d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile, getTheme());
-                    if (selectedColor != Color.WHITE) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            d.setColorFilter(new BlendModeColorFilter(
-                                    android.graphics.Color.rgb(selectedColor.redValue, selectedColor.greenValue, selectedColor.blueValue),
-                                    BlendMode.SRC_ATOP));
-                        } else {
-                            d.setColorFilter(android.graphics.Color.rgb(selectedColor.redValue, selectedColor.greenValue, selectedColor.blueValue),
-                                    PorterDuff.Mode.SRC_ATOP);
-                        }
+                    Drawable d;
+                    switch (selectedColor) {
+                        case RED:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_red, getTheme());
+                            break;
+                        case GREEN:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_green, getTheme());
+                            break;
+                        case ORANGE:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_orange, getTheme());
+                            break;
+                        case BLUE:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_blue, getTheme());
+                            break;
+                        case YELLOW:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_yellow, getTheme());
+                            break;
+                        default:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                            break;
                     }
 
                     l.setBackground(d);
