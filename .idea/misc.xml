@@ -4,12 +4,19 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18177083333333333" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/camera_tile.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_blue.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_green.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_orange.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_red.xml" value="0.3675" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/cube_tile_yellow.xml" value="0.3675" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/ic_camera.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/ic_cube_2_manually.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/ic_cube_3_manually.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/manual_2_tile.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/manual_3_tile.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_main.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_main2.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_read_cube_manually.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/fragment_home.xml" value="0.55" />
