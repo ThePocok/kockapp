@@ -36,9 +36,10 @@
 
     <Button
         android:id="@+id/cube_size_selector"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="3x3"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/white"
+        android:drawableTop="@drawable/ic_cube_2_icon"
         app:layout_constraintBottom_toTopOf="@+id/guideline_top"
         app:layout_constraintEnd_toStartOf="@+id/guideline_left"
         app:layout_constraintStart_toStartOf="parent"

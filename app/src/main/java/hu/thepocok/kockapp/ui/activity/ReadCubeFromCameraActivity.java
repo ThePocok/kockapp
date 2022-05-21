@@ -401,12 +401,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         synchronized (tileColorsLock) {
             tileColors.clear();
             if (isTwoTimesTwo) {
-                sizeChangeBtn.setText("2x2");
+                sizeChangeBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_cube_3_icon, 0, 0);
                 for (int i = 0; i < 4; i++) {
                     tileColors.add(Color.EMPTY);
                 }
             } else {
-                sizeChangeBtn.setText("3x3");
+                sizeChangeBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_cube_2_icon, 0, 0);
                 for (int i = 0; i < 9; i++) {
                     tileColors.add(Color.EMPTY);
                 }
