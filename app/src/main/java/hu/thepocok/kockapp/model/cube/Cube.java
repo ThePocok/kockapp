@@ -486,6 +486,10 @@ public abstract class Cube implements Serializable{
                 }
             }
         }
+
+        if (solution.get(solution.size() - 2) instanceof Reorientation) {
+            solution.remove(solution.size() - 2);
+        }
     }
 
     public void solveBySolutionArray(ArrayList<Move> solution) throws UnsolvableCubeException {
