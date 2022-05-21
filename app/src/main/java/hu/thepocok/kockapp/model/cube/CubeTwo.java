@@ -464,6 +464,22 @@ public class CubeTwo extends Cube implements Serializable {
     public boolean isValidCube() {
         ArrayList<Piece> allPieces = pieceMap.getAllPieces();
 
+        Color[] colors = new Color[]{Color.WHITE, Color.RED, Color.GREEN, Color.ORANGE, Color.BLUE, Color.YELLOW};
+
+        for (Color color : colors) {
+            int colorCount = 0;
+            colorCount += getFace(Color.WHITE).getColorCount(color);
+            colorCount += getFace(Color.RED).getColorCount(color);
+            colorCount += getFace(Color.GREEN).getColorCount(color);
+            colorCount += getFace(Color.ORANGE).getColorCount(color);
+            colorCount += getFace(Color.BLUE).getColorCount(color);
+            colorCount += getFace(Color.YELLOW).getColorCount(color);
+
+            if (colorCount != Math.pow(dimensions, 2)) {
+                return false;
+            }
+        }
+
         Cube referenceCube = new CubeTwo();
         ArrayList<Piece> referencePieces = referenceCube.getPieceMap().getAllPieces();
         for (Piece piece : referencePieces) {

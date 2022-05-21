@@ -4,14 +4,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
-import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.CubeTwo;
 import hu.thepocok.kockapp.model.piecemap.CubeTwoPieceMap;
 import hu.thepocok.kockapp.model.cube.component.Face;
@@ -668,6 +666,14 @@ public class TwoTimesTwoCubeTest {
     public void invalidCubeTest() {
         Assert.assertTrue(cube.isValidCube());
         cube.makeCubeInvalid();
+        Assert.assertFalse(cube.isValidCube());
+
+        cube = new CubeTwo(Face.generateFace(Color.YELLOW, 2),
+                Face.generateFace(Color.RED, 2),
+                Face.generateFace(Color.GREEN, 2),
+                Face.generateFace(Color.ORANGE, 2),
+                Face.generateFace(Color.BLUE, 2),
+                Face.generateFace(Color.YELLOW, 2));
         Assert.assertFalse(cube.isValidCube());
     }
 
