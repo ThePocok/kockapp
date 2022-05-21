@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
 
         Button cubeByCameraBtn = findViewById(R.id.cube_by_camera);
         cubeByCameraBtn.setOnClickListener(view -> {
