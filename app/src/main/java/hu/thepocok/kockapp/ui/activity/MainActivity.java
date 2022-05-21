@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import org.opencv.android.OpenCVLoader;
 
@@ -19,20 +20,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button cubeByCameraBtn = findViewById(R.id.cube_by_camera);
+        ImageView cubeByCameraBtn = findViewById(R.id.cube_by_camera);
         cubeByCameraBtn.setOnClickListener(view -> {
             Intent intent = new Intent(this, ReadCubeFromCameraActivity.class);
             startActivity(intent);
         });
 
-        Button cube3Manually = findViewById(R.id.cube_3_manually);
+        ImageView cube3Manually = findViewById(R.id.cube_3_manually);
         cube3Manually.setOnClickListener(view -> {
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", 3);
             startActivity(intent);
         });
 
-        Button cube2Manually = findViewById(R.id.cube_2_manually);
+        ImageView cube2Manually = findViewById(R.id.cube_2_manually);
         cube2Manually.setOnClickListener(view -> {
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
             intent.putExtra("cubeDimensions", 2);

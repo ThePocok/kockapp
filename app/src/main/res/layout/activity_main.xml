@@ -21,35 +21,6 @@
         app:layout_constraintGuide_percent="0.75" />
 
     <LinearLayout
-        android:id="@+id/linear_layout_home"
-        android:layout_width="409dp"
-        android:layout_height="346dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_top">
-
-        <Button
-            android:id="@+id/cube_by_camera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read cube from camera" />
-
-        <Button
-            android:id="@+id/cube_2_manually"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read 2x2 cube manually" />
-
-        <Button
-            android:id="@+id/cube_3_manually"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read 3x3 cube manually" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/cube_container"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -66,13 +37,19 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-
-            <ImageView
-                android:id="@+id/imageView"
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/manual_2_tile" />
+                app:cardCornerRadius="7dp"
+                android:background="@drawable/cube_tile_blue"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/cube_2_manually"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/manual_2_tile" />
+            </androidx.cardview.widget.CardView>
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -81,12 +58,21 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/cube_tile_green" />
 
-            <ImageView
-                android:id="@+id/imageView3"
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/manual_3_tile" />
+                app:cardCornerRadius="7dp"
+                android:background="@drawable/cube_tile_blue"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/cube_3_manually"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/manual_3_tile" />
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
 
         <LinearLayout
@@ -103,12 +89,19 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/cube_tile_green" />
 
-            <ImageView
-                android:id="@+id/imageView5"
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:src="@drawable/camera_tile" />
+                app:cardCornerRadius="7dp"
+                android:background="@drawable/cube_tile_blue"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/cube_by_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/camera_tile" />
+            </androidx.cardview.widget.CardView>
 
             <ImageView
                 android:id="@+id/imageView6"
