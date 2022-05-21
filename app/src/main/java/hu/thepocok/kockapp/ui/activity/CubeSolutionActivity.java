@@ -93,13 +93,13 @@ public class CubeSolutionActivity extends AppCompatActivity {
         nextStageBtn.setOnClickListener(this::nextStage);
 
         Button playBtn = findViewById(R.id.play_button);
-        playBtn.setOnClickListener(l -> animateSteps());
+        playBtn.setOnClickListener(this::animateSteps);
 
         Button prevStepBtn = findViewById(R.id.previous_step_button);
-        prevStepBtn.setOnClickListener(l -> previousStep());
+        prevStepBtn.setOnClickListener(this::previousStep);
 
         Button nextStepBtn = findViewById(R.id.next_step_button);
-        nextStepBtn.setOnClickListener(l -> nextStep());
+        nextStepBtn.setOnClickListener(this::nextStep);
 
         webView = findViewById(R.id.cube_model);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -149,7 +149,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
     }
 
-    private void animateSteps() {
+    private void animateSteps(View view) {
         resetCube();
         webView.evaluateJavascript("clickPlayButton()", null);
         shouldBeReset = true;
@@ -161,7 +161,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         currentMoveInSection = 0;
     }
 
-    public void nextStep() {
+    public void nextStep(View view) {
         if (shouldBeReset) {
             resetCube();
         }
@@ -174,7 +174,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         webView.evaluateJavascript("clickNextStepButton()", null);
     }
 
-    public void previousStep() {
+    public void previousStep(View view) {
         if (shouldBeReset) {
             resetCube();
         }
