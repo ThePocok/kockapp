@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp;
+package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Layer;

@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.ui;
+package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +35,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
@@ -46,6 +45,8 @@ import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.ui.view.CubeFacePreviewView;
+import hu.thepocok.kockapp.ui.view.CubeTileOverlayView;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeFromCameraActivity extends AppCompatActivity {
@@ -400,12 +401,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         synchronized (tileColorsLock) {
             tileColors.clear();
             if (isTwoTimesTwo) {
-                sizeChangeBtn.setText("2x2");
+                sizeChangeBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_cube_3_icon, 0, 0);
                 for (int i = 0; i < 4; i++) {
                     tileColors.add(Color.EMPTY);
                 }
             } else {
-                sizeChangeBtn.setText("3x3");
+                sizeChangeBtn.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_cube_2_icon, 0, 0);
                 for (int i = 0; i < 9; i++) {
                     tileColors.add(Color.EMPTY);
                 }

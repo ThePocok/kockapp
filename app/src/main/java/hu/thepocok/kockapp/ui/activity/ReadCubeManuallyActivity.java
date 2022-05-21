@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.ui;
+package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,21 +7,15 @@ import androidx.core.content.res.ResourcesCompat;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.BlendMode;
-import android.graphics.BlendModeColorFilter;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-import hu.thepocok.kockapp.CubeSolutionActivity;
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.Cube;
 import hu.thepocok.kockapp.model.cube.CubeThree;
@@ -30,6 +24,7 @@ import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
+import hu.thepocok.kockapp.ui.view.CubeFacePreviewView;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeManuallyActivity extends AppCompatActivity {

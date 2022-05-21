@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.ui;
+package hu.thepocok.kockapp.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
