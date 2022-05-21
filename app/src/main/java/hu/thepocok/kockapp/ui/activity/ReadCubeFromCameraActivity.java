@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.ui;
+package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +35,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
@@ -46,6 +45,8 @@ import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
+import hu.thepocok.kockapp.ui.view.CubeFacePreviewView;
+import hu.thepocok.kockapp.ui.view.CubeTileOverlayView;
 import pl.droidsonroids.gif.GifImageView;
 
 public class ReadCubeFromCameraActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package hu.thepocok.kockapp.ui;
+package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

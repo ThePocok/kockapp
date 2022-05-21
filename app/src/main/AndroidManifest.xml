@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KockApp.NoActionBar">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CubeSolutionActivity"
+            android:name=".ui.activity.CubeSolutionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ReadCubeFromCameraActivity"
+            android:name=".ui.activity.ReadCubeFromCameraActivity"
             android:exported="false"
             android:label="@string/read_cube" />
         <activity
-            android:name=".ui.ReadCubeManuallyActivity"
+            android:name=".ui.activity.ReadCubeManuallyActivity"
             android:exported="false" />
     </application>
 
