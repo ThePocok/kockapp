@@ -167,6 +167,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         if (currentMoveInSection == maxMovesInSection) {
+            nextStage(null);
             return;
         }
 
@@ -180,6 +181,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         if (currentMoveInSection == 0) {
+            previousStage(null);
             return;
         }
 
