@@ -316,7 +316,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.YELLOW);
             }
-            displayTwoArrowGifs(180, 270);
+            displayTwoArrowGifs(270, 180);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
