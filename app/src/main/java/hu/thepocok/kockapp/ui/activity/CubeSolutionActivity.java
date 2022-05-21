@@ -88,35 +88,9 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         Button prevStageBtn = findViewById(R.id.prev_stage);
-        prevStageBtn.setOnClickListener(l -> {
-            if (currentSection == 0) {
-                return;
-            }
-
-            currentSection--;
-            loadHtml(currentSection);
-            fillUpViewWithMoves(currentSection);
-            if (cube.getDimensions() == 2) {
-                stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
-            } else if (cube.getDimensions() == 3) {
-                stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
-            }
-        });
+        prevStageBtn.setOnClickListener(this::previousStage);
         Button nextStageBtn = findViewById(R.id.next_stage);
-        nextStageBtn.setOnClickListener(l -> {
-            if (currentSection == solvedCube.getSectionCount() - 1) {
-                return;
-            }
-
-            currentSection++;
-            loadHtml(currentSection);
-            fillUpViewWithMoves(currentSection);
-            if (cube.getDimensions() == 2) {
-                stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
-            } else if (cube.getDimensions() == 3) {
-                stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
-            }
-        });
+        nextStageBtn.setOnClickListener(this::nextStage);
 
         Button playBtn = findViewById(R.id.play_button);
         playBtn.setOnClickListener(l -> animateSteps());
@@ -143,6 +117,36 @@ public class CubeSolutionActivity extends AppCompatActivity {
         loadHtml(0);
 
         fillUpViewWithMoves(currentSection);
+    }
+
+    private void previousStage(View view) {
+        if (currentSection == 0) {
+            return;
+        }
+
+        currentSection--;
+        loadHtml(currentSection);
+        fillUpViewWithMoves(currentSection);
+        if (cube.getDimensions() == 2) {
+            stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
+        } else if (cube.getDimensions() == 3) {
+            stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
+        }
+    }
+
+    private void nextStage(View view) {
+        if (currentSection == solvedCube.getSectionCount() - 1) {
+            return;
+        }
+
+        currentSection++;
+        loadHtml(currentSection);
+        fillUpViewWithMoves(currentSection);
+        if (cube.getDimensions() == 2) {
+            stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
+        } else if (cube.getDimensions() == 3) {
+            stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
+        }
     }
 
     private void animateSteps() {
