@@ -203,6 +203,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         StringBuilder sb = new StringBuilder();
 
         sb.append("edit=0&");
+        sb.append("speed=20&");
         sb.append("bgcolor=ffffff&");
         sb.append("position=llluuuuuu&");
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
