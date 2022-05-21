@@ -346,9 +346,9 @@ public class CubeThree extends Cube implements Serializable {
             }
 
             misplacedMiddlePieces = getMisplacedMiddlePieces();
-        }
 
-        addSection(3);
+            addSection(3);
+        }
     }
 
     private ArrayList<Piece> getMisplacedMiddlePieces() {
@@ -444,9 +444,9 @@ public class CubeThree extends Cube implements Serializable {
             }
 
             whiteCorners = getWhiteCorners();
-        }
 
-        addSection(2);
+            addSection(2);
+        }
     }
 
     private boolean isCornerInCorrectPositionOnTheBottom(Piece piece) {
