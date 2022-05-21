@@ -310,6 +310,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         if (currentFaceToSet.equals(Color.EMPTY)) {
             Intent intent = new Intent(this, ReadCubeManuallyActivity.class);
+            intent.putExtra("comingFromCamera", 1);
             intent.putExtra("cubeDimensions", whiteFace.getDimensions());
             intent.putExtra("whiteFace", whiteFace);
             intent.putExtra("redFace", redFace);

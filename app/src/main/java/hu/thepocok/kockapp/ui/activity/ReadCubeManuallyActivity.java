@@ -563,6 +563,9 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        resetCube();
+        Intent intent = getIntent();
+        if (intent.getIntExtra("comingFromCamera", 0) == 0) {
+            resetCube();
+        }
     }
 }
