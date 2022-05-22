@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/cube_tile_blue_without_border"/>
-    <item android:drawable="@drawable/ic_cube_2_manually"/>
+    <item android:drawable="@drawable/ic_stopwatch"/>
 
 </layer-list>

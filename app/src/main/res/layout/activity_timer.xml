@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.Timer">
+    tools:context=".ui.activity.TimerActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -47,11 +47,13 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/elapsed_time_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fontFamily="@font/digital_7"
         android:gravity="center_horizontal|center_vertical"
+        android:text="00.00"
+        android:textSize="128dp"
         app:fontFamily="@font/digital_7"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"

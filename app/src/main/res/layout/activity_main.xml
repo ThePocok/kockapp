@@ -118,12 +118,20 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/cube_tile_blue" />
+                app:cardCornerRadius="7dp"
+                app:cardBackgroundColor="@color/blue"
+                android:background="@drawable/cube_tile_blue"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/timer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/timer_tile" />
+            </androidx.cardview.widget.CardView>
 
             <ImageView
                 android:id="@+id/imageView8"
@@ -132,12 +140,20 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/cube_tile_green" />
 
-            <ImageView
-                android:id="@+id/imageView9"
-                android:layout_width="wrap_content"
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/cube_tile_blue" />
+                app:cardCornerRadius="7dp"
+                app:cardBackgroundColor="@color/blue"
+                android:background="@drawable/cube_tile_blue"
+                android:layout_weight="1" >
+
+                <ImageView
+                    android:id="@+id/statistics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/statistics_tile" />
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
     </LinearLayout>

@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("cubeDimensions", 2);
             startActivity(intent);
         });
+
+        ImageView timer = findViewById(R.id.timer);
+        timer.setOnClickListener(view -> {
+            Intent intent = new Intent(this, TimerActivity.class);
+            startActivity(intent);
+        });
     }
 
     static {
