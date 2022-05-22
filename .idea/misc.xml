@@ -18,10 +18,12 @@
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/ic_cube_3_manually.xml" value="0.1595" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/manual_2_tile.xml" value="0.1595" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/drawable/manual_3_tile.xml" value="0.1595" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_cube_solution.xml" value="0.28203125" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_main.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_main2.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_read_cube_manually.xml" value="0.55" />
+        <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/activity_timer.xml" value="0.28203125" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/layout/fragment_home.xml" value="0.55" />
         <entry key="..\:/Users/arany/StudioProjects/kockapp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.28203125" />
         <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
