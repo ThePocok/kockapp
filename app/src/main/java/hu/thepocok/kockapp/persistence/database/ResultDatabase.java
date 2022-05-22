@@ -12,7 +12,7 @@ import hu.thepocok.kockapp.persistence.entity.Result;
 @Database(entities = {Result.class}, version = 1)
 public abstract class ResultDatabase extends RoomDatabase {
     private static ResultDatabase INSTANCE;
-    private static final String DB_NAME = "base.db";
+    private static final String DB_NAME = "result.db";
 
     public abstract ResultDao resultDao();
 

@@ -12,7 +12,6 @@ import android.widget.Button;
 import com.yashovardhan99.timeit.Stopwatch;
 
 import hu.thepocok.kockapp.R;
-import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.persistence.database.ResultDatabase;
 import hu.thepocok.kockapp.persistence.entity.Result;
 

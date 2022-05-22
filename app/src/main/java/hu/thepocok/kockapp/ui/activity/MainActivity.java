@@ -45,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, TimerActivity.class);
             startActivity(intent);
         });
+
+        ImageView statistics = findViewById(R.id.statistics);
+        statistics.setOnClickListener(view -> {
+            Intent intent = new Intent(this, StatisticsActivity.class);
+            startActivity(intent);
+        });
     }
 
     static {

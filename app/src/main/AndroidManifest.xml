@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KockApp.NoActionBar">
         <activity
+            android:name=".ui.activity.StatisticsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activity.TimerActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
