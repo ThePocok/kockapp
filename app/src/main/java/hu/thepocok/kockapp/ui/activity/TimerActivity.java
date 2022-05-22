@@ -37,11 +37,10 @@ public class TimerActivity extends AppCompatActivity {
         leftBtn.setOnTouchListener((view, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 isLeftTouched = true;
+                leftBtn.setBackgroundColor(getColor(R.color.yellow));
 
-                if (isLeftTouched && isRightTouched && !isTimerStarted) {
-                    leftBtn.setBackgroundColor(getColor(R.color.yellow));
-                } else if (isLeftTouched && isRightTouched && isTimerStarted) {
-                    stopwatch.stop();
+                if (isLeftTouched && isRightTouched && isTimerStarted) {
+                    stopTimer();
                 }
 
                 return true;
@@ -61,11 +60,10 @@ public class TimerActivity extends AppCompatActivity {
         rightBtn.setOnTouchListener((view, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 isRightTouched = true;
+                rightBtn.setBackgroundColor(getColor(R.color.yellow));
 
-                if (isLeftTouched && isRightTouched && !isTimerStarted) {
-                    rightBtn.setBackgroundColor(getColor(R.color.yellow));
-                } else if (isLeftTouched && isRightTouched && isTimerStarted) {
-                    stopwatch.stop();
+                if (isLeftTouched && isRightTouched && isTimerStarted) {
+                    stopTimer();
                 }
 
                 return true;
@@ -94,5 +92,10 @@ public class TimerActivity extends AppCompatActivity {
         if (stopwatch.isStarted()) {
             stopwatch.stop();
         }
+
+        // Necessary to make sure, that the timer will not restart when releasing the buttons
+        isLeftTouched = false;
+        isRightTouched = false;
+        isTimerStarted = false;
     }
 }
