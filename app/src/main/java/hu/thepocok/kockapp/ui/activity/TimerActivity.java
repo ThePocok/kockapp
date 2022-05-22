@@ -39,13 +39,18 @@ public class TimerActivity extends AppCompatActivity {
                 isLeftTouched = true;
 
                 if (isLeftTouched && isRightTouched && !isTimerStarted) {
-                    startTimer();
+                    leftBtn.setBackgroundColor(getColor(R.color.yellow));
                 } else if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopwatch.stop();
                 }
 
                 return true;
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (isLeftTouched && isRightTouched && !isTimerStarted) {
+                    startTimer();
+                }
+
+                leftBtn.setBackgroundColor(getColor(R.color.white));
                 isLeftTouched = false;
                 return false;
             }
@@ -58,13 +63,18 @@ public class TimerActivity extends AppCompatActivity {
                 isRightTouched = true;
 
                 if (isLeftTouched && isRightTouched && !isTimerStarted) {
-                    startTimer();
+                    rightBtn.setBackgroundColor(getColor(R.color.yellow));
                 } else if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopwatch.stop();
                 }
 
                 return true;
             } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (isLeftTouched && isRightTouched && !isTimerStarted) {
+                    startTimer();
+                }
+
+                rightBtn.setBackgroundColor(getColor(R.color.white));
                 isRightTouched = false;
                 return false;
             }
@@ -74,7 +84,15 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
-        stopwatch.start();
+        if (!stopwatch.isStarted()) {
+            stopwatch.start();
+        }
         isTimerStarted = true;
+    }
+
+    private void stopTimer() {
+        if (stopwatch.isStarted()) {
+            stopwatch.stop();
+        }
     }
 }

@@ -4,18 +4,24 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/drawable-v24/cube_tile_blue_without_border.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable-v24/timer_tile.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/camera_tile.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
+        <entry key="app/src/main/res/drawable/cube_tile_blue.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_angle_left.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_angle_right.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_angles_left.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_angles_right.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/ic_chart_simple.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_hand_left.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_hand_right.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_play.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_stopwatch.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/manual_2_tile.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/manual_3_tile.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/statistics_tile.xml" value="0.1495" />
         <entry key="app/src/main/res/layout/activity_cube_solution.xml" value="0.2608695652173913" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4036458333333333" />
         <entry key="app/src/main/res/layout/activity_read_cube_from_camera.xml" value="0.24365942028985507" />
