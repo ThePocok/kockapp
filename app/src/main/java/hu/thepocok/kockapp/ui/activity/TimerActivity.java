@@ -1,16 +1,20 @@
 package hu.thepocok.kockapp.ui.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.yashovardhan99.timeit.Stopwatch;
 
 import hu.thepocok.kockapp.R;
+import hu.thepocok.kockapp.model.cube.component.Color;
+import hu.thepocok.kockapp.persistence.database.ResultDatabase;
+import hu.thepocok.kockapp.persistence.entity.Result;
 
 public class TimerActivity extends AppCompatActivity {
     private Button leftBtn;
@@ -20,13 +24,17 @@ public class TimerActivity extends AppCompatActivity {
     private boolean isRightTouched = false;
     private boolean isTimerStarted = false;
 
-    Stopwatch stopwatch;
+    private Stopwatch stopwatch;
+
+    private ResultDatabase resultDatabase;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+
+        resultDatabase = ResultDatabase.getDatabase(this);
 
         stopwatch = new Stopwatch();
         stopwatch.setTextView(findViewById(R.id.elapsed_time_view));
@@ -64,6 +72,7 @@ public class TimerActivity extends AppCompatActivity {
 
                 if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopTimer();
+                    askToSaveResult();
                 }
 
                 return true;
@@ -79,6 +88,28 @@ public class TimerActivity extends AppCompatActivity {
 
             return false;
         });
+    }
+
+    private void askToSaveResult() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Congratulations!")
+                .setMessage("Do you want to save your result?")
+                .setPositiveButton("Yes, it was a 2x2 cube", (dialogInterface, i) -> {
+                    Result result = new Result();
+                    result.cubeSize = 2;
+                    result.time = stopwatch.getElapsedTime();
+
+                    resultDatabase.resultDao().insert(result);
+                })
+                .setNegativeButton("Yes, it was a 3x3 cube", (dialogInterface, i) -> {
+                    Result result = new Result();
+                    result.cubeSize = 3;
+                    result.time = stopwatch.getElapsedTime();
+
+                    resultDatabase.resultDao().insert(result);
+                })
+                .setNeutralButton("No", (dialogInterface, i) -> {})
+                .show();
     }
 
     private void startTimer() {
