@@ -1,7 +1,6 @@
 var express = require('express');
 var app = express();
 var mysql = require('mysql');
-var bodyParser = require("body-parser");
 
 var server = app.listen(3092, '192.168.1.157', function () {
     var host = server.address().address
@@ -10,8 +9,8 @@ var server = app.listen(3092, '192.168.1.157', function () {
     console.log("app listening at http://%s:%s", host, port)
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 app.get('/records/all', function (req, res) {
     var connection = connectToDatabase();
@@ -28,22 +27,23 @@ app.get('/records/all', function (req, res) {
 
 app.get('/records', function (req, res) {
     var connection = connectToDatabase();
-    
+
     connection.connect();
-    connection.query('SELECT COUNT(device_id) FROM Kockapp.Result WHERE cube_size = ' + req.body.cube_size + ' AND result < ' + req.body.result + ';', function(error, results, fields) {
+    connection.query('SELECT COUNT(device_id) AS rank FROM Kockapp.Result WHERE cube_size = ' + req.query.cube_size + ' AND result < ' + req.query.result + ';', function(error, results, fields) {
         if (error) {
             console.log(error);
         }
-        res.end(JSON.stringify(results));
+
+        res.end(JSON.stringify(results[0]));
     });
     connection.end()
 });
 
 app.post('/records', async function (req, res) {
     var result = await checkIfExists(req);
-    
+
     var connection = connectToDatabase();
-    
+
     connection.connect();
 
     if (result.length === 0) {
@@ -63,14 +63,14 @@ app.post('/records', async function (req, res) {
     }
 
     connection.end()
-    
+
     res.end("Success!");
 });
 
 function checkIfExists(req) {
     return new Promise((resolve, reject) => {
         var connection = connectToDatabase();
-        
+
         connection.connect();
         var result;
         connection.query('SELECT * FROM Kockapp.Result WHERE device_id = "' + req.body.device_id
