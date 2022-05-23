@@ -55,6 +55,7 @@ dependencies {
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
     implementation 'com.github.yashovardhan99:TimeIt:1.2.0'
     implementation "androidx.room:room-runtime:2.4.2"
+    implementation 'com.android.volley:volley:1.2.0'
     annotationProcessor "androidx.room:room-compiler:2.4.2"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

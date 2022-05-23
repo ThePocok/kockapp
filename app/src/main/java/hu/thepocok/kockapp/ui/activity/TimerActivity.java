@@ -1,21 +1,36 @@
 package hu.thepocok.kockapp.ui.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.yashovardhan99.timeit.Stopwatch;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.persistence.database.ResultDatabase;
 import hu.thepocok.kockapp.persistence.entity.Result;
 
 public class TimerActivity extends AppCompatActivity {
+    private final String apiURL = "http://thepocok.freeddns.org:3092/records";
     private Button leftBtn;
     private Button rightBtn;
 
@@ -27,6 +42,8 @@ public class TimerActivity extends AppCompatActivity {
 
     private ResultDatabase resultDatabase;
 
+    private RequestQueue queue;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +51,7 @@ public class TimerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timer);
 
         resultDatabase = ResultDatabase.getDatabase(this);
+        queue = Volley.newRequestQueue(this);
 
         stopwatch = new Stopwatch();
         stopwatch.setTextView(findViewById(R.id.elapsed_time_view));
@@ -99,6 +117,7 @@ public class TimerActivity extends AppCompatActivity {
                     result.time = stopwatch.getElapsedTime();
 
                     resultDatabase.resultDao().insert(result);
+                    saveResultToRemoteDatabase(2, stopwatch.getElapsedTime());
                 })
                 .setNegativeButton("Yes, it was a 3x3 cube", (dialogInterface, i) -> {
                     Result result = new Result();
@@ -106,6 +125,7 @@ public class TimerActivity extends AppCompatActivity {
                     result.time = stopwatch.getElapsedTime();
 
                     resultDatabase.resultDao().insert(result);
+                    saveResultToRemoteDatabase(3, stopwatch.getElapsedTime());
                 })
                 .setNeutralButton("No", (dialogInterface, i) -> {})
                 .show();
@@ -127,5 +147,29 @@ public class TimerActivity extends AppCompatActivity {
         isLeftTouched = false;
         isRightTouched = false;
         isTimerStarted = false;
+    }
+
+    public void saveResultToRemoteDatabase(int cubeSize, long result) {
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                apiURL,
+                response -> Toast.makeText(getApplicationContext(), "Result saved successfully!", Toast.LENGTH_SHORT).show(),
+                error -> {
+                    Log.d("REQUEST", error.toString());
+                    Toast.makeText(getApplicationContext(), "Could not save result to remote database!", Toast.LENGTH_SHORT).show();
+                }
+        ) {
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("device_id", Settings.Secure.ANDROID_ID);
+                params.put("cube_size", String.valueOf(cubeSize));
+                params.put("result", String.valueOf(result));
+                return params;
+            }
+        };
+
+        queue.add(request);
     }
 }
