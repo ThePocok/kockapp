@@ -65,7 +65,7 @@ public class TimerActivity extends AppCompatActivity {
 
                 if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopTimer();
-                    askToSaveResult();
+                    askToSaveResult(stopwatch.getElapsedTime());
                 }  else if (isLeftTouched && isRightTouched && !isTimerStarted) {
                     timer.setText(formatElapsedTime(0));
                 }
@@ -91,7 +91,7 @@ public class TimerActivity extends AppCompatActivity {
 
                 if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopTimer();
-                    askToSaveResult();
+                    askToSaveResult(stopwatch.getElapsedTime());
                 } else if (isLeftTouched && isRightTouched && !isTimerStarted) {
                     timer.setText(formatElapsedTime(0));
                 }
@@ -111,10 +111,10 @@ public class TimerActivity extends AppCompatActivity {
         });
     }
 
-    private void askToSaveResult() {
+    private void askToSaveResult(long elapsedTime) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Congratulations!")
-                .setMessage("Do you want to save your result?")
+                .setMessage("Your result is: " + formatElapsedTime(elapsedTime) + "\nDo you want to save your result?")
                 .setPositiveButton("Yes, it was a 2x2 cube", (dialogInterface, i) -> {
                     Result result = new Result();
                     result.cubeSize = 2;
