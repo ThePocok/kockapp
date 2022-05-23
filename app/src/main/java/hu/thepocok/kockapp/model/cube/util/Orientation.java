@@ -3,6 +3,7 @@ package hu.thepocok.kockapp.model.cube.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.RecursiveTask;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
@@ -166,6 +167,186 @@ public class Orientation implements Serializable {
             this.faceLeft = previousOrientation[2];
             throw new InvalidOrientationException();
         }
+    }
+
+    public boolean isFaceOnTheSide(Color faceColor) {
+        return faceColor.equals(getFaceFront()) || faceColor.equals(getFaceLeft()) ||
+                faceColor.equals(getFaceBack()) || faceColor.equals(getFaceRight());
+    }
+
+    public int getRotationDegree(Color faceColor) {
+        switch (getFaceUp()) {
+            case WHITE:
+                if (faceColor.equals(Color.RED) || faceColor.equals(Color.GREEN)
+                        || faceColor.equals(Color.ORANGE) || faceColor.equals(Color.BLUE)) {
+                    return 0;
+                }
+
+                switch (getFaceFront()) {
+                    case RED:
+                        return 0;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                return  90;
+                            case YELLOW:
+                                return 270;
+                        }
+                    case ORANGE:
+                        return 180;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                return 270;
+                            case YELLOW:
+                                return 90;
+                        }
+                }
+            case RED:
+                if (faceColor.equals(Color.YELLOW)) {
+                    return 0;
+                } else if (faceColor.equals(Color.BLUE)) {
+                    return 90;
+                } else if (faceColor.equals(Color.WHITE)) {
+                    return 180;
+                } else if (faceColor.equals(Color.GREEN)) {
+                    return 270;
+                }
+
+                switch (getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case RED:
+                                return 180;
+                            case ORANGE:
+                                return 0;
+                        }
+                    case BLUE:
+                        return 90;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case ORANGE:
+                                return 180;
+                            case RED:
+                                return 0;
+                        }
+                    case GREEN:
+                        return 270;
+                }
+            case GREEN:
+                if (faceColor.equals(Color.YELLOW) || faceColor.equals(Color.WHITE) || faceColor.equals(Color.RED)) {
+                    return 90;
+                } else if (faceColor.equals(Color.ORANGE)) {
+                    return 270;
+                }
+
+                switch (getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case GREEN:
+                                return 180;
+                            case BLUE:
+                                return 0;
+                        }
+                    case RED:
+                        return 90;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case GREEN:
+                                return 0;
+                            case BLUE:
+                                return 180;
+                        }
+                    case ORANGE:
+                        return 270;
+                }
+            case ORANGE:
+                if (faceColor.equals(Color.WHITE)) {
+                    return 0;
+                } else if (faceColor.equals(Color.GREEN)) {
+                    return 90;
+                } else if (faceColor.equals(Color.YELLOW)) {
+                    return 180;
+                } else if (faceColor.equals(Color.BLUE)) {
+                    return 270;
+                }
+
+                switch (getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case RED:
+                                return 0;
+                            case ORANGE:
+                                return 180;
+                        }
+                    case GREEN:
+                        return 90;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case ORANGE:
+                                return 0;
+                            case RED:
+                                return 180;
+                        }
+                    case BLUE:
+                        return 270;
+                }
+            case BLUE:
+                if (faceColor.equals(Color.YELLOW) || faceColor.equals(Color.WHITE) || faceColor.equals(Color.RED)) {
+                    return 270;
+                } else if (faceColor.equals(Color.ORANGE)) {
+                    return 90;
+                }
+
+                switch (getFaceFront()) {
+                    case WHITE:
+                        switch (faceColor) {
+                            case GREEN:
+                                return 0;
+                            case BLUE:
+                                return 180;
+                        }
+                    case ORANGE:
+                        return 90;
+                    case YELLOW:
+                        switch (faceColor) {
+                            case GREEN:
+                                return 180;
+                            case BLUE:
+                                return 0;
+                        }
+                    case RED:
+                       return 270;
+                }
+            case YELLOW:
+                if (faceColor.equals(Color.RED) || faceColor.equals(Color.GREEN)
+                        || faceColor.equals(Color.ORANGE) || faceColor.equals(Color.BLUE)) {
+                    return 180;
+                }
+
+                switch (getFaceFront()) {
+                    case RED:
+                        return 180;
+                    case BLUE:
+                        switch (faceColor) {
+                            case WHITE:
+                                return 270;
+                            case YELLOW:
+                                return 90;
+                        }
+                        break;
+                    case ORANGE:
+                        return 0;
+                    case GREEN:
+                        switch (faceColor) {
+                            case WHITE:
+                                return 90;
+                            case YELLOW:
+                                return 270;
+                        }
+                }
+        }
+        return -1;
     }
 
     public Color getOppositeColor(Color color) {

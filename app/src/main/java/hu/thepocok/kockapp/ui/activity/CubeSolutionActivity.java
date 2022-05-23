@@ -213,7 +213,11 @@ public class CubeSolutionActivity extends AppCompatActivity {
         sb.append("bgcolor=ffffff&");
         sb.append("position=llluuuuuu&");
         sb.append("colors=ffffffb71234009b480046adff5800ffd500&");
-        sb.append("facelets=" + mapCubeToFaceletString(section) + "&");
+        try {
+            sb.append("facelets=" + mapCubeToFaceletString(section) + "&");
+        } catch (InvalidOrientationException e) {
+            // This should never happen
+        }
         // F - green face clockwise
         // U - white face clockwise
         // R - red face clockwise
@@ -430,7 +434,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         return null;
     }
 
-    private String mapCubeToFaceletString(int section) {
+    private String mapCubeToFaceletString(int section) throws InvalidOrientationException{
         //TODO add reorientation to the beginning of every section
         Cube initialState = cube.duplicate();
         try {

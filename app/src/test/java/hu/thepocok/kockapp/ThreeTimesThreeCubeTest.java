@@ -15,6 +15,7 @@ import hu.thepocok.kockapp.model.cube.component.Face;
 import hu.thepocok.kockapp.model.cube.component.Layer;
 import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
+import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
 import hu.thepocok.kockapp.model.move.Move;
 import hu.thepocok.kockapp.model.move.Reorientation;
@@ -1018,7 +1019,7 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
-    public void solveYellowCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void solveYellowCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InvalidOrientationException {
         if (cube.isSolved()) {
 //            cube.mapKeysToRotation("F'", "R", "D'", "D'", "L", "B'", "L'", "F");
             cube.randomScramble(8);
@@ -1066,7 +1067,7 @@ public class ThreeTimesThreeCubeTest {
 
         try {
             Assert.assertTrue(cube.getFaceWithCurrentOrientation(Color.YELLOW).matchPattern("_", "YELLOW", "_", "YELLOW", "YELLOW", "YELLOW", "_", "YELLOW", "_"));
-        } catch (AssertionError e) {
+        } catch (AssertionError | InvalidOrientationException e) {
             System.out.println("Yellow cross has not been created!");
 
             System.out.println(cube.getSolutionString());
@@ -1250,7 +1251,7 @@ public class ThreeTimesThreeCubeTest {
     }
 
     @Test
-    public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, UnsolvableCubeException {
+    public void hundredRandomTest() throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, UnsolvableCubeException, InvalidOrientationException {
         for(int i = 0; i < 100; i++) {
             System.out.println("Teszt " + (i+1));
             cube = new CubeThree();

@@ -47,7 +47,11 @@ public class CubeThree extends Cube implements Serializable {
         solveMiddleLayer();
 
         /* Fifth task: create a yellow cross on the yellow face */
-        createYellowCross();
+        try {
+            createYellowCross();
+        } catch (InvalidOrientationException e) {
+            throw new UnsolvableCubeException();
+        }
 
         /* Sixth task: complete yellow corners */
         try {
@@ -201,7 +205,7 @@ public class CubeThree extends Cube implements Serializable {
         return pieces;
     }
 
-    private void createYellowCross() {
+    private void createYellowCross() throws InvalidOrientationException {
         while (!isYellowCrossCompleted()) {
             boolean foundCorrectStartingState = false;
             foundCorrectStartingState = foundCorrectStartingState ||
