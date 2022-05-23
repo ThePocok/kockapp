@@ -14,12 +14,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/records', function (req, res) {
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'XXXXXXXX',
-        database: 'Kockapp'
-    });
+    var connection = connectToDatabase();
     
     connection.connect();
     connection.query('SELECT * FROM Kockapp.Result', function(error, results, fields) {
@@ -34,12 +29,7 @@ app.get('/records', function (req, res) {
 app.post('/records', async function (req, res) {
     var result = await checkIfExists(req);
     
-    var connection = mysql.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: 'XXXXXXXX',
-        database: 'Kockapp'
-    });
+    var connection = connectToDatabase();
     
     connection.connect();
 
@@ -50,7 +40,7 @@ app.post('/records', async function (req, res) {
                 console.log(error);
             }
         });
-    } else {
+    } else if (result[0].result > req.body.result) {
         connection.query('UPDATE Kockapp.Result SET result = ' + req.body.result + ' WHERE device_id = "' + req.body.device_id
             + '" AND cube_size = ' + req.body.cube_size + ';', function(error, results, fields) {
             if (error) {
@@ -66,12 +56,7 @@ app.post('/records', async function (req, res) {
 
 function checkIfExists(req) {
     return new Promise((resolve, reject) => {
-        var connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'XXXXXXXX',
-            database: 'Kockapp'
-        });
+        var connection = connectToDatabase();
         
         connection.connect();
         var result;
@@ -85,5 +70,14 @@ function checkIfExists(req) {
             resolve(results);
         });
         connection.end();
+    });
+}
+
+function connectToDatabase() {
+    return mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        password: 'XXXXXXXX',
+        database: 'Kockapp'
     });
 }
