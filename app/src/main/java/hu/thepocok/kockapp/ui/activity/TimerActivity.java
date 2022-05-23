@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -159,11 +160,13 @@ public class TimerActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Could not save result to remote database!", Toast.LENGTH_SHORT).show();
                 }
         ) {
+            @SuppressLint("HardwareIds")
             @Nullable
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("device_id", Settings.Secure.ANDROID_ID);
+                params.put("device_id", android.provider.Settings.Secure.getString(
+                        getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 params.put("cube_size", String.valueOf(cubeSize));
                 params.put("result", String.valueOf(result));
                 return params;
