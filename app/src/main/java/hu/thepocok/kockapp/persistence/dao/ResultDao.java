@@ -13,7 +13,7 @@ public interface ResultDao {
     @Query("SELECT * FROM result WHERE cube_size = (:cubeSize)")
     List<Result> getAllOfSize(int cubeSize);
 
-    @Query("SELECT * FROM result WHERE cube_size = (:cubeSize) ORDER BY time DESC LIMIT 1")
+    @Query("SELECT * FROM result WHERE cube_size = (:cubeSize) ORDER BY time ASC LIMIT 1")
     List<Result> getBestOfSize(int cubeSize);
 
     @Insert
