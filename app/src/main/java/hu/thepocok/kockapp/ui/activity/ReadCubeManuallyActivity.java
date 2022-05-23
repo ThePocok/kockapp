@@ -92,16 +92,16 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         nextFace = Color.RED;
 
         prevBtn = findViewById(R.id.prev_face_button);
-        prevBtn.setOnClickListener(l -> setFace(true, true));
+        prevBtn.setOnClickListener(l -> setFace(true, true, true));
 
         nextBtn = findViewById(R.id.next_face_button);
-        nextBtn.setOnClickListener(l -> setFace(false, true));
+        nextBtn.setOnClickListener(l -> setFace(false, true, true));
         setPrevAndNextButtonColors();
 
         facePreviewView.setOnTouchListener((view, click) -> {
             Color clickedFace = facePreviewView.getClickedFace(click.getX(), click.getY());
             Log.d(TAG, "Clicked color: " + clickedFace);
-            setFace(false, false);
+            setFace(false, false, false);
             setFaceColorVariables(clickedFace);
             setPrevAndNextButtonColors();
             resetCubeContainer(clickedFace);
@@ -243,7 +243,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         }
     }
 
-    private void setFace(boolean reverse, boolean shouldOpenSolution) {
+    private void setFace(boolean reverse, boolean shouldOpenSolution, boolean shouldShowArrow) {
         ArrayList<Color> colors = (ArrayList<Color>) tileColors.clone();
         Face face;
         if (dimensions == 2) {
@@ -267,7 +267,10 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.RED);
             }
-            displayArrowGif(180);
+
+            if (shouldShowArrow) {
+                displayArrowGif(180);
+            }
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
             Log.d(TAG, "Colors assigned to red face");
@@ -278,7 +281,10 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.GREEN);
             }
-            displayArrowGif(270);
+
+            if (shouldShowArrow) {
+                displayArrowGif(270);
+            }
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
             Log.d(TAG, "Colors assigned to green face");
@@ -289,7 +295,10 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.ORANGE);
             }
-            displayArrowGif(270);
+
+            if (shouldShowArrow) {
+                displayArrowGif(270);
+            }
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
             Log.d(TAG, "Colors assigned to orange face");
@@ -300,7 +309,11 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.BLUE);
             }
-            displayArrowGif(270);
+
+
+            if (shouldShowArrow) {
+                displayArrowGif(270);
+            }
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
             Log.d(TAG, "Colors assigned to blue face");
@@ -311,7 +324,10 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
             } else {
                 setFaceColorVariables(Color.YELLOW);
             }
-            displayTwoArrowGifs(270, 180);
+
+            if (shouldShowArrow) {
+                displayTwoArrowGifs(270, 180);
+            }
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
             Log.d(TAG, "Colors assigned to yellow face");
