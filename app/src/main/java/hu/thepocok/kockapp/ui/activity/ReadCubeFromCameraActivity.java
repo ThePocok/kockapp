@@ -163,7 +163,11 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 Utils.bitmapToMat(bitmap, mat);
 
                 Mat hsvImage = new Mat();
+                Mat hsvImageLower = new Mat();
+                Mat hsvImageUpper = new Mat();
                 Imgproc.cvtColor(mat, hsvImage, Imgproc.COLOR_RGB2HSV);
+                Core.inRange(hsvImage, new Scalar(0, 70, 50), new Scalar(9, 255, 255), hsvImageLower);
+                Core.inRange(hsvImage, new Scalar(160, 70, 50), new Scalar(180, 255, 255), hsvImageUpper);
 
                 Point matCenterPoint = new Point(hsvImage.width() / 2.0f, hsvImage.height() / 2.0f);
 
@@ -178,10 +182,12 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                     Rect rect = new Rect(topLeft, bottomRight);
 
                     Mat hsvSubMat = hsvImage.submat(rect);
-                    Scalar hsvValues = Core.mean(hsvSubMat);
-                    Log.d("ReadColor", hsvValues.toString());
 
-                    //Bitmap bmp = Bitmap.createBitmap(bitmap, (int) points[0].x, (int) points[0].y, (int) (points[1].x - points[0].x), (int) (points[1].y - points[0].y));
+                    int pointX = (hsvSubMat.width() / 2);
+                    int pointY = (hsvSubMat.height() / 2);
+
+                    double[] hsvValuesArray = hsvSubMat.get(pointX, pointY);
+                    Scalar hsvValues = new Scalar(hsvValuesArray[0], hsvValuesArray[1], hsvValuesArray[2]);
 
                     synchronized (tileColorsLock) {
                         tileColors.set((int) points[2].y, getColorFromHSV(hsvValues));
@@ -372,8 +378,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     }
 
     private Color getColorFromHSV(Scalar hsvValues) {
-        if (inBetween(hsvValues, new Scalar(0, 70, 50), new Scalar(9, 255, 255)) ||
-                inBetween(hsvValues, new Scalar(160, 70, 50), new Scalar(180, 255, 255))) {
+        if (inBetween(hsvValues, new Scalar(0, 50, 70), new Scalar(9, 255, 255)) ||
+                inBetween(hsvValues, new Scalar(160, 50, 70), new Scalar(180, 255, 255))) {
             return Color.RED;
         } else if (inBetween(hsvValues, new Scalar(10, 100, 20), new Scalar(24, 255, 255))) {
             return Color.ORANGE;
