@@ -13,11 +13,24 @@ var server = app.listen(3092, '192.168.1.157', function () {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.get('/records/all', function (req, res) {
+    var connection = connectToDatabase();
+
+    connection.connect();
+    connection.query('SELECT * FROM Kockapp.Result;', function(error, results, fields) {
+        if (error) {
+            console.log(error);
+        }
+        res.end(JSON.stringify(results));
+    });
+    connection.end()
+});
+
 app.get('/records', function (req, res) {
     var connection = connectToDatabase();
     
     connection.connect();
-    connection.query('SELECT * FROM Kockapp.Result', function(error, results, fields) {
+    connection.query('SELECT COUNT(device_id) FROM Kockapp.Result WHERE cube_size = ' + req.body.cube_size + ' AND result < ' + req.body.result + ';', function(error, results, fields) {
         if (error) {
             console.log(error);
         }
