@@ -75,7 +75,7 @@ public class StatisticsActivity extends AppCompatActivity {
         ArrayList<Result> bestOfCubeThree = (ArrayList<Result>) resultDatabase.resultDao().getBestOfSize(3);
 
         if (bestOfCubeTwo.size() != 0) {
-            resultTwo.setText(String.valueOf(bestOfCubeTwo.get(0).time));
+            resultTwo.setText(formatTime(bestOfCubeTwo.get(0).time));
             getRankFromRemoteDatabase(2 ,bestOfCubeTwo.get(0).time);
         } else {
             resultTwo.setText("No result yet");
@@ -83,7 +83,7 @@ public class StatisticsActivity extends AppCompatActivity {
         }
 
         if (bestOfCubeThree.size() != 0) {
-            resultThree.setText(String.valueOf(bestOfCubeThree.get(0).time));
+            resultThree.setText(formatTime(bestOfCubeThree.get(0).time));
             getRankFromRemoteDatabase(3 ,bestOfCubeThree.get(0).time);
         } else {
             resultThree.setText("No result yet");
@@ -122,5 +122,28 @@ public class StatisticsActivity extends AppCompatActivity {
         );
 
         queue.add(request);
+    }
+
+    private String formatTime(long time){
+        int minutes = (int) (time / (60 * 1000) % 60);
+        int seconds = (int) ((time / 1000) % 60);
+        int milliseconds = (int) ((time % 1000) / 10);
+
+        StringBuilder sb = new StringBuilder();
+
+        if (minutes != 0) {
+            sb.append((minutes < 10) ? "0" : "");
+            sb.append(minutes);
+            sb.append(":");
+        }
+
+        sb.append((seconds < 10) ? "0" : "");
+        sb.append(seconds);
+        sb.append(".");
+
+        sb.append((milliseconds < 10) ? "0" : "");
+        sb.append(milliseconds);
+
+        return sb.toString();
     }
 }
