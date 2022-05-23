@@ -89,6 +89,8 @@ public class TimerActivity extends AppCompatActivity {
                 if (isLeftTouched && isRightTouched && isTimerStarted) {
                     stopTimer();
                     askToSaveResult();
+                } else if (isLeftTouched && isRightTouched && !isTimerStarted) {
+                    timer.setText(formatElapsedTime(0));
                 }
 
                 return true;
