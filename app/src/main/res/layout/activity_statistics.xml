@@ -135,7 +135,7 @@
             android:layout_margin="2dp"
             android:backgroundTint="@color/white"
             android:textColor="@color/black"
-            android:text="Delete local results" />
+            android:text="Delete results" />
 
         <Space
             android:layout_width="match_parent"

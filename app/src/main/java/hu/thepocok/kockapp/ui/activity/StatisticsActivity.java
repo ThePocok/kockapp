@@ -2,10 +2,12 @@ package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -65,6 +67,7 @@ public class StatisticsActivity extends AppCompatActivity {
         Button deleteBtn = findViewById(R.id.delete);
         deleteBtn.setOnClickListener(l -> {
             resultDatabase.resultDao().deleteAll();
+            deleteFromRemoteDatabase();
 
             setResults();
         });
@@ -114,6 +117,25 @@ public class StatisticsActivity extends AppCompatActivity {
                             rankThree.setText("Cannot retrieve information from database");
                         }                    }
                 },
+                error -> {
+                    Log.d("REQUEST", error.toString());
+                    rankTwo.setText("Could not connect to database");
+                    rankThree.setText("Could not connect to database");
+                }
+        );
+
+        queue.add(request);
+    }
+
+    @SuppressLint("HardwareIds")
+    private void deleteFromRemoteDatabase() {
+         String completedURL = API_URL + "/" + android.provider.Settings.Secure.getString(
+                getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                completedURL,
+                response -> Toast.makeText(this, "Records deleted successfully", Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
                     rankTwo.setText("Could not connect to database");

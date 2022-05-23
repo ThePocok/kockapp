@@ -67,6 +67,20 @@ app.post('/records', async function (req, res) {
     res.end("Success!");
 });
 
+app.delete('/records/:device_id', function (req, res) {
+    var connection = connectToDatabase();
+
+    connection.connect();
+    connection.query('DELETE FROM Kockapp.Result WHERE device_id = ' + req.params.device_id + ';', function(error, results, fields) {
+            if (error) {
+                console.log(error);
+            }
+
+            res.end("Success!");
+        });
+        connection.end()
+});
+
 function checkIfExists(req) {
     return new Promise((resolve, reject) => {
         var connection = connectToDatabase();
