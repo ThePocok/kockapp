@@ -5,10 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -17,8 +14,6 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.yashovardhan99.timeit.Stopwatch;
@@ -165,6 +160,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 params.put("device_id", android.provider.Settings.Secure.getString(
                         getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
                 params.put("cube_size", String.valueOf(cubeSize));
