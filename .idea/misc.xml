@@ -5,10 +5,12 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/drawable-v24/cube_tile_blue_without_border.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable-v24/cube_tile_empty.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable-v24/timer_tile.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/camera_tile.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/cube_tile.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/cube_tile_blue.xml" value="0.1495" />
+        <entry key="app/src/main/res/drawable/cube_tile_white.xml" value="0.1495" />
         <entry key="app/src/main/res/drawable/ic_angle_left.xml" value="0.235" />
         <entry key="app/src/main/res/drawable/ic_angle_right.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_angles_left.xml" value="0.235" />

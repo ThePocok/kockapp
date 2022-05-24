@@ -185,6 +185,9 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
 
                 Drawable drawable;
                 switch (color) {
+                    case WHITE:
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                        break;
                     case RED:
                         drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_red, getTheme());
                         break;
@@ -201,7 +204,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                         drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_yellow, getTheme());
                         break;
                     default:
-                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                        drawable = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_empty, getTheme());
                         break;
                 }
 
@@ -213,6 +216,9 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 tile.setOnClickListener(l -> {
                     Drawable d;
                     switch (selectedColor) {
+                        case WHITE:
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                            break;
                         case RED:
                             d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_red, getTheme());
                             break;
@@ -229,7 +235,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                             d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_yellow, getTheme());
                             break;
                         default:
-                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_white, getTheme());
+                            d = ResourcesCompat.getDrawable(res, R.drawable.cube_tile_empty, getTheme());
                             break;
                     }
 
