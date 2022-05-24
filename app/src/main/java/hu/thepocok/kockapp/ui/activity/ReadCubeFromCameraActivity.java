@@ -67,6 +67,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private Button sizeChangeBtn;
     private boolean isTwoTimesTwo = false;
 
+    private Button captureBtn;
+
     private GifImageView gifOverlay;
 
     private CubeFacePreviewView facePreviewView;
@@ -86,7 +88,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        Button captureBtn = findViewById(R.id.capture_face_button);
+        captureBtn = findViewById(R.id.capture_face_button);
         captureBtn.setOnClickListener(l -> setFace());
 
         sizeChangeBtn = findViewById(R.id.cube_size_selector);
@@ -351,6 +353,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 gifOverlay.setRotation(rotationDegree);
                 gifOverlay.setImageResource(R.drawable.arrow);
+                captureBtn.setClickable(false);
             });
 
             try {
@@ -359,7 +362,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            runOnUiThread(() -> gifOverlay.setImageResource(0));
+            runOnUiThread(() -> {
+                gifOverlay.setImageResource(0);
+                captureBtn.setClickable(true);
+            });
         });
         gifOverlayThread.start();
     }
