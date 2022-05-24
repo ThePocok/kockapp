@@ -17,7 +17,7 @@
 
     <string name="read_cube">Read cube</string>
 
-    <!-- Strings on solution activity -->
+    <!-- Strings for solution activity -->
     <!-- 3x3 -->
     <string name="white_cross_yellow_face">Create white cross on yellow face</string>
     <string name="white_cross_white_face">Turn the white cross to the white face</string>
@@ -34,4 +34,14 @@
     <string name="white_red_green">Place the white-red-green piece next to the white-orange-green piece</string>
     <string name="yellow_tiles_upwards">Make all yellow tiles face upwards</string>
     <string name="swap_incorrect">Swap the incorrectly placed pieces on the yellow face</string>
+
+    <!-- Strings for statistics activity -->
+    <string name="best_2">Best time for 2x2 cube</string>
+    <string name="best_3">Best time for 3x3 cube</string>
+    <string name="rank_2">Rank in solving 2x2 cube</string>
+    <string name="rank_3">Rank in solving 3x3 cube</string>
+    <string name="fetching_result">Fetching result...</string>
+    <string name="no_result">No result yet</string>
+    <string name="cannot_retrieve_information">Cannot retrieve information from database</string>
+    <string name="could_not_connect">Could not connect to database</string>
 </resources>

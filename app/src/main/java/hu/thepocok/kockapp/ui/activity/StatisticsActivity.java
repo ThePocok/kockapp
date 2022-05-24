@@ -44,23 +44,23 @@ public class StatisticsActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         TextView labelTwo = findViewById(R.id.best_2_label);
-        labelTwo.setText("Best time for 2x2 cube");
+        labelTwo.setText(R.string.best_2);
 
         TextView labelThree = findViewById(R.id.best_3_label);
-        labelThree.setText("Best time for 3x3 cube");
+        labelThree.setText(R.string.best_3);
 
         TextView rankTwoLabel = findViewById(R.id.rank_2_label);
-        rankTwoLabel.setText("Rank in 2x2 cube");
+        rankTwoLabel.setText(R.string.rank_2);
 
         TextView rankThreeLabel = findViewById(R.id.rank_3_label);
-        rankThreeLabel.setText("Rank in 3x3 cube");
+        rankThreeLabel.setText(R.string.rank_3);
 
         resultTwo = findViewById(R.id.best_2_result);
         resultThree = findViewById(R.id.best_3_result);
         rankTwo = findViewById(R.id.rank_2);
-        rankTwo.setText("Fetching result...");
+        rankTwo.setText(R.string.fetching_result);
         rankThree = findViewById(R.id.rank_3);
-        rankThree.setText("Fetching result...");
+        rankThree.setText(R.string.fetching_result);
 
         setResults();
 
@@ -81,16 +81,16 @@ public class StatisticsActivity extends AppCompatActivity {
             resultTwo.setText(formatTime(bestOfCubeTwo.get(0).time));
             getRankFromRemoteDatabase(2 ,bestOfCubeTwo.get(0).time);
         } else {
-            resultTwo.setText("No result yet");
-            rankTwo.setText("No result yet");
+            resultTwo.setText(R.string.no_result);
+            rankTwo.setText(R.string.no_result);
         }
 
         if (bestOfCubeThree.size() != 0) {
             resultThree.setText(formatTime(bestOfCubeThree.get(0).time));
             getRankFromRemoteDatabase(3 ,bestOfCubeThree.get(0).time);
         } else {
-            resultThree.setText("No result yet");
-            rankThree.setText("No result yet");
+            resultThree.setText(R.string.no_result);
+            rankThree.setText(R.string.no_result);
         }
     }
 
@@ -106,7 +106,7 @@ public class StatisticsActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(response);
                             rankTwo.setText(String.valueOf(obj.getInt("rank") + 1));
                         } catch (JSONException e) {
-                            rankTwo.setText("Cannot retrieve information from database");
+                            rankTwo.setText(R.string.cannot_retrieve_information);
                         }
 
                     } else if (cubeSize == 3) {
@@ -114,13 +114,14 @@ public class StatisticsActivity extends AppCompatActivity {
                             JSONObject obj = new JSONObject(response);
                             rankThree.setText(String.valueOf(obj.getInt("rank") + 1));
                         } catch (JSONException e) {
-                            rankThree.setText("Cannot retrieve information from database");
-                        }                    }
+                            rankThree.setText(R.string.cannot_retrieve_information);
+                        }
+                    }
                 },
                 error -> {
                     Log.d("REQUEST", error.toString());
-                    rankTwo.setText("Could not connect to database");
-                    rankThree.setText("Could not connect to database");
+                    rankTwo.setText(R.string.could_not_connect);
+                    rankThree.setText(R.string.could_not_connect);
                 }
         );
 
@@ -138,8 +139,8 @@ public class StatisticsActivity extends AppCompatActivity {
                 response -> Toast.makeText(this, "Records deleted successfully", Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
-                    rankTwo.setText("Could not connect to database");
-                    rankThree.setText("Could not connect to database");
+                    rankTwo.setText(R.string.could_not_connect);
+                    rankThree.setText(R.string.could_not_connect);
                 }
         );
 
