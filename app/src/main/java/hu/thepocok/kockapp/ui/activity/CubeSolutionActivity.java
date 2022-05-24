@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
@@ -527,25 +525,5 @@ public class CubeSolutionActivity extends AppCompatActivity {
         }
 
         return '_';
-    }
-
-    private void clickPlayButton() {
-        long downTime = SystemClock.uptimeMillis();
-        long eventTime = SystemClock.uptimeMillis() + 100;
-        float x = webView.getWidth() / 2.0f;
-        float y = webView.getHeight() * 0.90f;
-
-        int metaState = 0;
-        MotionEvent motionEvent = MotionEvent.obtain(
-                downTime,
-                eventTime,
-                MotionEvent.ACTION_UP,
-                x,
-                y,
-                metaState
-        );
-
-        webView.dispatchGenericMotionEvent(motionEvent);
-        Log.d(TAG, "Clicked");
     }
 }
