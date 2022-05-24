@@ -17,6 +17,15 @@
 
     <string name="read_cube">Read cube</string>
 
+    <!-- Strings for cube face preview view -->
+    <string name="title">Cube faces</string>
+    <string name="white">WHITE</string>
+    <string name="red">RED</string>
+    <string name="green">GREEN</string>
+    <string name="orange">ORANGE</string>
+    <string name="blue">BLUE</string>
+    <string name="yellow">YELLOW</string>
+
     <!-- Strings for solution activity -->
     <!-- 3x3 -->
     <string name="white_cross_yellow_face">Create white cross on yellow face</string>
