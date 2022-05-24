@@ -32,10 +32,24 @@
     <!-- Strings for statistics activity -->
     <string name="best_2">Best time for 2x2 cube</string>
     <string name="best_3">Best time for 3x3 cube</string>
+
     <string name="rank_2">Rank in solving 2x2 cube</string>
     <string name="rank_3">Rank in solving 3x3 cube</string>
+
     <string name="fetching_result">Fetching result...</string>
     <string name="no_result">No result yet</string>
+
     <string name="cannot_retrieve_information">Cannot retrieve information from database</string>
     <string name="could_not_connect">Could not connect to database</string>
+
+    <!-- Strings for read cube manually activity -->
+    <string name="unsolvable_cube_title">Unsolvable cube!</string>
+    <string name="unsolvable_cube_message">Unfortunately, we cannot solve this cube!</string>
+
+    <string name="review">Review</string>
+    <string name="reread_manually">Reread manually</string>
+    <string name="reread_camera">Reread by camera</string>
+
+    <string name="invalid_cube_title">Invalid cube!</string>
+    <string name="invalid_cube_message">Do you want to review the faces or reread the whole cube?</string>
 </resources>

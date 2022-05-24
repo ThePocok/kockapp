@@ -39,4 +39,11 @@
     <string name="no_result">Még nincs eredmény</string>
     <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
     <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
+    <string name="unsolvable_cube_title">Megoldhatatlan kocka!</string>
+    <string name="unsolvable_cube_message">Sajnos jelenleg nem tudjuk megoldani ezt a kockát!</string>
+    <string name="review">Ellenőrzés</string>
+    <string name="reread_manually">Beolvasás újra kézzel</string>
+    <string name="reread_camera">Beolvasás újra kamerával</string>
+    <string name="invalid_cube_title">Hibás kocka!</string>
+    <string name="invalid_cube_message">Szeretnéd ellenőrizni az oldalakat, vagy beolvasod újra a kockát?</string>
 </resources>

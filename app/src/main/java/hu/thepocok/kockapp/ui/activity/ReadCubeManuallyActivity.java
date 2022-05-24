@@ -392,16 +392,16 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     private boolean checkCubeValidity() {
         if (!cube.isValidCube()) {
             AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle("Invalid cube")
-                    .setMessage("Do you want to review the faces or reread the whole cube?")
-                    .setPositiveButton("Review", (dialogInterface, i) -> {
+                    .setTitle(R.string.invalid_cube_title)
+                    .setMessage(R.string.invalid_cube_message)
+                    .setPositiveButton(R.string.review, (dialogInterface, i) -> {
                         currentFaceToSet = Color.YELLOW;
                     })
-                    .setNegativeButton("Reread manually", (dialogInterface, i) -> {
+                    .setNegativeButton(R.string.reread_manually, (dialogInterface, i) -> {
                         resetCube();
                         resetCubeContainer(Color.WHITE);
                     })
-                    .setNeutralButton("Reread by camera", (dialogInterface, i) -> {
+                    .setNeutralButton(R.string.reread_camera, (dialogInterface, i) -> {
                         Intent intent = new Intent(ReadCubeManuallyActivity.this, ReadCubeFromCameraActivity.class);
                         startActivity(intent);
                     })
@@ -414,16 +414,16 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                 solvedCube.solve();
             } catch (UnsolvableCubeException e) {
                 AlertDialog dialog = new AlertDialog.Builder(this)
-                        .setTitle("Unsolvable cube")
-                        .setMessage("Unfortunately, we cannot solve this cube!")
-                        .setPositiveButton("Review", (dialogInterface, i) -> {
+                        .setTitle(R.string.unsolvable_cube_title)
+                        .setMessage(R.string.unsolvable_cube_message)
+                        .setPositiveButton(R.string.review, (dialogInterface, i) -> {
 
                         })
-                        .setNegativeButton("Reread manually", (dialogInterface, i) -> {
+                        .setNegativeButton(R.string.reread_manually, (dialogInterface, i) -> {
                             resetCube();
                             resetCubeContainer(Color.WHITE);
                         })
-                        .setNeutralButton("Reread by camera", (dialogInterface, i) -> {
+                        .setNeutralButton(R.string.reread_camera, (dialogInterface, i) -> {
                             Intent intent = new Intent(ReadCubeManuallyActivity.this, ReadCubeFromCameraActivity.class);
                             startActivity(intent);
                         })
