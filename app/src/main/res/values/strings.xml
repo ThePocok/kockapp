@@ -52,4 +52,16 @@
 
     <string name="invalid_cube_title">Invalid cube!</string>
     <string name="invalid_cube_message">Do you want to review the faces or reread the whole cube?</string>
+
+    <!-- Strings for timer activity -->
+    <string name="congratulations_title">Congratulations!</string>
+    <string name="your_result">Your result is: </string>
+    <string name="want_to_save">\nDo you want to save your result?</string>
+
+    <string name="yes_2">Yes, it was a 2x2 cube</string>
+    <string name="yes_3">Yes, it was a 3x3 cube</string>
+    <string name="no">No</string>
+
+    <string name="saved">Result saved successfully!</string>
+    <string name="not_saved">Could not save result to remote database!</string>
 </resources>

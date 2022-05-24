@@ -113,9 +113,9 @@ public class TimerActivity extends AppCompatActivity {
 
     private void askToSaveResult(long elapsedTime) {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Congratulations!")
-                .setMessage("Your result is: " + formatElapsedTime(elapsedTime) + "\nDo you want to save your result?")
-                .setPositiveButton("Yes, it was a 2x2 cube", (dialogInterface, i) -> {
+                .setTitle(R.string.congratulations_title)
+                .setMessage(getResources().getString(R.string.your_result) + formatElapsedTime(elapsedTime) + getResources().getString(R.string.want_to_save))
+                .setPositiveButton(R.string.yes_2, (dialogInterface, i) -> {
                     Result result = new Result();
                     result.cubeSize = 2;
                     result.time = stopwatch.getElapsedTime();
@@ -123,7 +123,7 @@ public class TimerActivity extends AppCompatActivity {
                     resultDatabase.resultDao().insert(result);
                     saveResultToRemoteDatabase(2, stopwatch.getElapsedTime());
                 })
-                .setNegativeButton("Yes, it was a 3x3 cube", (dialogInterface, i) -> {
+                .setNegativeButton(R.string.yes_3, (dialogInterface, i) -> {
                     Result result = new Result();
                     result.cubeSize = 3;
                     result.time = stopwatch.getElapsedTime();
@@ -131,7 +131,7 @@ public class TimerActivity extends AppCompatActivity {
                     resultDatabase.resultDao().insert(result);
                     saveResultToRemoteDatabase(3, stopwatch.getElapsedTime());
                 })
-                .setNeutralButton("No", (dialogInterface, i) -> {})
+                .setNeutralButton(R.string.no, (dialogInterface, i) -> {})
                 .show();
     }
 
@@ -182,10 +182,10 @@ public class TimerActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 apiURL,
-                response -> Toast.makeText(getApplicationContext(), "Result saved successfully!", Toast.LENGTH_SHORT).show(),
+                response -> Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
-                    Toast.makeText(getApplicationContext(), "Could not save result to remote database!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.not_saved, Toast.LENGTH_SHORT).show();
                 }
         ) {
             @SuppressLint("HardwareIds")

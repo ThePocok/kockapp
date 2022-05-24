@@ -33,17 +33,36 @@
     <!-- Strings for statistics activity -->
     <string name="best_2">Legjobb idő a 2x2-es kocka megoldásában</string>
     <string name="best_3">Legjobb idő a 3x3-as kocka megoldásában</string>
+
     <string name="rank_2">Helyezésed a 2x2-es kocka megoldásában</string>
     <string name="rank_3">Helyezésed a 3x3-as kocka megoldásában</string>
+
     <string name="fetching_result">Adatok lekérdezése...</string>
     <string name="no_result">Még nincs eredmény</string>
+
     <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
     <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
+
+    <!-- Strings for read cube manually activity -->
     <string name="unsolvable_cube_title">Megoldhatatlan kocka!</string>
     <string name="unsolvable_cube_message">Sajnos jelenleg nem tudjuk megoldani ezt a kockát!</string>
+
     <string name="review">Ellenőrzés</string>
     <string name="reread_manually">Beolvasás újra kézzel</string>
     <string name="reread_camera">Beolvasás újra kamerával</string>
+
     <string name="invalid_cube_title">Hibás kocka!</string>
     <string name="invalid_cube_message">Szeretnéd ellenőrizni az oldalakat, vagy beolvasod újra a kockát?</string>
+
+    <!-- Strings for timer activity -->
+    <string name="congratulations_title">Gratulálunk!</string>
+    <string name="your_result">"Az eredményed: "</string>
+    <string name="want_to_save">\nSzeretnéd elmenteni?</string>
+
+    <string name="yes_2">Igen, egy 2x2-es kockát oldottam meg</string>
+    <string name="yes_3">Igen, egy 3x3-as kockát oldottam meg</string>
+    <string name="no">Nem</string>
+
+    <string name="saved">Eredmény elmentve!</string>
+    <string name="not_saved">Az eredményt nem sikerült a távoli adatbázisba elmenteni!</string>
 </resources>
