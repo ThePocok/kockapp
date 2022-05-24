@@ -255,17 +255,18 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     private void fillUpViewWithMoves(int section) {
+        final int movesPerRow = 6;
         LinearLayout moves = findViewById(R.id.moves);
         moves.removeAllViews();
 
-        int rowHeight = 69; //Math.min((moves.getMeasuredHeight() - 5*15) / 4, (moves.getMeasuredWidth() - 5*15) / 5);
+        int rowHeight = Math.min((moves.getMeasuredHeight() - movesPerRow * 15) / 4, (moves.getMeasuredWidth() - movesPerRow * 15) / movesPerRow);
         String[] solutionSection = mapCubeSolutionToAnimCubeMoves(section).split(" ");
 
         currentMoveInSection = 0;
         maxMovesInSection = solutionSection.length;
 
-        int rowCount = solutionSection.length / 5;
-        if (solutionSection.length % 5 != 0) {
+        int rowCount = solutionSection.length / movesPerRow;
+        if (solutionSection.length % movesPerRow != 0) {
             rowCount++;
         }
 
@@ -274,8 +275,10 @@ public class CubeSolutionActivity extends AppCompatActivity {
             linearLayout.setGravity(Gravity.LEFT);
             linearLayout.setMinimumHeight(rowHeight);
 
-            for (int j = i * 5; j < Math.min((i + 1 ) * 5, solutionSection.length); j++) {
+            for (int j = i * movesPerRow; j < Math.min((i + 1 ) * movesPerRow, solutionSection.length); j++) {
                 ImageView imageView = new ImageView(this);
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imageView.setAdjustViewBounds(true);
                 imageView.setMaxHeight(rowHeight);
                 imageView.setMaxWidth(rowHeight);
 
