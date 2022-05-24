@@ -221,13 +221,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
         } catch (InvalidOrientationException e) {
             // This should never happen
         }
-        // F - green face clockwise
-        // U - white face clockwise
-        // R - red face clockwise
-        // L - orange face clockwise
-        // B - blue face clockwise
-        // D - yellow face clockwise
-        sb.append("move=" + mapCubeSolutionToAnimCubeMoves(section) + "&");
+        sb.append("move=" + mapCubeSolutionToAnimCubeMoves(section).replace(" ", " . ") + "&");
 
         return sb.toString();
     }
@@ -287,12 +281,6 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 imageView.setMaxWidth(rowHeight);
                 imageView.setPadding(7, 7, 7, 7);
 
-                /*int finalJ = j;
-                imageView.setOnClickListener(l -> {
-                    currentMoveInSection = finalJ;
-                    Log.d("MoveIconFinalJ", String.valueOf(finalJ));
-                    webView.evaluateJavascript("goToStep(" + finalJ + ", " + solutionSection.length + ")", null);
-                });*/
 
                 // F - green face clockwise
                 // U - white face clockwise
@@ -367,6 +355,12 @@ public class CubeSolutionActivity extends AppCompatActivity {
         if (move instanceof Rotation) {
             String key = ((Rotation) move).getKey();
 
+            // F - green face clockwise
+            // U - white face clockwise
+            // R - red face clockwise
+            // L - orange face clockwise
+            // B - blue face clockwise
+            // D - yellow face clockwise
             switch (key) {
                 case "F":
                     return "R";
