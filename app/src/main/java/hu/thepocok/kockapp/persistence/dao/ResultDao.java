@@ -10,9 +10,6 @@ import hu.thepocok.kockapp.persistence.entity.Result;
 
 @Dao
 public interface ResultDao {
-    @Query("SELECT * FROM result WHERE cube_size = (:cubeSize)")
-    List<Result> getAllOfSize(int cubeSize);
-
     @Query("SELECT * FROM result WHERE cube_size = (:cubeSize) ORDER BY time ASC LIMIT 1")
     List<Result> getBestOfSize(int cubeSize);
 

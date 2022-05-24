@@ -100,12 +100,10 @@ public class CubeTwo extends Cube implements Serializable {
                     try {
                         setOrientation(orientation.getOppositeColor(piecePlacedCorrectly.getPosition(Color.WHITE).getFace()),
                                 orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorShouldBeCompleted).getFace()));
-                                //piecePlacedCorrectly.getPosition(colorsToDetermineFace.get(0)).getFace());
                     } catch (InvalidOrientationException e) {
                         try {
                             setOrientation(orientation.getOppositeColor(piecePlacedCorrectly.getPosition(Color.WHITE).getFace()),
                                     orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorShouldBeCompleted).getFace()));
-                                    //orientation.getOppositeColor(piecePlacedCorrectly.getPosition(colorsToDetermineFace.get(0)).getFace()));
                         } catch (InvalidOrientationException invalidOrientationException) {
                             throw new UnsolvableCubeException();
                         }
@@ -128,7 +126,6 @@ public class CubeTwo extends Cube implements Serializable {
                 try {
                     setOrientation(orientation.getOppositeColor(pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceDown())).getFace()),
                             pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceFront())).getFace());
-                            //orientation.getOppositeColor(pieceBottomRight.getPosition(pieceBottomRight.getColorOnFace(orientation.getFaceRight())).getFace()));
                 } catch (InvalidOrientationException e) {
                     throw new UnsolvableCubeException();
                 }
@@ -156,7 +153,6 @@ public class CubeTwo extends Cube implements Serializable {
         try {
             setOrientation(orientation.getOppositeColor(referencePiece.getPosition(Color.WHITE).getFace()),
                     orientation.getFaceBack());
-                    //orientation.getFaceLeft());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
@@ -220,7 +216,6 @@ public class CubeTwo extends Cube implements Serializable {
 
         setOrientation(thirdPiece.getPosition(Color.WHITE).getFace(),
                 thirdPiece.getPosition(Color.GREEN).getFace());
-                //thirdPiece.getPosition(Color.ORANGE).getFace());
 
         ArrayList<Position> topLayerPositions = getTopLayerPositions();
         if (topLayerPositions.contains(fourthPiece.getPosition(Color.WHITE))) {
@@ -272,7 +267,6 @@ public class CubeTwo extends Cube implements Serializable {
         try {
             setOrientation(secondPiece.getPosition(Color.WHITE).getFace(),
                     secondPiece.getPosition(Color.ORANGE).getFace());
-                    //secondPiece.getPosition(Color.BLUE).getFace());
         } catch (InvalidOrientationException e) {
             throw new UnsolvableCubeException();
         }
