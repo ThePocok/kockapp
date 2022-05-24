@@ -46,24 +46,24 @@ public class CubeSolutionActivity extends AppCompatActivity {
     private int maxMovesInSection = 0;
     private boolean shouldBeReset = false;
 
-    private String[] cubeThreeStageNames = new String[] {
-            "Create white cross on yellow face",
-            "Turn the white cross to the white face",
-            "Solve the white edges",
-            "Solve the middle layer",
-            "Create yellow cross on yellow face",
-            "Complete yellow face",
-            "Reposition yellow corners to their right place",
-            "Reposition pieces of the yellow cross to their right place"
+    private final String[] cubeThreeStageNames = new String[] {
+            "white_cross_yellow_face",
+            "white_cross_white_face",
+            "white_edges",
+            "middle_layer",
+            "yellow_cross_yellow_face",
+            "yellow_edges",
+            "reposition_yellow_edges",
+            "reposition_yellow_middles"
     };
 
-    private String[] cubeTwoStageNames = new String[] {
-            "Find the white-red-blue piece and make its white tile face upwards",
-            "Place the white-orange-blue piece next to the white-red-blue piece",
-            "Place the white-orange-green piece next to the white-orange-blue piece",
-            "Place the white-red-green piece next to the white-orange-green piece",
-            "Make all yellow tiles face upwards",
-            "Swap the incorrectly placed pieces on the yellow face",
+    private final String[] cubeTwoStageNames = new String[] {
+            "white_red_blue",
+            "white_orange_green",
+            "white_orange_green",
+            "white_red_green",
+            "yellow_tiles_upwards",
+            "swap_incorrect",
     };
 
     @SuppressLint({"SetJavaScriptEnabled", "ClickableViewAccessibility"})
@@ -77,9 +77,9 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         stageName = findViewById(R.id.stage_name);
         if (cube.getDimensions() == 2) {
-            stageName.setText(cubeTwoStageNames[currentSection]);
+            stageName.setText(getResources().getIdentifier(cubeTwoStageNames[currentSection], "string", getPackageName()));
         } else if (cube.getDimensions() == 3) {
-            stageName.setText(cubeThreeStageNames[currentSection]);
+            stageName.setText(getResources().getIdentifier(cubeThreeStageNames[currentSection], "string", getPackageName()));
         }
 
         moves = findViewById(R.id.moves);
@@ -125,9 +125,11 @@ public class CubeSolutionActivity extends AppCompatActivity {
         loadHtml(currentSection);
         fillUpViewWithMoves(currentSection);
         if (cube.getDimensions() == 2) {
-            stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
+            stageName.setText(getResources().getIdentifier(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)],
+                    "string", getPackageName()));
         } else if (cube.getDimensions() == 3) {
-            stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
+            stageName.setText(getResources().getIdentifier(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)],
+                    "string", getPackageName()));
         }
     }
 
@@ -140,9 +142,11 @@ public class CubeSolutionActivity extends AppCompatActivity {
         loadHtml(currentSection);
         fillUpViewWithMoves(currentSection);
         if (cube.getDimensions() == 2) {
-            stageName.setText(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)]);
+            stageName.setText(getResources().getIdentifier(cubeTwoStageNames[solvedCube.getIDFromSection(currentSection)],
+                    "string", getPackageName()));
         } else if (cube.getDimensions() == 3) {
-            stageName.setText(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)]);
+            stageName.setText(getResources().getIdentifier(cubeThreeStageNames[solvedCube.getIDFromSection(currentSection)],
+                    "string", getPackageName()));
         }
     }
 

@@ -16,4 +16,22 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="read_cube">Read cube</string>
+
+    <!-- Strings on solution activity -->
+    <!-- 3x3 -->
+    <string name="white_cross_yellow_face">Create white cross on yellow face</string>
+    <string name="white_cross_white_face">Turn the white cross to the white face</string>
+    <string name="white_edges">Solve the white edges</string>
+    <string name="middle_layer">Solve the middle layer</string>
+    <string name="yellow_cross_yellow_face">Create yellow cross on yellow face</string>
+    <string name="yellow_edges">Complete yellow face</string>
+    <string name="reposition_yellow_edges">Reposition yellow corners to their right place</string>
+    <string name="reposition_yellow_middles">Reposition pieces of the yellow cross to their right place</string>
+    <!-- 2x2 -->
+    <string name="white_red_blue">Find the white-red-blue piece and make its white tile face upwards</string>
+    <string name="white_orange_blue">Place the white-orange-blue piece next to the white-red-blue piece</string>
+    <string name="white_orange_green">Place the white-orange-green piece next to the white-orange-blue piece</string>
+    <string name="white_red_green">Place the white-red-green piece next to the white-orange-green piece</string>
+    <string name="yellow_tiles_upwards">Make all yellow tiles face upwards</string>
+    <string name="swap_incorrect">Swap the incorrectly placed pieces on the yellow face</string>
 </resources>
