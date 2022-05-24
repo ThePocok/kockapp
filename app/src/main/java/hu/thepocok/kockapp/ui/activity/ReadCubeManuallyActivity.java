@@ -92,7 +92,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         nextFace = Color.RED;
 
         prevBtn = findViewById(R.id.prev_face_button);
-        prevBtn.setOnClickListener(l -> setFace(true, true, true));
+        prevBtn.setOnClickListener(l -> setFace(true, false, true));
 
         nextBtn = findViewById(R.id.next_face_button);
         nextBtn.setOnClickListener(l -> setFace(false, true, true));
@@ -395,7 +395,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
                     .setTitle("Invalid cube")
                     .setMessage("Do you want to review the faces or reread the whole cube?")
                     .setPositiveButton("Review", (dialogInterface, i) -> {
-
+                        currentFaceToSet = Color.YELLOW;
                     })
                     .setNegativeButton("Reread manually", (dialogInterface, i) -> {
                         resetCube();
