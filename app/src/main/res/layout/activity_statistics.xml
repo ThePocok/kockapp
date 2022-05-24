@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".ui.activity.StatisticsActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -46,16 +47,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="TextView" />
+                android:gravity="center_vertical|left" />
 
             <TextView
                 android:id="@+id/best_2_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:text="TextView" />
+                android:gravity="center_vertical|right" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,16 +68,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="TextView" />
+                android:gravity="center_vertical|left" />
 
             <TextView
                 android:id="@+id/best_3_result"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:text="TextView" />
+                android:gravity="center_vertical|right" />
         </LinearLayout>
 
         <LinearLayout
@@ -92,16 +89,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="TextView" />
+                android:gravity="center_vertical|left" />
 
             <TextView
                 android:id="@+id/rank_2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:text="TextView" />
+                android:gravity="center_vertical|right" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,16 +110,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|left"
-                android:text="TextView" />
+                android:gravity="center_vertical|left" />
 
             <TextView
                 android:id="@+id/rank_3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical|right"
-                android:text="TextView" />
+                android:gravity="center_vertical|right" />
         </LinearLayout>
 
         <Button
