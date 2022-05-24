@@ -261,7 +261,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         if (currentFaceToSet.equals(Color.WHITE)) {
             whiteFace = face;
-            Toast.makeText(this, "Colors assigned to white face",
+            Toast.makeText(this, R.string.assigned_white,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to white face");
             facePreviewView.setFace(Color.WHITE, whiteFace);
@@ -270,7 +270,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             displayArrowGif(180);
         } else if (currentFaceToSet.equals(Color.RED)) {
             redFace = face;
-            Toast.makeText(this, "Colors assigned to red face",
+            Toast.makeText(this,  R.string.assigned_red,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to red face");
             facePreviewView.setFace(Color.RED, redFace);
@@ -279,7 +279,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.GREEN)) {
             greenFace = face;
-            Toast.makeText(this, "Colors assigned to green face",
+            Toast.makeText(this,  R.string.assigned_green,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to green face");
             facePreviewView.setFace(Color.GREEN, greenFace);
@@ -288,7 +288,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.ORANGE)) {
             orangeFace = face;
-            Toast.makeText(this, "Colors assigned to orange face",
+            Toast.makeText(this,  R.string.assigned_orange,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to orange face");
             facePreviewView.setFace(Color.ORANGE, orangeFace);
@@ -297,7 +297,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             displayArrowGif(270);
         } else if (currentFaceToSet.equals(Color.BLUE)) {
             blueFace = face;
-            Toast.makeText(this, "Colors assigned to blue face",
+            Toast.makeText(this,  R.string.assigned_blue,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to blue face");
             facePreviewView.setFace(Color.BLUE, blueFace);
@@ -306,7 +306,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
             displayTwoArrowGifs(270, 180);
         } else if (currentFaceToSet.equals(Color.YELLOW)) {
             yellowFace = face;
-            Toast.makeText(this, "Colors assigned to yellow face",
+            Toast.makeText(this,  R.string.assigned_yellow,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Colors assigned to yellow face");
             facePreviewView.setFace(Color.YELLOW, yellowFace);
@@ -455,8 +455,8 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private void showPermissionAskingDialog(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(R.string.ok, okListener)
+                .setNegativeButton(R.string.cancel, null)
                 .create()
                 .show();
     }
@@ -467,9 +467,9 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.permission_granted, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.permission_denied, Toast.LENGTH_SHORT).show();
 
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
