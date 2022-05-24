@@ -78,18 +78,6 @@ public class Piece implements Serializable {
         return null;
     }
 
-    public boolean hasCommonFace(Piece that) {
-        for (Position thisPosition : this.getPositions()) {
-            for (Position thatPosition : that.getPositions()) {
-                if (thisPosition.getFace().equals(thatPosition.getFace())) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public boolean hasPosition(Position thatPosition) {
         for (Position thisPosition : positions) {
             if (thisPosition.equals(thatPosition)) {
@@ -173,20 +161,6 @@ public class Piece implements Serializable {
         return null;
     }
 
-    public Position getOtherColor(Color color1, Color color2) {
-        if (positions.size() != 3) {
-            return null;
-        }
-
-        for (Position p : positions) {
-            if (!p.getColor().equals(color1) && !p.getColor().equals(color2)) {
-                return p;
-            }
-        }
-
-        return null;
-    }
-
     public Color getOtherFace(Color face) {
         if (positions.size() != 2) {
             return null;
@@ -194,20 +168,6 @@ public class Piece implements Serializable {
 
         for (Position p : positions) {
             if (!p.getFace().equals(face)) {
-                return p.getFace();
-            }
-        }
-
-        return null;
-    }
-
-    public Color getOtherFace(Color face1, Color face2) {
-        if (positions.size() != 3) {
-            return null;
-        }
-
-        for (Position p : positions) {
-            if (!p.getFace().equals(face1) && !p.getFace().equals(face2)) {
                 return p.getFace();
             }
         }

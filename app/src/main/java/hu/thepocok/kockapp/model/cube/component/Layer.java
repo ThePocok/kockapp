@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Representing a column or row of the cube. <br>
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public class Layer implements Serializable {
     private final int dimension;
-    private ArrayList<Color> colors;
+    private final ArrayList<Color> colors;
 
     public Layer(Color... colors) {
         this.colors = new ArrayList<>(Arrays.asList(colors));
@@ -58,28 +57,6 @@ public class Layer implements Serializable {
         return this;
     }
 
-    public boolean hasColor(Color colorToFind) {
-        boolean l = false;
-
-        for (Color c : colors) {
-            l = l || c.equals(colorToFind);
-        }
-
-        return l;
-    }
-
-    public List<Integer> findColor(Color colorToFind) {
-        ArrayList<Integer> indexes = new ArrayList<>();
-
-        for (int i = 0; i < colors.size(); i++) {
-            if (colors.get(i).equals(colorToFind)) {
-                indexes.add(i);
-            }
-        }
-
-        return indexes;
-    }
-
     /**
      * This method is used to wildcard the two ends of the layer.
      * It helps rotating the face layer by layer.
@@ -98,7 +75,8 @@ public class Layer implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Color color : colors) {
-            sb.append(color.stringValue + " ");
+            sb.append(color.stringValue);
+            sb.append(" ");
         }
         sb.append("\n");
         return sb.toString();

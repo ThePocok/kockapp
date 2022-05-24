@@ -664,22 +664,6 @@ public abstract class Cube implements Serializable{
                 || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key);
     }
 
-    public Position getPositionByColor(Color... colors) {
-        if (dimensions == 2 && colors.length != 3) {
-            return null;
-        }
-
-        for (Piece piece : pieceMap.getAllPieces()) {
-            ArrayList<Color> colorsInPiece = mapPieceToColor(piece);
-
-            if (colorsInPiece.containsAll(Arrays.asList(colors))) {
-                return piece.getPositions().get(0);
-            }
-        }
-
-        return null;
-    }
-
     public Piece getPieceByColor(Color... colors) {
         if (dimensions == 2 && colors.length != 3) {
             return null;

@@ -3,7 +3,6 @@ package hu.thepocok.kockapp.model.cube.util;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.RecursiveTask;
 
 import hu.thepocok.kockapp.model.cube.component.Color;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
@@ -167,11 +166,6 @@ public class Orientation implements Serializable {
             this.faceLeft = previousOrientation[2];
             throw new InvalidOrientationException();
         }
-    }
-
-    public boolean isFaceOnTheSide(Color faceColor) {
-        return faceColor.equals(getFaceFront()) || faceColor.equals(getFaceLeft()) ||
-                faceColor.equals(getFaceBack()) || faceColor.equals(getFaceRight());
     }
 
     public int getRotationDegree(Color faceColor) {

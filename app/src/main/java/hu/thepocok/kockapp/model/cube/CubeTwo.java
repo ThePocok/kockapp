@@ -11,7 +11,6 @@ import hu.thepocok.kockapp.model.cube.component.Piece;
 import hu.thepocok.kockapp.model.cube.component.Position;
 import hu.thepocok.kockapp.model.exception.InvalidOrientationException;
 import hu.thepocok.kockapp.model.exception.UnsolvableCubeException;
-import hu.thepocok.kockapp.model.move.Separator;
 import hu.thepocok.kockapp.model.piecemap.CubeTwoPieceMap;
 
 public class CubeTwo extends Cube implements Serializable {

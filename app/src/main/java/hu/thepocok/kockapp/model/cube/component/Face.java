@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Face implements Serializable {
     private Color faceColor;
     private final int dimensions;
-    private ArrayList<Layer> layers;
+    private final ArrayList<Layer> layers;
 
     public Face(Layer... layers) {
         this.layers = new ArrayList<>(Arrays.asList(layers));

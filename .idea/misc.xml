@@ -33,6 +33,8 @@
         <entry key="app/src/main/res/layout/fragment_cube_solution.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.24365942028985507" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.20057373046875004" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1495" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
