@@ -1,10 +1,8 @@
 package hu.thepocok.kockapp.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -15,15 +13,11 @@ import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import hu.thepocok.kockapp.R;
@@ -332,16 +326,16 @@ public class CubeSolutionActivity extends AppCompatActivity {
                         imageView.setImageResource(R.drawable.turn_x_);
                         break;
                     case "Y":
-                        imageView.setImageResource(R.drawable.turn_y_);
-                        break;
-                    case "Y'":
                         imageView.setImageResource(R.drawable.turn_y);
                         break;
+                    case "Y'":
+                        imageView.setImageResource(R.drawable.turn_y_);
+                        break;
                     case "Z":
-                        imageView.setImageResource(R.drawable.turn_z_);
+                        imageView.setImageResource(R.drawable.turn_z);
                         break;
                     case "Z'":
-                        imageView.setImageResource(R.drawable.turn_z);
+                        imageView.setImageResource(R.drawable.turn_z_);
                         break;
                 }
 
