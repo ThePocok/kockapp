@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -56,7 +57,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
     private ImageAnalysis imageAnalysis;
 
-    private ArrayList<Color> tileColors = new ArrayList<>();
+    private final ArrayList<Color> tileColors = new ArrayList<>();
     private final Object tileColorsLock = new Object();
     private long colorsLastProcessedTime = 0L;
 
@@ -81,6 +82,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     private Face blueFace = null;
     private Face yellowFace = null;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -441,11 +443,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     }
 
     private boolean checkCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-        return true;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestCameraPermission() {
@@ -464,7 +462,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
