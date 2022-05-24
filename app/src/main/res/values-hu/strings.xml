@@ -43,6 +43,20 @@
     <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
     <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
 
+    <!-- Strings for read cube from camera activity -->
+    <string name="assigned_white">Fehér oldal elmentve</string>
+    <string name="assigned_red">Piros oldal elmentve</string>
+    <string name="assigned_green">Zöld oldal elmentve</string>
+    <string name="assigned_orange">Narancs oldal elmentve</string>
+    <string name="assigned_blue">Kék oldal elmentve</string>
+    <string name="assigned_yellow">Sárga oldal elmentve</string>
+
+    <string name="permission_granted">Engedély megadva</string>
+    <string name="permission_denied">Engedély megtagadva</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Mégsem</string>
+
     <!-- Strings for read cube manually activity -->
     <string name="unsolvable_cube_title">Megoldhatatlan kocka!</string>
     <string name="unsolvable_cube_message">Sajnos jelenleg nem tudjuk megoldani ezt a kockát!</string>

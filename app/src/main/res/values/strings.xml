@@ -42,6 +42,20 @@
     <string name="cannot_retrieve_information">Cannot retrieve information from database</string>
     <string name="could_not_connect">Could not connect to database</string>
 
+    <!-- Strings for read cube from camera activity -->
+    <string name="assigned_white">Colors assigned to white face</string>
+    <string name="assigned_red">Colors assigned to red face</string>
+    <string name="assigned_green">Colors assigned to green face</string>
+    <string name="assigned_orange">Colors assigned to orange face</string>
+    <string name="assigned_blue">Colors assigned to blue face</string>
+    <string name="assigned_yellow">Colors assigned to yellow face</string>
+
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
     <!-- Strings for read cube manually activity -->
     <string name="unsolvable_cube_title">Unsolvable cube!</string>
     <string name="unsolvable_cube_message">Unfortunately, we cannot solve this cube!</string>
