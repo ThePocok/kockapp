@@ -1,21 +1,5 @@
 <resources>
-    <string name="app_name">KockApp</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_read_cube_from_camera">ReadCubeFromCameraActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
-    <string name="read_cube">Read cube</string>
+    <string name="app_name">CubeApp</string>
 
     <!-- Strings for cube face preview view -->
     <string name="title">Cube faces</string>
@@ -36,6 +20,7 @@
     <string name="yellow_edges">Complete yellow face</string>
     <string name="reposition_yellow_edges">Reposition yellow corners to their right place</string>
     <string name="reposition_yellow_middles">Reposition pieces of the yellow cross to their right place</string>
+
     <!-- 2x2 -->
     <string name="white_red_blue">Find the white-red-blue piece and make its white tile face upwards</string>
     <string name="white_orange_blue">Place the white-orange-blue piece next to the white-red-blue piece</string>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KockApp</string>
+
+    <!-- Strings for cube face preview view -->
+    <string name="title">Oldalak</string>
+    <string name="white">FEHÉR</string>
+    <string name="red">PIROS</string>
+    <string name="green">ZÖLD</string>
+    <string name="orange">NARANCS</string>
+    <string name="blue">KÉK</string>
+    <string name="yellow">SÁRGA</string>
+
+    <!-- Strings for solution activity -->
+    <!-- 3x3 -->
+    <string name="white_cross_yellow_face">Készíts fehér keresztet a sárga oldalon</string>
+    <string name="white_cross_white_face">Készíts fehér keresztet a fehér oldalon</string>
+    <string name="white_edges">Rakd a helyükre a fehér sarkokat</string>
+    <string name="middle_layer">Rakd a helyükre a középső réteg kockáit</string>
+    <string name="yellow_cross_yellow_face">Készíts sárga keresztet a sárga oldalon</string>
+    <string name="yellow_edges">Fejezd be a sárga oldalt</string>
+    <string name="reposition_yellow_edges">Helyezd át a sárga sarkokat a helyükre</string>
+    <string name="reposition_yellow_middles">Helyezd át a sárga közepeket a helyükre</string>
+
+    <!-- 2x2 -->
+    <string name="white_red_blue">Keresd meg a fehér-piros-kék kockát és fordítsd magad felé</string>
+    <string name="white_orange_blue">Helyezt a fehér-narancs-kék kockát a fehér-piros-kék mellé</string>
+    <string name="white_orange_green">Helyezt a fehér-narancs-zöld kockát a fehér-narancs-kék mellé</string>
+    <string name="white_red_green">Helyezt a fehér-piros-zöld kockát a fehér-narancs-zöld mellé</string>
+    <string name="yellow_tiles_upwards">Fordítsd felfelé a sárga kockákat</string>
+    <string name="swap_incorrect">Cseréld meg a rossz helyen levő sárga kockákat</string>
+
+    <!-- Strings for statistics activity -->
+    <string name="best_2">Legjobb idő a 2x2-es kocka megoldásában</string>
+    <string name="best_3">Legjobb idő a 3x3-as kocka megoldásában</string>
+    <string name="rank_2">Helyezésed a 2x2-es kocka megoldásában</string>
+    <string name="rank_3">Helyezésed a 3x3-as kocka megoldásában</string>
+    <string name="fetching_result">Adatok lekérdezése...</string>
+    <string name="no_result">Még nincs eredmény</string>
+    <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
+    <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
+</resources>

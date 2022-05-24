@@ -34,8 +34,7 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.ReadCubeFromCameraActivity"
-            android:exported="false"
-            android:label="@string/read_cube" />
+            android:exported="false" />
         <activity
             android:name=".ui.activity.ReadCubeManuallyActivity"
             android:exported="false" />
