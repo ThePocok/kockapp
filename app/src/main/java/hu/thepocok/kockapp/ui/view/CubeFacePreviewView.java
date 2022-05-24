@@ -17,8 +17,8 @@ import hu.thepocok.kockapp.model.cube.component.Face;
 public class CubeFacePreviewView extends View {
     private final String TAG = "CubeFacePreviewView";
     private final int BORDER_WIDTH = 1;
-    private final int PREVIEW_TEXT_SIZE = 32;
-    private final int FACE_TEXT_SIZE = 16;
+    private final int PREVIEW_TEXT_SIZE = 36;
+    private final int FACE_TEXT_SIZE = 24;
 
     private int fullWidth;
     private int fullHeight;
