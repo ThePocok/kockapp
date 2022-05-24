@@ -41,6 +41,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
     public final String TAG = "CubeSolutionActivity";
     private WebView webView;
     private TextView stageName;
+    private LinearLayout moves;
 
     private Cube cube;
     private Cube solvedCube;
@@ -87,6 +88,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
             stageName.setText(cubeThreeStageNames[currentSection]);
         }
 
+        moves = findViewById(R.id.moves);
+
         Button prevStageBtn = findViewById(R.id.prev_stage);
         prevStageBtn.setOnClickListener(this::previousStage);
         Button nextStageBtn = findViewById(R.id.next_stage);
@@ -116,7 +119,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         loadHtml(0);
 
-        fillUpViewWithMoves(currentSection);
+        moves.post(() -> fillUpViewWithMoves(currentSection));
     }
 
     private void previousStage(View view) {
@@ -255,11 +258,11 @@ public class CubeSolutionActivity extends AppCompatActivity {
     }
 
     private void fillUpViewWithMoves(int section) {
-        final int movesPerRow = 6;
-        LinearLayout moves = findViewById(R.id.moves);
+        final int movesPerRow = 7;
+
         moves.removeAllViews();
 
-        int rowHeight = Math.min((moves.getMeasuredHeight() - movesPerRow * 15) / 4, (moves.getMeasuredWidth() - movesPerRow * 15) / movesPerRow);
+        int rowHeight = Math.min((moves.getMeasuredHeight() - movesPerRow * 14) / 4, (moves.getMeasuredWidth() - movesPerRow * 14) / movesPerRow);
         String[] solutionSection = mapCubeSolutionToAnimCubeMoves(section).split(" ");
 
         currentMoveInSection = 0;
@@ -272,7 +275,8 @@ public class CubeSolutionActivity extends AppCompatActivity {
 
         for (int i = 0; i < rowCount; i++) {
             LinearLayout linearLayout = new LinearLayout(this);
-            linearLayout.setGravity(Gravity.LEFT);
+            linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+            linearLayout.setGravity(Gravity.CENTER_VERTICAL);
             linearLayout.setMinimumHeight(rowHeight);
 
             for (int j = i * movesPerRow; j < Math.min((i + 1 ) * movesPerRow, solutionSection.length); j++) {
@@ -281,6 +285,7 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 imageView.setAdjustViewBounds(true);
                 imageView.setMaxHeight(rowHeight);
                 imageView.setMaxWidth(rowHeight);
+                imageView.setPadding(7, 7, 7, 7);
 
                 /*int finalJ = j;
                 imageView.setOnClickListener(l -> {
@@ -353,9 +358,6 @@ public class CubeSolutionActivity extends AppCompatActivity {
                 }
 
                 linearLayout.addView(imageView);
-                Space space = new Space(this);
-                space.setMinimumWidth(15);
-                linearLayout.addView(space);
             }
             moves.addView(linearLayout);
         }
