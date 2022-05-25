@@ -1,5 +1,6 @@
 package hu.thepocok.kockapp.ui.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -18,6 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import hu.thepocok.kockapp.R;
 import hu.thepocok.kockapp.persistence.database.ResultDatabase;
@@ -80,6 +84,8 @@ public class StatisticsActivity extends AppCompatActivity {
         if (bestOfCubeTwo.size() != 0) {
             resultTwo.setText(formatTime(bestOfCubeTwo.get(0).time));
             getRankFromRemoteDatabase(2 ,bestOfCubeTwo.get(0).time);
+
+            saveResultToRemoteDatabase(2, bestOfCubeTwo.get(0).time);
         } else {
             resultTwo.setText(R.string.no_result);
             rankTwo.setText(R.string.no_result);
@@ -88,10 +94,39 @@ public class StatisticsActivity extends AppCompatActivity {
         if (bestOfCubeThree.size() != 0) {
             resultThree.setText(formatTime(bestOfCubeThree.get(0).time));
             getRankFromRemoteDatabase(3 ,bestOfCubeThree.get(0).time);
+
+            saveResultToRemoteDatabase(3, bestOfCubeThree.get(0).time);
         } else {
             resultThree.setText(R.string.no_result);
             rankThree.setText(R.string.no_result);
         }
+    }
+
+    public void saveResultToRemoteDatabase(int cubeSize, long result) {
+        StringRequest request = new StringRequest(
+                Request.Method.POST,
+                API_URL,
+                response -> Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show(),
+                error -> {
+                    Log.d("REQUEST", error.toString());
+                    Toast.makeText(getApplicationContext(), R.string.not_saved, Toast.LENGTH_SHORT).show();
+                }
+        ) {
+            @SuppressLint("HardwareIds")
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                params.put("device_id", android.provider.Settings.Secure.getString(
+                        getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ANDROID_ID));
+                params.put("cube_size", String.valueOf(cubeSize));
+                params.put("result", String.valueOf(result));
+                return params;
+            }
+        };
+
+        queue.add(request);
     }
 
     public void getRankFromRemoteDatabase(int cubeSize, long result) {

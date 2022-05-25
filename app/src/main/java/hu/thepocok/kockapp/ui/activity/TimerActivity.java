@@ -27,7 +27,7 @@ import hu.thepocok.kockapp.persistence.database.ResultDatabase;
 import hu.thepocok.kockapp.persistence.entity.Result;
 
 public class TimerActivity extends AppCompatActivity {
-    private final String apiURL = "http://thepocok.freeddns.org:3092/records";
+    private final String API_URL = "http://thepocok.freeddns.org:3092/records";
     private Button leftBtn;
     private Button rightBtn;
     TextView timer;
@@ -181,7 +181,7 @@ public class TimerActivity extends AppCompatActivity {
     public void saveResultToRemoteDatabase(int cubeSize, long result) {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
-                apiURL,
+                API_URL,
                 response -> Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
