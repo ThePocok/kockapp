@@ -705,7 +705,19 @@ public class CubeThree extends Cube implements Serializable {
             }
         }
 
-        return allPieces.isEmpty();
+        if (!allPieces.isEmpty()) {
+            return false;
+        }
+
+        boolean allFacesHasCorrectMiddlePiece = true;
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.WHITE).getNthRow(1).getNthPiece(1).equals(Color.WHITE);
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.RED).getNthRow(1).getNthPiece(1).equals(Color.RED);
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.GREEN).getNthRow(1).getNthPiece(1).equals(Color.GREEN);
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.ORANGE).getNthRow(1).getNthPiece(1).equals(Color.ORANGE);
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.BLUE).getNthRow(1).getNthPiece(1).equals(Color.BLUE);
+        allFacesHasCorrectMiddlePiece = allFacesHasCorrectMiddlePiece && getFace(Color.YELLOW).getNthRow(1).getNthPiece(1).equals(Color.YELLOW);
+
+        return allFacesHasCorrectMiddlePiece;
     }
 
     public void makeCubeInvalid() {
