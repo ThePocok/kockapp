@@ -120,6 +120,17 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
         yellowFace = (Face) intent.getSerializableExtra("yellowFace");
         facePreviewView.setAllFaces(whiteFace, redFace, greenFace, orangeFace, blueFace, yellowFace);
 
+        Button helpBtn = findViewById(R.id.help_button);
+        helpBtn.setOnClickListener(l -> {
+            String message = (dimensions == 2) ? getResources().getString(R.string.cube_read_help_2) : getResources().getString(R.string.cube_read_help_3);
+
+            new AlertDialog.Builder(this)
+                    .setMessage(message)
+                    .setPositiveButton(R.string.ok,null)
+                    .create()
+                    .show();
+        });
+
         tileColors = new ArrayList<>();
 
         if (whiteFace != null) {

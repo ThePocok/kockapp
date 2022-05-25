@@ -57,6 +57,9 @@
     <string name="ok">OK</string>
     <string name="cancel">Mégsem</string>
 
+    <string name="cube_read_help_2">Kezdd a beolvasást a felfelé néző oldallal és forgasd a kockát a megjelenő nyilaknak megfelelően</string>
+    <string name="cube_read_help_3">Tartsd a kockát a fehér oldalával felfelé úgy, hogy a piros oldal feléd nézzen. Kezdd a beolvasást a fehér oldallal és forgasd a kockát a megjelenő nyilaknak megfelelően</string>
+
     <!-- Strings for read cube manually activity -->
     <string name="unsolvable_cube_title">Megoldhatatlan kocka!</string>
     <string name="unsolvable_cube_message">Sajnos jelenleg nem tudjuk megoldani ezt a kockát!</string>

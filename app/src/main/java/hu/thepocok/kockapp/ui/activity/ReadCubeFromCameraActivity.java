@@ -90,6 +90,17 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        Button helpBtn = findViewById(R.id.help_button);
+        helpBtn.setOnClickListener(l -> {
+            String message = (isTwoTimesTwo) ? getResources().getString(R.string.cube_read_help_2) : getResources().getString(R.string.cube_read_help_3);
+
+            new AlertDialog.Builder(this)
+                    .setMessage(message)
+                    .setPositiveButton(R.string.ok,null)
+                    .create()
+                    .show();
+        });
+
         captureBtn = findViewById(R.id.capture_face_button);
         captureBtn.setOnClickListener(l -> setFace());
 

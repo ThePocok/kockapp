@@ -36,6 +36,18 @@
         app:layout_constraintGuide_percent="0.8" />
 
     <Button
+        android:id="@+id/help_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableTop="@drawable/ic_question"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="#000000"
+        app:strokeWidth="2dp" />
+
+    <Button
         android:id="@+id/prev_face_button"
         android:layout_width="40dp"
         android:layout_height="40dp"
