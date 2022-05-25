@@ -79,14 +79,4 @@
 
     <string name="saved">Eredmény elmentve!</string>
     <string name="not_saved">Az eredményt nem sikerült a távoli adatbázisba elmenteni!</string>
-    <string name="assigned_white">Fehér oldal elmentve</string>
-    <string name="assigned_red">Piros oldal elmentve</string>
-    <string name="assigned_green">Zöld oldal elmentve</string>
-    <string name="assigned_orange">Narancs oldal elmentve</string>
-    <string name="assigned_blue">Kék oldal elmentve</string>
-    <string name="assigned_yellow">Sárga oldal elmentve</string>
-    <string name="permission_granted">Engedély megadva</string>
-    <string name="permission_denied">Engedély megtagadva</string>
-    <string name="ok">OK</string>
-    <string name="cancel">Mégsem</string>
 </resources>
