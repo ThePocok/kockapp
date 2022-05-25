@@ -511,49 +511,7 @@ public class ReadCubeManuallyActivity extends AppCompatActivity {
     }
 
     private void selectColor(Color color) {
-        switch (selectedColor) {
-            case WHITE:
-                whiteBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-            case RED:
-                redBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-            case GREEN:
-                greenBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-            case ORANGE:
-                orangeBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-            case BLUE:
-                blueBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-            case YELLOW:
-                yellowBtn.setHighlightColor(android.graphics.Color.TRANSPARENT);
-                break;
-        }
-
         selectedColor = color;
-
-        switch (color) {
-            case WHITE:
-                whiteBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-            case RED:
-                redBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-            case GREEN:
-                greenBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-            case ORANGE:
-                orangeBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-            case BLUE:
-                blueBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-            case YELLOW:
-                yellowBtn.setHighlightColor(android.graphics.Color.MAGENTA);
-                break;
-        }
     }
 
     public void displayArrowGif(int rotationDegree) {
