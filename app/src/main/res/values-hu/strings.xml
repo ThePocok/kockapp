@@ -31,6 +31,8 @@
     <string name="swap_incorrect">Cseréld meg a rossz helyen levő sárga kockákat</string>
 
     <!-- Strings for statistics activity -->
+    <string name="statistics_title">Statisztikák</string>
+
     <string name="best_2">Legjobb idő a 2x2-es kocka megoldásában</string>
     <string name="best_3">Legjobb idő a 3x3-as kocka megoldásában</string>
 
@@ -42,6 +44,8 @@
 
     <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
     <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
+
+    <string name="delete_statistics">Adatok törlése</string>
 
     <!-- Strings for read cube from camera activity -->
     <string name="assigned_white">Fehér oldal elmentve</string>

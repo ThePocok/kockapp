@@ -15,11 +15,10 @@
         app:layout_constraintGuide_percent="0.1" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/statistics_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:textSize="36dp"
-        android:text="Statistics"
         android:gravity="center_horizontal|center_vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/statistics_title">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -127,8 +126,7 @@
             android:layout_weight="1"
             android:layout_margin="2dp"
             android:backgroundTint="@color/white"
-            android:textColor="@color/black"
-            android:text="Delete results" />
+            android:textColor="@color/black" />
 
         <Space
             android:layout_width="match_parent"

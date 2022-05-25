@@ -30,6 +30,8 @@
     <string name="swap_incorrect">Swap the incorrectly placed pieces on the yellow face</string>
 
     <!-- Strings for statistics activity -->
+    <string name="statistics_title">Statistics</string>
+
     <string name="best_2">Best time for 2x2 cube</string>
     <string name="best_3">Best time for 3x3 cube</string>
 
@@ -41,6 +43,8 @@
 
     <string name="cannot_retrieve_information">Cannot retrieve information from database</string>
     <string name="could_not_connect">Could not connect to database</string>
+
+    <string name="delete_statistics">Delete results</string>
 
     <!-- Strings for read cube from camera activity -->
     <string name="assigned_white">Colors assigned to white face</string>

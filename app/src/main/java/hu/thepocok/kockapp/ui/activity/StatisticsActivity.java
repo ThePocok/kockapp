@@ -47,6 +47,9 @@ public class StatisticsActivity extends AppCompatActivity {
         resultDatabase = ResultDatabase.getDatabase(this);
         queue = Volley.newRequestQueue(this);
 
+        TextView title = findViewById(R.id.statistics_title);
+        title.setText(R.string.statistics_title);
+
         TextView labelTwo = findViewById(R.id.best_2_label);
         labelTwo.setText(R.string.best_2);
 
@@ -69,6 +72,7 @@ public class StatisticsActivity extends AppCompatActivity {
         setResults();
 
         Button deleteBtn = findViewById(R.id.delete);
+        deleteBtn.setText(R.string.delete_statistics);
         deleteBtn.setOnClickListener(l -> {
             resultDatabase.resultDao().deleteAll();
             deleteFromRemoteDatabase();
