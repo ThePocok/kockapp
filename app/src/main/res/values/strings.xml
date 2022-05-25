@@ -41,8 +41,12 @@
     <string name="fetching_result">Fetching result...</string>
     <string name="no_result">No result yet</string>
 
+    <string name="updated">Results updated</string>
+    <string name="not_updated">An error occurred while updating results!</string>
+
     <string name="cannot_retrieve_information">Cannot retrieve information from database</string>
     <string name="could_not_connect">Could not connect to database</string>
+    <string name="records_deleted">Records successfully deleted!</string>
 
     <string name="delete_statistics">Delete results</string>
 

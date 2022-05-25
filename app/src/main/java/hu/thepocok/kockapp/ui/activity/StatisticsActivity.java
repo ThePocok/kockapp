@@ -110,10 +110,10 @@ public class StatisticsActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(
                 Request.Method.POST,
                 API_URL,
-                response -> Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show(),
+                response -> Toast.makeText(getApplicationContext(), R.string.updated, Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
-                    Toast.makeText(getApplicationContext(), R.string.not_saved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.not_updated, Toast.LENGTH_SHORT).show();
                 }
         ) {
             @SuppressLint("HardwareIds")
@@ -175,7 +175,7 @@ public class StatisticsActivity extends AppCompatActivity {
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 completedURL,
-                response -> Toast.makeText(this, "Records deleted successfully", Toast.LENGTH_SHORT).show(),
+                response -> Toast.makeText(this, R.string.records_deleted, Toast.LENGTH_SHORT).show(),
                 error -> {
                     Log.d("REQUEST", error.toString());
                     rankTwo.setText(R.string.could_not_connect);

@@ -42,8 +42,12 @@
     <string name="fetching_result">Adatok lekérdezése...</string>
     <string name="no_result">Még nincs eredmény</string>
 
+    <string name="updated">Adatok frissítve</string>
+    <string name="not_updated">Hiba az adatok frissítése során!</string>
+
     <string name="cannot_retrieve_information">Az adatok lekérdezése sikertelen</string>
     <string name="could_not_connect">Nem sikerült csatlakozni az adatbázishoz</string>
+    <string name="records_deleted">Adatok sikeresen törölve!</string>
 
     <string name="delete_statistics">Adatok törlése</string>
 
