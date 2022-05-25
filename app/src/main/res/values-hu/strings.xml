@@ -82,4 +82,5 @@
 
     <string name="saved">Eredmény elmentve!</string>
     <string name="not_saved">Az eredményt nem sikerült a távoli adatbázisba elmenteni!</string>
+    <string name="allow_permissions">A folytatáshoz engedélyezned kell a hozzáférést a kamerához</string>
 </resources>

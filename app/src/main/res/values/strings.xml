@@ -81,4 +81,5 @@
 
     <string name="saved">Result saved successfully!</string>
     <string name="not_saved">Could not save result to remote database!</string>
+    <string name="allow_permissions">You need to allow camera permission to continue</string>
 </resources>

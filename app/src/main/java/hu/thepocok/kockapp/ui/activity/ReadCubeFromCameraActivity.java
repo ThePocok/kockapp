@@ -467,7 +467,10 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setMessage(message)
                 .setPositiveButton(R.string.ok, okListener)
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+                })
                 .create()
                 .show();
     }
@@ -484,7 +487,7 @@ public class ReadCubeFromCameraActivity extends AppCompatActivity {
 
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
-                        showPermissionAskingDialog("You need to allow access permissions",
+                        showPermissionAskingDialog(getResources().getString(R.string.allow_permissions),
                                 (dialog, which) -> requestCameraPermission());
                     }
                 }
