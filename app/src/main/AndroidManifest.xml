@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KockApp.NoActionBar">
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.StatisticsActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.TimerActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.TimerActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.MainActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,13 +30,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.CubeSolutionActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.CubeSolutionActivity"
             android:exported="false" />
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.ReadCubeFromCameraActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.ReadCubeFromCameraActivity"
             android:exported="false" />
         <activity
-            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.ReadCubeManuallyActivity"
+            android:name="hu.aranyosipeter.kockapp.ui.activity.ReadCubeManuallyActivity"
             android:exported="false" />
     </application>
 
