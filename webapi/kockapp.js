@@ -12,18 +12,6 @@ var server = app.listen(3092, '192.168.1.157', function () {
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.get('/records/all', function (req, res) {
-    var connection = connectToDatabase();
-
-    connection.connect();
-    connection.query('SELECT * FROM Kockapp.Result;', function(error, results, fields) {
-        if (error) {
-            console.log(error);
-        }
-        res.end(JSON.stringify(results));
-    });
-    connection.end()
-});
 
 app.get('/records', function (req, res) {
     var connection = connectToDatabase();
