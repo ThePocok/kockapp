@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="hu.thepocok.kockapp">
+    package="hu.aranyosipeter.kockapp">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KockApp.NoActionBar">
         <activity
-            android:name=".ui.activity.StatisticsActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.TimerActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.TimerActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,13 +30,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.CubeSolutionActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.CubeSolutionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.ReadCubeFromCameraActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.ReadCubeFromCameraActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activity.ReadCubeManuallyActivity"
+            android:name="hu.thepocok.hu.aranyosipeter.kockapp.ui.activity.ReadCubeManuallyActivity"
             android:exported="false" />
     </application>
 

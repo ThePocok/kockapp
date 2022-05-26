@@ -58,7 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <hu.thepocok.kockapp.ui.view.CubeFacePreviewView
+    <hu.aranyosipeter.kockapp.ui.view.CubeFacePreviewView
         android:id="@+id/cube_face_preview_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <hu.thepocok.kockapp.ui.view.CubeTileOverlayView
+        <hu.aranyosipeter.kockapp.ui.view.CubeTileOverlayView
             android:id="@+id/cube_tile_overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
