@@ -1,5 +1,7 @@
 CREATE DATABASE IF NOT EXISTS Kockapp;
 
+USE Kockapp;
+
 CREATE TABLE Results(
     device_id CHAR(16),
     cube_type INT NOT NULL,
