@@ -659,7 +659,7 @@ public abstract class Cube implements Serializable{
         return l;
     }
 
-    public boolean areCounterRotations(String key, String nextKey) {
+    private boolean areCounterRotations(String key, String nextKey) {
         return key.endsWith("'") && key.substring(0, 1).equals(nextKey)
                 || nextKey.endsWith("'") && nextKey.substring(0, 1).equals(key);
     }
