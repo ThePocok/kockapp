@@ -388,8 +388,8 @@ public abstract class Cube implements Serializable{
         solution.add(new Rotation(rotationKey));
     }
 
-    private void mapFaceToRotation(Color color, boolean counterClockwise) {
-        switch (color) {
+    private void mapFaceToRotation(Color faceColor, boolean counterClockwise) {
+        switch (faceColor) {
             case WHITE:
                 if (counterClockwise) {
                     rotateUpCounterClockwise();
