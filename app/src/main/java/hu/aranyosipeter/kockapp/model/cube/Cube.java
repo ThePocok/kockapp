@@ -507,7 +507,7 @@ public abstract class Cube implements Serializable{
         }
     }
 
-    public ArrayList<Position> getTopLayerPositions() {
+    protected ArrayList<Position> getTopLayerPositions() {
         ArrayList<Position> positions = new ArrayList<>();
 
         switch (orientation.getFaceUp()) {
@@ -611,7 +611,7 @@ public abstract class Cube implements Serializable{
         return sb.toString();
     }
 
-    public void turnCubeClockwise() {
+    protected void turnCubeClockwise() {
         Color faceRight = orientation.getFaceRight();
 
         try {
@@ -622,7 +622,7 @@ public abstract class Cube implements Serializable{
     }
 
 
-    public void turnCubeCounterClockwise() {
+    protected void turnCubeCounterClockwise() {
         Color faceLeft = orientation.getFaceLeft();
 
         try {
@@ -632,11 +632,11 @@ public abstract class Cube implements Serializable{
         }
     }
 
-    public boolean isPieceOnLeftSide(Piece piece) {
+    protected boolean isPieceOnLeftSide(Piece piece) {
         return piece.hasFace(orientation.getFaceFront()) && piece.hasFace(orientation.getFaceLeft());
     }
 
-    public boolean isPieceOnRightSide(Piece piece) {
+    protected boolean isPieceOnRightSide(Piece piece) {
         return piece.hasFace(orientation.getFaceFront()) && piece.hasFace(orientation.getFaceRight());
     }
 
@@ -714,7 +714,7 @@ public abstract class Cube implements Serializable{
         }
     }
 
-    public Iterator<Face> getFaceIterator() {
+    private Iterator<Face> getFaceIterator() {
         ArrayList<Face> faces = new ArrayList<>();
         faces.add(whiteFace);
         faces.add(redFace);
