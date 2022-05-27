@@ -19,7 +19,6 @@ public class Piece implements Serializable {
         return positions;
     }
 
-    //TODO incomplete
     public boolean isAdjacent(Piece that, int cubeDimensions) {
         ArrayList<ArrayList<Position>> positionsOnSameFace = new ArrayList<>();
         for (Position p1 : positions) {
