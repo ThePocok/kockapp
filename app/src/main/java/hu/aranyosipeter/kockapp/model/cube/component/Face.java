@@ -182,7 +182,7 @@ public class Face implements Serializable {
         ArrayList<Layer> copyOfLayers = new ArrayList<>();
 
         for (Layer layer : layers) {
-            Layer copyOfLayer = new Layer(layer.getDataSet().toArray(new Color[layer.getDataSet().size()]));
+            Layer copyOfLayer = new Layer(layer.getDataSet());
             copyOfLayers.add(copyOfLayer);
         }
 
