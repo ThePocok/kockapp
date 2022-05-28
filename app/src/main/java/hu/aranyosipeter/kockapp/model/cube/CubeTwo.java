@@ -14,9 +14,6 @@ import hu.aranyosipeter.kockapp.model.exception.UnsolvableCubeException;
 import hu.aranyosipeter.kockapp.model.piecemap.CubeTwoPieceMap;
 
 public class CubeTwo extends Cube implements Serializable {
-    private Piece referencePiece;
-    private Piece secondPiece;
-
     public CubeTwo() {
         super(2);
         pieceMap = new CubeTwoPieceMap();
@@ -148,7 +145,7 @@ public class CubeTwo extends Cube implements Serializable {
     }
 
     private void moveYellowTilesUp() throws UnsolvableCubeException, InvalidOrientationException {
-        referencePiece = findReferencePiece();
+        Piece referencePiece = findReferencePiece();
 
         try {
             setOrientation(orientation.getOppositeColor(referencePiece.getPosition(Color.WHITE).getFace()),
@@ -255,8 +252,8 @@ public class CubeTwo extends Cube implements Serializable {
     }
 
     private void solveThirdPiece() throws UnsolvableCubeException {
-        referencePiece = findReferencePiece();
-        secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+        Piece referencePiece = findReferencePiece();
+        Piece secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
         Piece thirdPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN);
 
         if (secondPiece.isAdjacent(thirdPiece, Color.WHITE, Color.ORANGE)) {
@@ -318,8 +315,8 @@ public class CubeTwo extends Cube implements Serializable {
     }
 
     private void solveSecondPiece() throws UnsolvableCubeException {
-        referencePiece = findReferencePiece();
-        secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
+        Piece referencePiece = findReferencePiece();
+        Piece secondPiece = getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE);
         Color whiteTileFace = secondPiece.getPosition(Color.WHITE).getFace();
 
 
@@ -426,7 +423,7 @@ public class CubeTwo extends Cube implements Serializable {
     }
 
     private void setInitialOrientation() throws UnsolvableCubeException {
-        referencePiece = findReferencePiece();
+        Piece referencePiece = findReferencePiece();
         Color faceUp = null;
         Color faceFront = null;
         for (Position p : referencePiece.getPositions()) {
