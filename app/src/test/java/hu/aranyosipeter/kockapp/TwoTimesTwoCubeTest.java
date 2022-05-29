@@ -945,6 +945,9 @@ public class TwoTimesTwoCubeTest {
         try {
             Assert.assertNotNull(thirdPiece);
             Assert.assertTrue(thirdPiece.isAdjacent(fourthPiece, Color.WHITE, Color.GREEN));
+
+            Color whiteFaceColor = thirdPiece.getPosition(Color.WHITE).getFace();
+            cube.getFace(whiteFaceColor).matchPattern("WHITE", "WHITE", "WHITE", "WHITE");
         } catch (AssertionError e) {
             System.out.println("Third piece is not solved!");
 
