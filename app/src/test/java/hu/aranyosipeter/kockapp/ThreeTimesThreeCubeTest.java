@@ -1009,6 +1009,16 @@ public class ThreeTimesThreeCubeTest {
         method.invoke(cube);
 
         try {
+            Assert.assertEquals(Color.RED, cube.getPieceByColor(Color.WHITE, Color.RED).getPosition(Color.RED).getFace());
+            Assert.assertEquals(Color.GREEN, cube.getPieceByColor(Color.WHITE, Color.GREEN).getPosition(Color.GREEN).getFace());
+            Assert.assertEquals(Color.ORANGE, cube.getPieceByColor(Color.WHITE, Color.ORANGE).getPosition(Color.ORANGE).getFace());
+            Assert.assertEquals(Color.BLUE, cube.getPieceByColor(Color.WHITE, Color.BLUE).getPosition(Color.BLUE).getFace());
+
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.RED, Color.GREEN))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.GREEN))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.ORANGE, Color.BLUE))));
+            Assert.assertTrue(cube.isPieceInCorrectPosition(cube.mapPieceToColorInPlace(cube.getPieceByColor(Color.WHITE, Color.RED, Color.BLUE))));
+
             ArrayList<Piece> sidePieces = cube.getSideMiddlePieces();
 
             for (Piece piece : sidePieces) {
