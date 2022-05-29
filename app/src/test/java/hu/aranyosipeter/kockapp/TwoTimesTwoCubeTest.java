@@ -761,7 +761,7 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
-    public void randomScrambledInitialOrientationTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void initialOrientationTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
@@ -802,7 +802,7 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
-    public void randomScrambledSecondPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void secondPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
@@ -848,7 +848,7 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
-    public void randomScrambledThirdPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void thirdPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
@@ -899,7 +899,7 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
-    public void randomScrambledFourthPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void fourthPieceSolutionTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
@@ -956,7 +956,7 @@ public class TwoTimesTwoCubeTest {
     }
 
     @Test
-    public void randomScrambledYellowFaceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void yellowFaceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
@@ -1071,21 +1071,12 @@ public class TwoTimesTwoCubeTest {
             System.out.println(sb);
             System.out.println(cube);
 
-            randomScrambledInitialOrientationTest();
-            randomScrambledSecondPieceSolutionTest();
-            randomScrambledThirdPieceSolutionTest();
-            randomScrambledFourthPieceSolutionTest();
-            randomScrambledYellowFaceTest();
+            initialOrientationTest();
+            secondPieceSolutionTest();
+            thirdPieceSolutionTest();
+            fourthPieceSolutionTest();
+            yellowFaceTest();
             solveWholeCubeTest();
         }
-    }
-
-    @Test
-    public void solvedCheckTest() {
-        Assert.assertTrue(cube.isSolved());
-
-        cube.mapKeyToRotation("R");
-
-        Assert.assertFalse(cube.isSolved());
     }
 }
