@@ -1027,7 +1027,7 @@ public class ThreeTimesThreeCubeTest {
                 }
             }
         } catch (AssertionError e) {
-            System.out.println("Middle layer has not been solved!");
+            System.out.println("Middle layer has not been solved or the white face did not remain intact!");
 
             System.out.println(cube.getSolutionString());
             throw e;
