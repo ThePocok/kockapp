@@ -865,7 +865,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void whiteCrossOnWhiteFaceTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
-            //cube.mapKeysToRotation("U", "F'", "L", "R", "F'", "U'", "R'", "U");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -912,7 +911,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void solveWhiteCornersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
-            //cube.mapKeysToRotation("F", "L", "F", "B'", "U'", "F", "L", "B");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -969,7 +967,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void solveMiddleLayerTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
-//            cube.mapKeysToRotation("B", "L", "B", "B'", "L", "F'", "B'", "D");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -1039,7 +1036,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void solveYellowCrossTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InvalidOrientationException {
         if (cube.isSolved()) {
-//            cube.mapKeysToRotation("F'", "R", "D'", "D'", "L", "B'", "L'", "F");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -1098,7 +1094,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void solveYellowCornersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
-//            cube.mapKeysToRotation("F'", "R", "D'", "D'", "L", "B'", "L'", "F");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -1162,7 +1157,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void repositionYellowCornersTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if (cube.isSolved()) {
-//            cube.mapKeysToRotation("D", "R", "R", "R", "D'", "F'", "L", "L");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
@@ -1235,7 +1229,6 @@ public class ThreeTimesThreeCubeTest {
     @Test
     public void solveWholeCubeTest() throws UnsolvableCubeException {
         if (cube.isSolved()) {
-//            cube.mapKeysToRotation("F", "U'", "B", "U'", "U", "D'", "D", "R");
             cube.randomScramble(8);
             ArrayList<Move> scramble = cube.getSolution();
             System.out.println("Scramble:");
