@@ -746,7 +746,7 @@ public class ThreeTimesThreeCubeTest {
                 Face.generateFace(Color.YELLOW, 3));
         Assert.assertFalse(cube.isValidCube());
 
-        cube = new CubeThree(Face.generateFace(Color.YELLOW, 3),
+        cube = new CubeThree(Face.generateFace(Color.WHITE, 3),
                 Face.generateFace(Color.GREEN, 3),
                 Face.generateFace(Color.ORANGE, 3),
                 Face.generateFace(Color.BLUE, 3),
